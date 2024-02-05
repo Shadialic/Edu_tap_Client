@@ -18,17 +18,17 @@ export function TuotoApporuval({ setOpn, filter }) {
     await apporvTutor({ _id: userId,data }).then((res) => {
       toast(res.data.alert);
       console.log(res, "pdpdpdpdp");
+      setOpn(false);
     });
-    setOpn(false);
   };
 
   const handelapproval = async (userId) => {
     let data='approved';
     await apporvTutor({ _id: userId,data }).then((res) => {
       toast(res.data.alert);
-      console.log(res, "pdpdpdpdp");
+      
+      setOpn(false);
     });
-    setOpn(false);
   };
 
   useEffect(() => {

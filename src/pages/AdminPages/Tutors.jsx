@@ -35,12 +35,9 @@ function Tutors() {
       const res = await BlockUnblockTutor({ _id: userId });
       if (res.status === 200) {
         toast(res.data.alert);
-
         const updatedTutor = tutor.map((tutor) =>
           tutor._id === userId ? { ...tutor, is_Block: !tutor.is_Block } : tutor
         );
-
-        // Store the updated tutors in local storage
         localStorage.setItem("tutors", JSON.stringify(updatedTutor));
         setTutor(updatedTutor);
       }
@@ -173,24 +170,24 @@ function Tutors() {
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
-                        {!values.is_Block ? (
-                          <button
-                            className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20  rounded-lg py-0.5 px-2 text-[11px] font-medium w-fit"
-                            data-projection-id="1"
-                            style={{ opacity: 1 }}
-                            onClick={() => handleblockTutor(values._id)}
-                          >
-                            <span>Block</span>
-                          </button>
+                        {values.is_Block ? (
+                         <button
+                         className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20  rounded-lg py-0.5 px-2 text-[11px] font-medium w-fit"
+                         data-projection-id="1"
+                         style={{ opacity: 1 }}
+                         onClick={() => handleblockTutor(values._id)}
+                       >
+                         <span>Unblock</span>
+                       </button>
                         ) : (
                           <button
-                            className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20  rounded-lg py-0.5 px-2 text-[11px] font-medium w-fit"
-                            data-projection-id="1"
-                            style={{ opacity: 1 }}
-                            onClick={() => handleblockTutor(values._id)}
-                          >
-                            <span>Unblock</span>
-                          </button>
+                          className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20  rounded-lg py-0.5 px-2 text-[11px] font-medium w-fit"
+                          data-projection-id="1"
+                          style={{ opacity: 1 }}
+                          onClick={() => handleblockTutor(values._id)}
+                        >
+                          <span>Block</span>
+                        </button>
                         )}
                       </div>
                     </td>

@@ -40,6 +40,7 @@
     "react-paginate": "^8.2.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.21.1",
+    "react-simple-star-rating": "^5.1.7",
     "react-slick": "^0.30.1",
     "react-spinners": "^0.13.8",
     "react-toastify": "^9.1.3",

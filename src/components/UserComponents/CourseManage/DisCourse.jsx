@@ -47,7 +47,6 @@ function DisCourse() {
         const filter = data.filter((item) => item.is_varified === "true");
         setCategory(categories);
         setData(filter);
-        setCourse(filter);
       });
     };
     fetchData();
@@ -60,9 +59,15 @@ function DisCourse() {
     .filter(
       (item) => !inputText || item.title.toLowerCase().includes(inputText)
     );
-    const detailsCourse=async(id)=>{
-      setOpn(true)
-  }
+    const detailsCourse = async (id) => {
+      console.log(data, 'dddssa');
+      console.log(id, 'ss');
+      const filter = data.find((item) => item._id === id);  // Fix the equality check here
+      console.log(filter, 'llllll');
+      setCourse(filter);
+    
+      setOpn(true);
+    };
 
   const settings = {
     infinite: true,
@@ -205,7 +210,7 @@ function DisCourse() {
         </div>
       </div>
     </div>):(
-      <DetailsCourses/>
+      <DetailsCourses data={course}/>
     )}
     
     </>
