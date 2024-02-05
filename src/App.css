@@ -1,0 +1,51 @@
+:root{
+  --primary-color:#6f55f2;
+  --heading-color:#132742;
+}
+body{
+  font-family:'Times New Roman", Times, serif';
+}
+section{
+  padding:50px 0px
+}
+a{
+  text-decoration: none;
+  color: unset;
+}
+a:hover{
+  color:unset;
+}
+link{
+  text-decoration: none;
+  color: unset;
+}
+link:hover{
+  color:unset;
+}
+
+ul{
+  list-style: none;
+}
+
+.container{
+  width: 1140px;
+  padding:0 px 15px ;
+  margin:auto;
+}
+
+.section_title{
+  color: var(--heading-color);
+  font-weight:700px;
+}
+.register-btn{
+  background: #6f55f2;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-name);
+  font-size: 1rem;
+  font-weight: 700;
+  outline: none;
+  padding: 7px 15px;
+}
