@@ -102,7 +102,7 @@ function DisplayProfile() {
         setUserDetails({
           userName: response.data.updatedData.userName,
           phone: response.data.updatedData.phone,
-          country: response.data.updatedData.Country,
+          country: response.data.updatedData.country,
           is_Active: response.data.updatedData.is_Active,
           email: response.data.updatedData.email,
           is_Admin: response.data.updatedData.is_Admin,
@@ -115,6 +115,7 @@ function DisplayProfile() {
       console.error(err);
     }
   };
+  console.log(data,'ddd');
   return (
     <div>
       {isOpn === "profile" ? (
@@ -175,7 +176,7 @@ function DisplayProfile() {
               </div>
               <div className="pl-9 font-prompt flex-row flex gap-2 mt-2">
                 <label htmlFor="">Country :</label>
-                <h1 className="gap-3">{data.country}</h1>
+                <h1 className="gap-3">{data.Country}</h1>
               </div>
               <div className="flex flex-row justify-between">
 
