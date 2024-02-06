@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../assets/images/logoO.png";
+import logo from "../../../assets/images/logoO.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { resetState } from "../../Redux/userSlice/userSlice";
+import { resetState } from "../../../Redux/userSlice/userSlice";
 
 function Header({ state }) {
   const dispatch = useDispatch();

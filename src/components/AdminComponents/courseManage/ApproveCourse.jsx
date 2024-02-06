@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { manageCourse } from "../../../api/adminApi";
+import { manageCourse } from "../../../api/AdminApi";
 import { useDispatch } from "react-redux";
 import { setCourseDetailes } from "../../../Redux/CourseSlice/CourseSlice";
 

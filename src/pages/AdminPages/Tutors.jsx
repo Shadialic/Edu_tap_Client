@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/AdminComponents/Sidebar";
-import Navbar from "../../components/AdminComponents/Navbar";
-import { BlockUnblockTutor, LoadTutorList } from "../../api/adminApi";
+import Sidebar from "../../components/AdminComponents/Layouts/Sidebar";
+import Navbar from "../../components/AdminComponents/Layouts/Navbar";
+import { BlockUnblockTutor, LoadTutorList } from "../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { logoutDetails } from "../../Redux/TutorSlice/tutorSlice";

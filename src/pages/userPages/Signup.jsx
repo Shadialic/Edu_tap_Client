@@ -6,9 +6,9 @@ import {
   UserSendingOtp,
   userRegisterGoogle,
   userSignUp,
-} from "../../api/userApi";
+} from "../../api/UserApi";
 import { ToastContainer, toast } from "react-toastify";
-import {useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,11 +19,9 @@ import { setUserDetails } from "../../Redux/userSlice/userSlice";
 function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [clicked, setClicked] = useState(true);
-  let [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState([]);
-
   const GoogleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
     onError: () => toast.error("Goole login failed"),
@@ -106,6 +104,9 @@ function Signup() {
       } else if (!/\d/.test(formData.password)) {
         toast.error("Password must contain at least one number");
         return;
+      } else if (/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+        toast.error("Password cannot contain special characters");
+        return;
       } else if (
         !/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/.test(formData.phone)
       ) {
@@ -115,20 +116,18 @@ function Signup() {
         setLoading(true);
         toast.success("Form submitted successfully!");
         const userData = await userSignUp(formData).then((res) => {
-          
-          const userData=res;
-          console.log(userData,'userDatauserDatauserDatauserDatauserData');
+          const userData = res;
+          console.log(userData, "userDatauserDatauserDatauserDatauserData");
           toast(res.data.alert);
           console.log(res);
           if (res.status === 201) {
             const dataOtp = { email: formData.credential };
-            const tutorOtp = UserSendingOtp(dataOtp).then((res) => {   
-             
-           
-
+            const tutorOtp = UserSendingOtp(dataOtp).then((res) => {
               dispatch(
                 setUserDetails({
-                  id: userData.data.saveUserData? userData.data.saveUserData._id : null,
+                  id: userData.data.saveUserData
+                    ? userData.data.saveUserData._id
+                    : null,
                   userName: userData.data.saveUserData.userName,
                   phone: userData.data.saveUserData.phone,
                   is_Active: userData.data.saveUserData.is_Active,

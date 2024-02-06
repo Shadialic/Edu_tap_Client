@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/images/logo.png";
-import tutor from "../../../public/images/admin/icons/tutor.png";
-import tutorReq from "../../../public/images/admin/icons/tutorReq.png";
-import courseicon from "../../../public/images/admin/icons/courseicon.png";
-import categoryIcon from "../../../public/images/admin/icons/categoryIcon.png";
-import control_Course from "../../../public/images/admin/icons/control_course.png";
+import logo from "../../../assets/images/logo.png";
+import tutor from "../../../../public/images/admin/icons/tutor.png";
+import tutorReq from "../../../../public/images/admin/icons/tutorReq.png";
+import courseicon from "../../../../public/images/admin/icons/courseicon.png";
+import categoryIcon from "../../../../public/images/admin/icons/categoryIcon.png";
+import control_Course from "../../../../public/images/admin/icons/control_course.png";
 
 export const Sidebar = ({ state }) => {
   // const [activeButton, setActiveButton] = useState(null);

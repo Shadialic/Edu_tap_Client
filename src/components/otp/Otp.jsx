@@ -1,29 +1,25 @@
 import React, { useState, useEffect } from "react";
 import meta from "../../assets/images/web.gif";
-import { TutorSendingOtp, TutorVerifyOtp } from "../../api/VendorApi";
+import { TutorVerifyOtp } from "../../api/VendorApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import {
   UserSendingOtp,
   UserVerifyOtp,
-  forgotPass,
   passverifyOTP,
-} from "../../api/userApi";
+} from "../../api/UserApi";
 import { useSelector } from "react-redux";
-import PasswordUpdate from "../forgetPass/passwordUpdate";
+import PasswordUpdate from "../ForgetPass/passwordUpdate";
 
 function Otp() {
   const userInfo = useSelector((state) => state.user.userInfo);
   const yourData = userInfo.email;
   const tutorInfo = useSelector((state) => state.tutor.tutorInfo);
   const tutorEmail = tutorInfo.email;
-  // console.log(tutorEmail,'tutorEmail');
-  
-
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(0);
   const [page, setPage] = useState("otp");
-  let [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const current = location.state;
   let email;
@@ -63,10 +59,10 @@ function Otp() {
     console.log(current);
     setMinutes(1);
     setSeconds(0);
-     if(current.type=='user'){
-    const dataOtp = { email: yourData };
-    const tutorOtp = UserSendingOtp(dataOtp);
-     }else if(current.type=='vendor'){
+    if (current.type == "user") {
+      const dataOtp = { email: yourData };
+      const tutorOtp = UserSendingOtp(dataOtp);
+    } else if (current.type == "vendor") {
       const dataOtp = { email: tutorEmail };
       const tutorOtp = UserSendingOtp(dataOtp);
     }

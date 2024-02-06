@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/AdminComponents/Sidebar";
-import Navbar from "../../components/AdminComponents/Navbar";
+import Sidebar from "../../components/AdminComponents/Layouts/Sidebar";
+import Navbar from "../../components/AdminComponents/Layouts/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -12,7 +12,7 @@ import {
   Typography,
   Input,
 } from "@material-tailwind/react";
-import { ManageCategory, loadCategory, manageBlock } from "../../api/adminApi";
+import { ManageCategory, loadCategory, manageBlock } from "../../api/AdminApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,

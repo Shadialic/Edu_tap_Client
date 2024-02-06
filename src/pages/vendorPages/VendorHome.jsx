@@ -1,5 +1,5 @@
 import React from 'react'
-import Card_Dashboard from '../../components/TutorComponents/cards/Card_Dashboard'
+import Card_Dashboard from '../../components/TutorComponents/Cards/Card_Dashboard'
 import Home from '../../components/TutorComponents/Dashboard/Home'
 import { useLocation } from 'react-router-dom'
 

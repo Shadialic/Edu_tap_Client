@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BlockingCourse } from "../../../../api/adminApi";
+import { BlockingCourse } from "../../../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 function DetailesCourse({ courseId, course, setOpn }) {

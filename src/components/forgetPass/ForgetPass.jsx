@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import LoginForm from "../UserComponents/LoginForm";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { forgotPass } from "../../api/userApi";
+import { forgotPass } from "../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import LoginForm from "../UserComponents/Login/LoginForm";
 
 function ForgetPass() {
   const navigate = useNavigate();
   const [isOpn, setOpn] = useState(false);
-  let [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState(""); // Initialize email state with an empty string
+  const [email, setEmail] = useState(""); 
   const backhandle = (e) => {
     setOpn(true);
     <LoginForm />;
@@ -64,14 +65,14 @@ function ForgetPass() {
             </div>
           </div>
           <div className="flex flex-col items-center">
-          <button
-            type="submit"
-            className="bg-violet-600 h-8 rounded-md w-full flex justify-center items-center gap-2 text-white mt-3"
-          >
-            Reset Password
-          </button>
-          {loading && <PropagateLoader className="mt-2" color="#8b44ef" />}
-         </div>
+            <button
+              type="submit"
+              className="bg-violet-600 h-8 rounded-md w-full flex justify-center items-center gap-2 text-white mt-3"
+            >
+              Reset Password
+            </button>
+            {loading && <PropagateLoader className="mt-2" color="#8b44ef" />}
+          </div>
           <div className="flex w-full h-fit justify-start items-center text-[13px] text-primary mt-4">
             <span className="cursor-pointer w-fit h-fit flex">
               <svg

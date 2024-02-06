@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import meta from "../../assets/images/web.gif";
 import "react-toastify/dist/ReactToastify.css";
-import ForgetPass from "../../components/forgetPass/ForgetPass";
-import LoginForm from "../../components/UserComponents/LoginForm";
+import ForgetPass from "../../components/ForgetPass/ForgetPass";
+import LoginForm from "../../components/UserComponents/Login/LoginForm";
+
 
 
 function Login() {

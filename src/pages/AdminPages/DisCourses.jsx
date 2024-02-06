@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/AdminComponents/Sidebar";
-import Navbar from "../../components/AdminComponents/Navbar";
+import Sidebar from "../../components/AdminComponents/Layouts/Sidebar";
+import Navbar from "../../components/AdminComponents/Layouts/Navbar";
 import DisplayCourse from "../../components/AdminComponents/courseManage/showCourse/DisplayCourse";
-import { getCourse } from "../../api/adminApi";
+import { getCourse } from "../../api/AdminApi";
 function DisCourses() {
   const [searchInput, setSearchInput] = useState("");
   const [course, setCourse] = useState([]);

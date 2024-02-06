@@ -1,6 +1,7 @@
 import React from "react";
-import Header from "../../components/UserComponents/Header";
+
 import empty from "../../../public/images/tutor/empty.png";
+import Header from "../../components/UserComponents/Layouts/Header";
 function Enrollments() {
   return (
     <div>

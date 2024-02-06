@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCourse } from "../../../../api/adminApi";
+import { getCourse } from "../../../../api/AdminApi";
 import DetailesCourse from "./DetailesCourse";
 
 function DisplayCourse({userDatas}) {
@@ -33,7 +33,7 @@ function DisplayCourse({userDatas}) {
           {course.map((item) => (
             <div
               key={item.id}
-              className="relative flex mb-6 flex-col text-gray-700 bg-white shadow-lg shadow-lightBlue-800 rounded-xl w-64 max-h-80 justify-center items-center transition-transform transition-shadow duration-200 transform hover:scale-105 hover:shadow-md"
+              className="relative flex mb-6 flex-col text-gray-700 bg-white shadow-lg shadow-lightBlue-800 rounded-xl w-64 max-h-80 justify-center items-center duration-200 transform hover:scale-105 hover:shadow-md"
             >
               <div
                 onClick={() => handleCourse(item._id)}

@@ -1,16 +1,16 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Login from "../pages/userPages/Login";
-import Home from "../pages/userPages/Home";
-import Signup from "../pages/userPages/Signup";
+import Login from "../pages/UserPages/Login";
+import Home from "../pages/UserPages/Home";
+import Signup from "../pages/UserPages/Signup";
 import Otp from "../components/otp/Otp";
 
 import UserPublic from "./UserPublic";
-import UserLayout from "../pages/userPages/Layout";
-import Profile from "../pages/userPages/Profile";
-import Course from "../pages/userPages/Course";
-import Enrollments from "../pages/userPages/Enrollments";
+import UserLayout from "../pages/UserPages/Layout";
+import Profile from "../pages/UserPages/Profile";
+import Course from "../pages/UserPages/Course";
+import Enrollments from "../pages/UserPages/Enrollments";
 
 function UserRouter() {
   return (
@@ -31,12 +31,8 @@ function UserRouter() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/course" element={<Course />} />
       <Route path="/enrollments" element={<Enrollments />} />
-
-
-
     </Routes>
   );
 }
 
 export default UserRouter;
-  

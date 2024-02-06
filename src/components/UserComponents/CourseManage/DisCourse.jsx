@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCourse } from "../../../api/userApi";
+import { getCourse } from "../../../api/UserApi";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

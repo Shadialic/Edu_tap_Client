@@ -1,5 +1,7 @@
 import React from 'react'
-import Header from "../../components/UserComponents/Header";
+
+
+import Header from '../../components/UserComponents/Layouts/Header';
 import DisplayProfile from '../../components/UserComponents/profile/DisplayProfile';
           
 

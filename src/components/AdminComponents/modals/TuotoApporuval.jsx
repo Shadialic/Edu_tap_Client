@@ -6,7 +6,7 @@ import {
   DialogFooter,
   Button,
 } from "@material-tailwind/react";
-import { apporvTutor } from "../../../api/adminApi";
+import { apporvTutor } from "../../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

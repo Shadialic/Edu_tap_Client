@@ -1,5 +1,6 @@
 import React from 'react'
-import Header from '../../components/UserComponents/Header'
+
+import Header from '../../components/UserComponents/Layouts/Header'
 import DisCourse from '../../components/UserComponents/CourseManage/DisCourse'
 
 function Course() {

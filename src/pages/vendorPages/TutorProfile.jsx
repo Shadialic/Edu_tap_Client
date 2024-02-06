@@ -1,5 +1,5 @@
 import React from 'react'
-import DisProfile from '../../components/TutorComponents/profile/DisProfile'
+import DisProfile from '../../components/TutorComponents/Profile/DisProfile'
 
 
 function TutorProfile() {

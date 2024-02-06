@@ -5,7 +5,7 @@ import { FaEyeSlash, FaRegEye } from "react-icons/fa";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AdminSignIn } from "../../api/adminApi";
+import { AdminSignIn } from "../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { resetState } from "../../Redux/userSlice/userSlice";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/AdminComponents/Sidebar";
-import Navbar from "../../components/AdminComponents/Navbar";
-import { LoadTutorList, apporvTutor } from "../../api/adminApi";
+import Sidebar from "../../components/AdminComponents/Layouts/Sidebar";
+import Navbar from "../../components/AdminComponents/Layouts/Navbar";
+import { LoadTutorList, apporvTutor } from "../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ import {
 // import ok from '../../../public/images/admin/icons/ok.png'
 import approval from "../../../public/images/admin/icons/approval.png";
 import { TuotoApporuval } from "../../components/AdminComponents/modals/TuotoApporuval";
+
 
 function Tutors() {
   const dispatch = useDispatch();

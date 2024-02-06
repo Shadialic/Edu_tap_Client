@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/AdminComponents/Sidebar";
-import Navbar from "../../components/AdminComponents/Navbar";
+import Sidebar from "../../components/AdminComponents/Layouts/Sidebar";
+import Navbar from "../../components/AdminComponents/Layouts/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BlockUnblockuser, LoadUserList } from "../../api/adminApi";
+import { BlockUnblockuser, LoadUserList } from "../../api/AdminApi";
 import { resetState } from "../../Redux/userSlice/userSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";

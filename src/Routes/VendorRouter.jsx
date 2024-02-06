@@ -1,15 +1,17 @@
 import React from "react";
 import { Route, Routes, Outlet, Form } from "react-router-dom";
-import VendorSignUp from "../pages/vendorPages/VendorSignUp";
-import VendorLogin from "../pages/vendorPages/VendorLogin";
-import VendorHome from "../pages/vendorPages/VendorHome";
-import AddForm from "../components/TutorComponents/add_form/Form";
-import Otp from "../components/otp/Otp";
-import Header from "../components/TutorComponents/tutorLayouts/Header";
-import { Footer } from "../components/TutorComponents/tutorLayouts/Footer";
-import TutorProfile from "../pages/vendorPages/TutorProfile";
-import WaitingList from "../pages/vendorPages/WaitingList";
+import VendorSignUp from "../pages/VendorPages/VendorSignUp";
+import VendorLogin from "../pages/VendorPages/VendorLogin";
+import VendorHome from "../pages/VendorPages/VendorHome";
+import AddForm from "../components/TutorComponents/Add_form/Form";
+// import Otp from "../components/Otp/Otp";
+import Header from "../components/TutorComponents/TutorLayouts/Header";
+import { Footer } from "../components/TutorComponents/TutorLayouts/Footer";
+import TutorProfile from "../pages/VendorPages/TutorProfile";
 import VendorPublic from "./VendorPublic";
+import Otp from "../components/otp/Otp";
+import WaitingList from "../pages/vendorPages/WaitingList";
+
 const Lyouts = () => {
   return (
     <>

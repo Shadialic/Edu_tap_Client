@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import empty from "../../../public/images/tutor/noData.png";
 import { useSelector } from "react-redux";
-import { LoadCourse } from "../../api/adminApi";
+import { LoadCourse } from "../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { manageCourse } from "../../api/VendorApi";

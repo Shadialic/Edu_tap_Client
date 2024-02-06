@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEyeSlash, FaRegEye } from "react-icons/fa";
-import { userLogin, userRegisterGoogle } from "../../api/userApi";
-import { setUserDetails } from "../../Redux/userSlice/userSlice";
+import { userLogin, userRegisterGoogle } from "../../../api/UserApi";
+import { setUserDetails } from "../../../Redux/userSlice/userSlice";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import PropagateLoader from "react-spinners/PropagateLoader";
-import ForgetPass from "../forgetPass/ForgetPass";
+import ForgetPass from "../../ForgetPass/ForgetPass";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 

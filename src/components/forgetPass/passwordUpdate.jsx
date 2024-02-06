@@ -3,7 +3,7 @@ import { FaEyeSlash, FaRegEye } from "react-icons/fa";
 import meta from "../../assets/images/web.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updatePass } from "../../api/userApi";
+import { updatePass } from "../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 
 const PasswordUpdate = ({ email }) => {
@@ -17,7 +17,7 @@ const PasswordUpdate = ({ email }) => {
       console.log(data, "00000000");
       if (password === "") {
         toast("Please add password");
-      }else if (!/[a-z]/.test(password)) {
+      } else if (!/[a-z]/.test(password)) {
         toast.error("Password must contain at least one lowercase letter");
         return;
       } else if (!/[A-Z]/.test(password)) {
@@ -31,7 +31,7 @@ const PasswordUpdate = ({ email }) => {
         await updatePass(data).then((res) => {
           console.log(res, "res");
           if (res.status === 200) {
-            toast('Your Password Updated')
+            toast("Your Password Updated");
             navigate("/login");
           }
         });

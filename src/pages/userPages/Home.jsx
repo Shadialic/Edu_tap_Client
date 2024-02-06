@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import meta from "../../assets/images/home.jpeg";
 import { useCookies } from "react-cookie";
-import Header from "../../components/UserComponents/Header";
-import { verifyuser } from "../../api/userApi";
+import Header from "../../components/UserComponents/Layouts/Header";
+import { verifyuser } from "../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 function Home() {
   // const navigate = useNavigate();

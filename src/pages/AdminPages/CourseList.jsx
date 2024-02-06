@@ -1,7 +1,8 @@
 import React from 'react'
-import Sidebar from "../../components/AdminComponents/Sidebar";
-import Navbar from "../../components/AdminComponents/Navbar";
+
 import CourseMange from '../../components/AdminComponents/courseManage/CourseMange';
+import Sidebar from '../../components/AdminComponents/Layouts/Sidebar';
+import Navbar from '../../components/AdminComponents/Layouts/Navbar';
 function CourseList() {
   return (
     <div>
