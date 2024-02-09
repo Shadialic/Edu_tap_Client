@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
-import { setTutorDetailes } from "../../Redux/TutorSlice/tutorSlice";
+import { setTutorDetailes } from "../../Redux/TutorSlice/TutorSlice";
 import { useDispatch } from "react-redux";
 
 function VendorSignUp() {
@@ -28,7 +28,7 @@ function VendorSignUp() {
     email: "",
     phone: "",
     password: "",
-    image: null, // Change image to null initially
+    image: null,
   });
   const GoogleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => setTutor(codeResponse),
@@ -121,8 +121,8 @@ function VendorSignUp() {
       } else if (!/\d/.test(formData.password)) {
         toast.error("Password must contain at least one number");
         return;
-      } else if (/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
-        toast.error("Password cannot contain special characters");
+      } else if (!/[^a-zA-Z0-9]/.test(formData.password)) {
+        toast.error("Password must contain at least one special character");
         return;
       } else if (
         !/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/.test(formData.phone)
@@ -136,10 +136,7 @@ function VendorSignUp() {
         handleBlurBackground();
         setLoading(true);
         toast.success("Form submitted successfully!");
-
         console.log("Form submitted with data:", formData);
-
-        // Create FormData and append the image file
         const formDataToSend = new FormData();
         formDataToSend.append("tutorName", formData.tutorName);
         formDataToSend.append("email", formData.email);
@@ -147,7 +144,6 @@ function VendorSignUp() {
         formDataToSend.append("password", formData.password);
         formDataToSend.append("image", formData.image);
         const tutorData = await TutorSignUp(formDataToSend);
-        console.log(tutorData, "tutorDatatutorData");
         dispatch(
           setTutorDetailes({
             id: tutorData.data.newTutor._id,
@@ -163,7 +159,6 @@ function VendorSignUp() {
           if (tutorData.status === 201) {
             const dataOtp = { email: formData.email };
             const Tutorotp = await TutorSendingOtp(dataOtp);
-
             if (Tutorotp && Tutorotp.status === 200) {
               navigate("/vendor/otp", { state: { type: "vendor" } });
             } else {
@@ -176,7 +171,7 @@ function VendorSignUp() {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("An error occurred while submitting the form");
+      toast.error("Email alredy exist");
     } finally {
       setLoading(false);
     }
@@ -229,7 +224,6 @@ function VendorSignUp() {
                 Tutor
               </div>
             </div>
-
             <div>
               <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className="flex flex-col justify-center gap-3 px-5 py-2">

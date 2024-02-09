@@ -94,7 +94,6 @@ function Category() {
   };
 
   const retrieveBlockStatus = (id) => {
-    // Retrieve the block status from local storage
     const status = localStorage.getItem(`blockStatus_${id}`);
     return status === "true";
   };

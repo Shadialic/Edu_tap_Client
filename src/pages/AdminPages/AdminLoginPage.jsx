@@ -8,14 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { AdminSignIn } from "../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { resetState } from "../../Redux/userSlice/userSlice";
+import { resetState } from "../../Redux/UserSlice/UserSlice";
 
 function VendorLogin() {
   const dispatch=useDispatch();
   const navigate=useNavigate()
   const [clicked, setClicked] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     credential: "",
     password: "",
@@ -32,36 +31,39 @@ function VendorLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       if (formData.credential === "") {
         toast("Please add email");
       } else if (formData.password === "") {
         toast("Please add password");
       } else {
-        // Corrected the typo here
         const loginResponse = await AdminSignIn({
           credential: formData.credential,
           password: formData.password,
         });
-        console.log(loginResponse);
-        if (loginResponse.data) {
-          localStorage.setItem("admintoken", loginResponse.data.admintoken);
-          dispatch(
-            resetState({
-              id: loginResponse.data.loginData._id,
-              userName: loginResponse.data.loginData.userName,
-              phone: loginResponse.data.loginData.phone,
-              email: loginResponse.data.loginData.credential,
-            })
-          );
+        console.log(loginResponse,';;;');
+        if (loginResponse.loginData) {
+          console.log(loginResponse.loginData,'8888');
+          // toast(loginResponse.data.alert)
+          localStorage.setItem("admintoken", loginResponse.admintoken);
+          // dispatch(
+          //   resetState({
+          //     id: loginResponse.data.loginData._id,
+          //     userName: loginResponse.data.loginData.userName,
+          //     phone: loginResponse.data.loginData.phone,
+          //     email: loginResponse.data.loginData.credential,
+          //   })
+          // );
           navigate("/admin/dashboard");
         } else {
-          toast(loginResponse.data.alert);
+          console.log('pepe');
+          toast(loginResponse.alert);
         }
       }
     } catch (err) {
       console.log(err);
+    }finally{
+      setLoading(false);
     }
     console.log("Form submitted with data:", formData);
   };

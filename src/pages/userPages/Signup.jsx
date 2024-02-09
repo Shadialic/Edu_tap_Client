@@ -14,7 +14,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { FcGoogle } from "react-icons/fc";
-import { setUserDetails } from "../../Redux/userSlice/userSlice";
+import { setUserDetails } from "../../Redux/UserSlice/UserSlice";
 
 function Signup() {
   const dispatch = useDispatch();
@@ -64,12 +64,14 @@ function Signup() {
     };
     fetchData();
   }, [user, dispatch, navigate]);
+
   const [formData, setFormData] = useState({
     name: "",
     credential: "",
     phone: "",
     password: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -77,6 +79,7 @@ function Signup() {
       [name]: value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -104,8 +107,8 @@ function Signup() {
       } else if (!/\d/.test(formData.password)) {
         toast.error("Password must contain at least one number");
         return;
-      } else if (/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
-        toast.error("Password cannot contain special characters");
+      } else if (!/[^a-zA-Z0-9]/.test(formData.password)) {
+        toast.error("Password must contain at least one special character");
         return;
       } else if (
         !/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/.test(formData.phone)
@@ -115,37 +118,35 @@ function Signup() {
       } else {
         setLoading(true);
         toast.success("Form submitted successfully!");
-        const userData = await userSignUp(formData).then((res) => {
-          const userData = res;
-          console.log(userData, "userDatauserDatauserDatauserDatauserData");
-          toast(res.data.alert);
-          console.log(res);
-          if (res.status === 201) {
-            const dataOtp = { email: formData.credential };
-            const tutorOtp = UserSendingOtp(dataOtp).then((res) => {
-              dispatch(
-                setUserDetails({
-                  id: userData.data.saveUserData
-                    ? userData.data.saveUserData._id
-                    : null,
-                  userName: userData.data.saveUserData.userName,
-                  phone: userData.data.saveUserData.phone,
-                  is_Active: userData.data.saveUserData.is_Active,
-                  email: userData.data.saveUserData.email,
-                  is_Admin: userData.data.saveUserData.is_Admin,
-                })
-              );
-              if (res.status === 200) {
-                navigate("/otp", { state: { type: "user" } });
-              }
-            });
+        const userData = await userSignUp(formData);
+        console.log(userData, "userDatauserDatauserDatauserDatauserData");
+        toast(userData.data.alert);
+        console.log(userData);
+        if (userData.status === 201) {
+          const dataOtp = { email: formData.credential };
+          const tutorOtp = await UserSendingOtp(dataOtp);
+          dispatch(
+            setUserDetails({
+              id: userData.data.saveUserData
+                ? userData.data.saveUserData._id
+                : null,
+              userName: userData.data.saveUserData.userName,
+              phone: userData.data.saveUserData.phone,
+              is_Active: userData.data.saveUserData.is_Active,
+              email: userData.data.saveUserData.email,
+              is_Admin: userData.data.saveUserData.is_Admin,
+            })
+          );
+          if (tutorOtp.status === 200) {
+            navigate("/otp", { state: { type: "user" } });
           }
-        });
+        }
       }
     } catch (err) {
       console.log(err);
     }
   };
+
   const [activeTab, setActiveTab] = useState("student");
 
   const handleTabClick = (tab) => {
@@ -309,7 +310,7 @@ function Signup() {
                 >
                   {/* Google Sign-In Button */}
                   <FcGoogle />
-                  <div className='style="height: 32px; pr-3'>
+                  <div style={{ height: "32px", paddingRight: "3px" }}>
                     {/* Add your Google Sign-In button here */}
                     sign in with Google
                   </div>

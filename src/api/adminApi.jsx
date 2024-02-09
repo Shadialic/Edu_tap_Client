@@ -7,11 +7,12 @@ const AdminApi = axios.create({
 //============================== ADDMIN SIGNIN =================================//
 export async function AdminSignIn(userData) {
   try {
-    const admindata = await AdminApi.post("/login", userData);
-    console.log(admindata, "admindata");
-    return admindata;
+    const response = await AdminApi.post("/login", userData);
+    console.log(response.data,']');
+    return response.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    throw error; 
   }
 }
 export async function LoadUserList(userData) {
@@ -26,9 +27,10 @@ export async function LoadUserList(userData) {
 
 export async function LoadTutorList(tutorData) {
   try {
-    console.log(tutorData);
+    console.log(tutorData,'llldfgdfgdl');
 
-    const admindata = await AdminApi.post("/loadtutor", tutorData);
+    const admindata = await AdminApi.get("/loadtutor", tutorData);
+    console.log(admindata,'admindataadmindata');
     return admindata;
   } catch (error) {
     console.log(error);

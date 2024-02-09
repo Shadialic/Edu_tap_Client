@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import meta from "../../assets/images/home.jpeg";
-import { useCookies } from "react-cookie";
 import Header from "../../components/UserComponents/Layouts/Header";
-import { verifyuser } from "../../api/UserApi";
-import { useNavigate } from "react-router-dom";
+import Banner from "../../components/UserComponents/Home/Banner";
+import { Footer } from "../../components/UserComponents/Layouts/Footer";
 function Home() {
-  // const navigate = useNavigate();
-  // const [cookies, removeCookie] = useCookies([]);
-  // const [username, setUsername] = useState("");
-  // useEffect(() => {
-  //   const verifyCookie = async () => {
-  //     if (!cookies.token) {
-  //       navigate("/login");
-  //     }
-  //     const { data } = await verifyuser(data)
-  //     const { status, user } = data;
-  //     setUsername(user);
-  //     return status
-  //       ? toast(`Hello ${user}`, {
-  //           position: "top-right",
-  //         })
-  //       : (removeCookie("token"), navigate("/login"));
-  //   };
-  //   verifyCookie();
-  // }, [cookies, navigate, removeCookie]);
   return (
     <div>
       <Header state='Home'/>
@@ -68,6 +48,8 @@ function Home() {
           </div>
         </div>
       </section>
+      <Banner/>
+      <Footer/>
     </div>
   );
 }

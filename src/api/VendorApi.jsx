@@ -1,8 +1,4 @@
-// import axios from "axios";
 
-// const TutorApi = axios.create({
-//   baseURL: "http://localhost:3000/vendor",
-// });
 import tutorInterseption from '../utils/intreceptors/tutotinterceptors';
 
 const TutorApi=tutorInterseption;
@@ -62,7 +58,6 @@ export async function tutorRegisterGoogle(tutorData) {
 
 export async function CoursrManage(newData) {
   try {
-    console.log(newData, "newData");
     const response = await TutorApi.post("/vendor/loadCourse", newData
     // , {
     //   headers: {

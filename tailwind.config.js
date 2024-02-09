@@ -32,6 +32,7 @@ export default withMT({
       'prompt-normal': 400,
       'prompt-semibold': 800,
     },
+    
     extend: {
       spacing: {
         '128': '85vh',

@@ -11,38 +11,33 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export function TuotoApporuval({ setOpn, filter }) {
-  const [open, setOpen] = useState(true);
-
-  const handleClose = async (userId) => {
-    let data='rejected'
-    await apporvTutor({ _id: userId,data }).then((res) => {
+  const handleReject = async (userId) => {
+    const data = "rejected";
+    await apporvTutor({ _id: userId, data }).then((res) => {
       toast(res.data.alert);
-      console.log(res, "pdpdpdpdp");
       setOpn(false);
     });
   };
 
-  const handelapproval = async (userId) => {
-    let data='approved';
-    await apporvTutor({ _id: userId,data }).then((res) => {
+  const handleApproval = async (userId) => {
+    const data = "approved";
+    await apporvTutor({ _id: userId, data }).then((res) => {
       toast(res.data.alert);
-      
       setOpn(false);
     });
   };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      handleClose(filter._id);
+      setOpn(false); // Close the dialog after the timeout
     }, 5000);
-
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [filter._id]); // Added filter._id as a dependency to useEffect
+  }, [setOpn]);
 
   return (
-    <Dialog open={open} onClose={() => handleClose(filter._id)} width="1/2">
+    <Dialog open={setOpn} onClose={() => setOpn(false)} width="1/2">
       <DialogHeader>Tutor Approval Request</DialogHeader>
       <DialogBody>
         <p>
@@ -60,7 +55,7 @@ export function TuotoApporuval({ setOpn, filter }) {
         <Button
           variant="text"
           color="red"
-          onClick={() => handleClose(filter._id)}
+          onClick={() => handleReject(filter._id)}
           className="mr-1"
         >
           <span>Reject</span>
@@ -68,7 +63,7 @@ export function TuotoApporuval({ setOpn, filter }) {
         <Button
           variant="gradient"
           color="green"
-          onClick={() => handelapproval(filter._id)}
+          onClick={() => handleApproval(filter._id)}
         >
           <span>Approve</span>
         </Button>

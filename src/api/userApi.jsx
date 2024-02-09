@@ -1,34 +1,3 @@
-// import axios from "axios";
-
-// const UserApi = axios.create({
-//   baseURL: `http://localhost:3000`,
-// });
-// let userData = JSON.parse(localStorage.getItem("userData"));
-// let token;
-// if (userData) {
-//   token = userData.token;
-// }
-// axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-// axios.defaults.headers.post["Content-Type"] = "application/json";
-// axios.interceptors.request.use(
-//   (request) => {
-//     return request;
-//   },
-//   (error) => {
-//     //  console.log(error);
-//     return Promise.reject(error);
-//   }
-// );
-// axios.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     console.log(error.response);
-//     return Promise.reject(error);
-//   }
-// );
-// import UserApi from '../utils/userinterceptors'
 import userInterseption from '../utils/intreceptors/userinterceptors';
 const UserApi=userInterseption;
 console.log(UserApi,'UserApiUserApiUserApiUserApi');
@@ -95,9 +64,7 @@ export async function forgotPass(forgotData) {
 
 export async function passverifyOTP(newData) {
   try {
-    console.log("0000000002222222222222222222");
     const data = await UserApi.post("/newPass", newData);
-    console.log(data, "///////111111111111111111111111////////////////////");
     return data;
   } catch (err) {
     console.log(err);
@@ -107,7 +74,6 @@ export async function passverifyOTP(newData) {
 export async function updatePass(updateData) {
   try {
     const data = await UserApi.put("/updateaPass", updateData);
-    console.log(data, "updatePass");
     return data;
   } catch (error) {
     console.log(error);
@@ -124,7 +90,6 @@ export async function userRegisterGoogle(userData) {
 }
 export async function getUserData(userData) {
   try {
-    console.log(userData,'zzz');
     const response = await UserApi.get("/getUser", userData);
     return response;
   } catch (error) {
@@ -146,7 +111,6 @@ export async function UpdateProfile(updateData) {
 
 export async function profileuser(userData) {
   try {
-    console.log(userData,'zzz');
     const response = await UserApi.get("/manageProfile", { params: userData });
     return response;
   } catch (error) {
@@ -156,17 +120,24 @@ export async function profileuser(userData) {
 
 export async function getCourse(newData) {
   try {
-    console.log(newData,'zzz');
     const response = await UserApi.get("/getCourse", newData);
     return response;
   } catch (error) {
     console.log(error);
   }
 }
+
 export async function UpdateUser(newData) {
   try {
-    console.log(newData,'zzz');
     const response = await UserApi.post("/updateuser", newData);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function LoadCategory() {
+  try {
+    const response = await UserApi.get("/LoadCategory");
     return response;
   } catch (error) {
     console.log(error);

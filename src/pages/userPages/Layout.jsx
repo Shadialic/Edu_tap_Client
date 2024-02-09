@@ -2,7 +2,8 @@ import React from 'react'
 
 
 import { Outlet } from 'react-router-dom'
-import Footer from '../../components/UserComponents/Layouts/Footer'
+import { Footer } from '../../components/UserComponents/Layouts/Footer'
+
 function Layout() {
   return (
     <div>

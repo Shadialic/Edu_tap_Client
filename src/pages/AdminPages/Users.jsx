@@ -4,7 +4,7 @@ import Navbar from "../../components/AdminComponents/Layouts/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BlockUnblockuser, LoadUserList } from "../../api/AdminApi";
-import { resetState } from "../../Redux/userSlice/userSlice";
+import { resetState } from "../../Redux/UserSlice/UserSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";

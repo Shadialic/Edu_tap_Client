@@ -28,6 +28,7 @@ function Tutors() {
   useEffect(() => {
     LoadTutorList()
       .then((res) => {
+        console.log(res,';ld');
         const tutorList = res.data.tutordata;
         const activeTutors = tutorList.filter(
           (item) => item.is_Actived === "pending"
@@ -92,19 +93,16 @@ function Tutors() {
                             Id
                           </p>
                         </th>
-
                         <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
                           <p className="block antialiased font-sans text-[11px] font-bold uppercase text-blue-gray-400">
                             tutorName
                           </p>
                         </th>
-
                         <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
                           <p className="block antialiased font-sans text-[11px] font-bold uppercase text-blue-gray-400">
                             Email
                           </p>
                         </th>
-
                         <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
                           <p className="block antialiased font-sans text-[11px] font-bold uppercase text-blue-gray-400">
                             phone
@@ -115,14 +113,11 @@ function Tutors() {
                             ID Proof
                           </p>
                         </th>
-
                         <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
                           <p className="block antialiased font-sans text-[11px] font-bold uppercase text-blue-gray-400">
                             approvel
                           </p>
                         </th>
-
-                        {/* ... other table header cells ... */}
                       </tr>
                     </thead>
                     <tbody>
@@ -131,25 +126,21 @@ function Tutors() {
                           <td className="py-3 px-5 border-b border-blue-gray-50">
                             <div className="flex items-center gap-4">
                               {index + 1}
-                              {/* ... content for the second row ... */}
                             </div>
                           </td>
                           <td className="py-3 px-5 border-b border-blue-gray-50">
                             <div className="flex items-center gap-4">
                               {values.tutorName}
-                              {/* ... content for the second row ... */}
                             </div>
                           </td>
                           <td className="py-3 px-5 border-b border-blue-gray-50">
                             <div className="flex items-center gap-4">
-                              {values.email}
-                              {/* ... content for the third row ... */}
+                              {values.email}                            
                             </div>
                           </td>
                           <td className="py-3 px-5 border-b border-blue-gray-50">
                             <div className="flex items-center gap-4">
-                              {values.phone}
-                              {/* ... content for the fourth row ... */}
+                              {values.phone}               
                             </div>
                           </td>
                           <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -177,7 +168,6 @@ function Tutors() {
                               </button>
                             </div>
                           </td>
-                          {/* ... other table cells ... */}
                         </tr>
                       ))}
                     </tbody>

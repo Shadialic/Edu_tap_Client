@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 function DisplayProfile() {
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
 
   const [value, onChange] = useState(new Date());
@@ -74,6 +74,7 @@ function DisplayProfile() {
         const formData = new FormData();
         formData.append("image", selectedFile);
         formData.append("email", userInfo.email);
+        console.log(formData,'l');
         const response = await UpdateProfile(formData);
         const updatedImage = response.data.userData.image;
         setImage(updatedImage);
@@ -109,13 +110,12 @@ function DisplayProfile() {
           id: response.data.updatedData._id,
         })
       );
-
       setOpn("profile");
     } catch (err) {
       console.error(err);
     }
   };
-  console.log(data,'ddd');
+
   return (
     <div>
       {isOpn === "profile" ? (
@@ -124,11 +124,19 @@ function DisplayProfile() {
             <div className="w-[30%] h-[90%] bg-white shadow-sm shadow-violet-600 mt-4 ml-5 ">
               <div>
                 <div className="flex justify-center items-center ">
-                  <img
-                    className="w-32 h-32 mt-10 overflow-hidden rounded-full"
-                    src={data.image}
-                    alt="Profile"
-                  />
+                  {data && data.image ? (
+                    <img
+                      className="w-32 h-32 mt-10 overflow-hidden rounded-full"
+                      src={data.image}
+                      alt="Profile"
+                    />
+                  ) : (
+                    <img
+                      className="w-32 h-32 mt-10 overflow-hidden rounded-full"
+                      src={profile}
+                      alt="Profile"
+                    />
+                  )}
                 </div>
               </div>
               <h1 className="font-prompt-semibold font-prompt uppercase text-center mt-3">
@@ -148,7 +156,10 @@ function DisplayProfile() {
                 />
               </div>
               <div className="flex  justify-center items-center w-[75%] h-[10%] bg-violet-600 mt-4 ml-9 text-white font-prompt rounded-md ">
-                <button onClick={()=>navigate('/enrollments')} className="justify-center items-center">
+                <button
+                  onClick={() => navigate("/enrollments")}
+                  className="justify-center items-center"
+                >
                   Your Enrollements
                 </button>
               </div>
@@ -179,7 +190,6 @@ function DisplayProfile() {
                 <h1 className="gap-3">{data.Country}</h1>
               </div>
               <div className="flex flex-row justify-between">
-
                 <h1 className="font-prompt text-xl p-6">
                   About Your Education
                 </h1>

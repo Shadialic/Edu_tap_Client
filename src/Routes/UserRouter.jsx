@@ -11,6 +11,8 @@ import UserLayout from "../pages/UserPages/Layout";
 import Profile from "../pages/UserPages/Profile";
 import Course from "../pages/UserPages/Course";
 import Enrollments from "../pages/UserPages/Enrollments";
+import About from "../pages/UserPages/About";
+import Blog from "../pages/UserPages/Blog";
 
 function UserRouter() {
   return (
@@ -31,6 +33,10 @@ function UserRouter() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/course" element={<Course />} />
       <Route path="/enrollments" element={<Enrollments />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/blog" element={<Blog />} />
+
+
     </Routes>
   );
 }

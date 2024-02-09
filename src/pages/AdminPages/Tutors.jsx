@@ -4,7 +4,7 @@ import Navbar from "../../components/AdminComponents/Layouts/Navbar";
 import { BlockUnblockTutor, LoadTutorList } from "../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { logoutDetails } from "../../Redux/TutorSlice/tutorSlice";
+import { logoutDetails } from "../../Redux/TutorSlice/TutorSlice";
 import { useDispatch } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -47,26 +47,27 @@ function Tutors() {
   };
 
   useEffect(() => {
+    console.log('030');
     const fetchTutors = async () => {
       try {
         const res = await LoadTutorList();
         const tutorList = res.data.tutordata;
+        console.log(tutorList,'tutorList');
         const activeTutors = tutorList.filter((item) => item.is_Actived === "approved");
         setTutor(activeTutors);
-
-        // Store active tutors in local storage
         localStorage.setItem("tutors", JSON.stringify(activeTutors));
       } catch (err) {
         console.log(err);
       }
     };
+    fetchTutors();
 
-    const storedTutors = JSON.parse(localStorage.getItem("tutors"));
-    if (storedTutors) {
-      setTutor(storedTutors);
-    } else {
-      fetchTutors();
-    }
+    // const storedTutors = JSON.parse(localStorage.getItem("tutors"));
+    // if (storedTutors) {
+    //   setTutor(storedTutors);
+    // } else {
+    //   fetchTutors();
+    // }
   }, []);
   //===================== SEACHED DATA FETCHING  ============//
  
@@ -140,26 +141,22 @@ function Tutors() {
                   <tr key={values._id}>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
-                        {index + 1}
-                     
+                        {index + 1}                   
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
-                        {values.tutorName}
-                     
+                        {values.tutorName}                    
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
-                        {values.email}
-                        {/* ... content for the third row ... */}
+                        {values.email}                      
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
-                        {values.phone}
-                        {/* ... content for the fourth row ... */}
+                        {values.phone}                  
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -170,7 +167,7 @@ function Tutors() {
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
-                        {values.is_Block ? (
+                        {!values.is_Block ? (
                          <button
                          className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20  rounded-lg py-0.5 px-2 text-[11px] font-medium w-fit"
                          data-projection-id="1"

@@ -1,11 +1,22 @@
-import React, { useState  } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ state, searchInput, setSearchInput }) => {
-
   const [currentState, setCurrentState] = useState(state);
+  const navigate=useNavigate()
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
   };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  const logoutAdmin=()=>{
+    localStorage.removeItem("admintoken");
+    navigate('/admin')
+
+  }
 
   return (
     <div>
@@ -55,10 +66,11 @@ const Navbar = ({ state, searchInput, setSearchInput }) => {
                   </svg>
                 </span>
               </button>
-              <a href="#/auth/sign-in">
+              <div className="relative">
                 <button
                   className="align-middle select-none font-sans font-bold text-center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 hidden items-center gap-1 px-4 xl:flex normal-case"
                   type="button"
+                  onClick={toggleDropdown}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -75,14 +87,25 @@ const Navbar = ({ state, searchInput, setSearchInput }) => {
                   </svg>
                   Admin
                 </button>
-              </a>
-              <button
+                {isDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-md">
+                    <button
+                    onClick={logoutAdmin}
+                     
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+              {/* <button
                 aria-expanded="false"
                 aria-haspopup="menu"
                 id=":r6g:"
                 className="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
                 type="button"
-              >
+              >ddd
                 <span className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +121,7 @@ const Navbar = ({ state, searchInput, setSearchInput }) => {
                     ></path>
                   </svg>
                 </span>
-              </button>
+              </button> */}
               {/* ... (previous code) */}
             </div>
           </div>
