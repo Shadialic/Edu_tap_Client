@@ -34,7 +34,7 @@ function Header() {
       display: "Waiting List",
     },
     {
-      path: "/about",
+      path: "/vendor/runningClasses",
       display: "Running Classes",
     },
     {

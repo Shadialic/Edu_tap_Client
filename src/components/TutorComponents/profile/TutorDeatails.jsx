@@ -1,11 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Card } from "@material-tailwind/react";
 
 function TutorDeatails({ formData, setFormData }) {
-  // useEffect(() => {
-  //   // You can perform any side-effects here if needed
-  // }, [formData]); // Add formData as a dependency if you are using it in the useEffect
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({

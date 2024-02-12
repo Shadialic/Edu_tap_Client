@@ -7,8 +7,8 @@ import cloudinary from "cloudinary-core";
 import { useSelector } from "react-redux";
 
 function Form() {
-  const tutor=useSelector((state) => state.tutor.tutorInfo);
-  const auther=tutor.email
+  const tutor = useSelector((state) => state.tutor.tutorInfo);
+  const auther = tutor.email;
 
   const [payment, setPayment] = useState("free");
   const [level, setLevel] = useState("beginner");
@@ -42,7 +42,6 @@ function Form() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Check if the name is 'category' and set it accordingly
     if (name === "category") {
       setCategory(value);
     }
@@ -52,12 +51,6 @@ function Form() {
       [name]: value,
     }));
   };
-
-  // const cloudinaryInstance = new cloudinary.Cloudinary({
-  //   cloud_name: import.meta.env.VITE_CLOUD_NAME,
-  //   api_key: import.meta.env.VITE_API_KEY,
-  //   api_secret: import.meta.env.VITE_API_SECRET,
-  // });
 
   const uploadImage = async (file) => {
     try {
@@ -95,14 +88,9 @@ function Form() {
 
   const handleFileChange = async (e) => {
     try {
-      console.log("File input changed");
       const file = e.target.files[0];
-      console.log("Selected file:", file);
       const url = await uploadImage(file);
-      console.log("Uploaded image URL:", url);
       setProfilePic(url);
-
-      // Set the 'image' field in formData
       setFormData((prevFormData) => ({
         ...prevFormData,
         image: url,

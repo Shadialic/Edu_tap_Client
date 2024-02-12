@@ -194,10 +194,10 @@ function DisCourse() {
                           {item.title}
                         </h1>
                         <div className="flex flex-row font-prompt ml-4 justify-center items-center mt-3">
-                          <label className="uppercase text-md gap-4" htmlFor="">
+                          <label className="uppercase text-sm gap-4" htmlFor="">
                             category:
                           </label>
-                          <h1 className="font-prompt text-center ml-1">
+                          <h1 className="font-prompt text-center text-sm ml-1">
                             {item.category}
                           </h1>
                         </div>

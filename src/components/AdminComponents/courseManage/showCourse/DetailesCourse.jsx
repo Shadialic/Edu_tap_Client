@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 function DetailesCourse({ courseId, course, setOpn }) {
   const [data, setData] = useState([]);
   const [block, setBlock] = useState(false);
+  console.log(course,'lllllllllll');
 
   useEffect(() => {
     const filteredData = course.filter((element) => element._id === courseId);
@@ -41,6 +42,13 @@ function DetailesCourse({ courseId, course, setOpn }) {
               </h1>
               <div className="block font-sans text-base antialiased font-light leading-relaxed text-inherit ml-5">
                 <p>{element.description}</p>
+              </div>
+
+              <div className="flex flex-row p-4">
+                <label className="text-xl font-prompt-semibold" htmlFor="">auther:</label>
+                <h1 className="text-lg font-prompt ml-1">{element.auther}</h1>
+                <img src="" alt="" />
+
               </div>
             </div>
           ))}

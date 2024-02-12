@@ -10,13 +10,9 @@ function DisProfile({}) {
   const [currentProfile, setCurrentProfile] = useState(profile);
   const tutorInfo = useSelector((state) => state.tutor.tutorInfo);
   useEffect(() => {
-    console.log(tutorInfo.email, "ssss");
     profiletutor({ email: tutorInfo.email }).then((res) => {
-      console.log(res, "res");
-
       const tutor = res.data.tutorData;
       setFormData(tutor);
-      console.log(tutor, "user");
     });
   }, []);
 

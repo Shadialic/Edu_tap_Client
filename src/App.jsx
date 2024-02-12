@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 import UserRouter from "./Routes/userRouter";
-import VendorRouter from "./Routes/VendorRouter";
+import TutorRouter from "./Routes/TutorRouter";
 import AdminRouter from "./Routes/AdminRouter";
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/*" element={<UserRouter />} />
-        <Route path="/vendor/*" element={<VendorRouter />} />
+        <Route path="/vendor/*" element={<TutorRouter/>} />
         <Route path="/admin/*" element={<AdminRouter />} />
       </Routes>
     </Router>

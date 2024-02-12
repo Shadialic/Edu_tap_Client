@@ -1,16 +1,13 @@
+import tutorInterseption from "../utils/intreceptors/tutotinterceptors";
+const TutorApi = tutorInterseption;
 
-import tutorInterseption from '../utils/intreceptors/tutotinterceptors';
-
-const TutorApi=tutorInterseption;
-export async function TutorSignUp(signUpData) {
+export async function TutorsignUp(signUpData) {
   try {
-    console.log(signUpData, "222222222222");
     const data = await TutorApi.post("/vendor/signup", signUpData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(data,'[][][][][]');
     return data;
   } catch (err) {
     console.log(err);
@@ -58,13 +55,7 @@ export async function tutorRegisterGoogle(tutorData) {
 
 export async function CoursrManage(newData) {
   try {
-    const response = await TutorApi.post("/vendor/loadCourse", newData
-    // , {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // }
-    );
+    const response = await TutorApi.post("/vendor/loadCourse", newData);
     return response;
   } catch (error) {
     console.log(error);
@@ -81,8 +72,9 @@ export async function getCategory(category) {
 }
 export async function profiletutor(tutorData) {
   try {
-    console.log(tutorData,'zzz');
-    const response = await TutorApi.get("/vendor/manageProfile", { params: tutorData });
+    const response = await TutorApi.get("/vendor/manageProfile", {
+      params: tutorData,
+    });
     return response;
   } catch (error) {
     console.log(error);
@@ -101,18 +93,42 @@ export async function UpdateProfile(updateData) {
   }
 }
 
-export async function fetchCoures() {
+export async function fetchCoures(data) {
   try {
-    const response = await TutorApi.post("/vendor/getcoures")
+    console.log(data, "ppppp");
+    const response = await TutorApi.post("/vendor/getcoures", data);
     return response;
   } catch (error) {
     console.log(error);
   }
 }
+
 export async function manageCourse(id) {
   try {
-    console.log(id, 'llll');
     const response = await TutorApi.put(`/vendor/manageCourse/${id}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function addChapter(formData, id) {
+  console.log(id,"course idd in vendour apiiiiiiiiiii");
+  try {
+    console.log(formData, "popo==================");
+    const response = await TutorApi.post(`/vendor/addChapter/${id}`,formData);
+    console.log(response, "p");
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchChapter() {
+
+  try {
+
+    const response = await TutorApi.get('/vendor/getChapter');
+    console.log(response, "p");
     return response;
   } catch (error) {
     console.log(error);

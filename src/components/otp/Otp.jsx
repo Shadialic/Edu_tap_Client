@@ -41,8 +41,6 @@ function Otp() {
       }
       if (seconds === 0) {
         if (minutes === 0) {
-          // Reset the timer after 1 minute
-          // setMinutes(1);
         } else {
           setSeconds(59);
           setMinutes(minutes - 1);
@@ -84,16 +82,13 @@ function Otp() {
     if (otp.length === 6) {
       if (current.type == "forgot") {
         await passverifyOTP(data).then((res) => {
-          console.log(res, "??????????????");
           if (res.data.status == 200) {
-            console.log(res, "????======");
             setPage("password");
           }
         });
       } else if (current.type == "user") {
         try {
           const res = await UserVerifyOtp(data);
-          console.log(res, "sdjsdfhjsdhfusdhfuhsd");
           if (res.data.status) {
             toast(res.data.alert);
             navigate("/login");
@@ -106,10 +101,7 @@ function Otp() {
       } else if (current.type == "vendor") {
         await TutorVerifyOtp(data).then((res) => {
           toast(res.data.alert);
-          console.log(res.data.tutor, "55555555555555555");
           if (res.data.status) {
-            console.log(res.data.tutor, "52222222555555555");
-
             toast(
               "Tutor signup successful. Please wait for admin approval before logging in"
             );
@@ -120,17 +112,6 @@ function Otp() {
     } else {
       toast("please Enter 6 Digits");
     }
-    // if (current == "forgot") {
-    //   console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[');
-    //   await forgotPass(data).then((res) => {
-    //     if (res.status == 200) {
-    //       navigate('/login')
-    //     }
-    //   });
-    // } else {
-    //   console.log(false, "should be add 6 digits");
-    //   toast.error("should be add 6 digits");
-    // }
   };
 
   return (
@@ -143,7 +124,6 @@ function Otp() {
                 <span className="font-prompt-semibold text-4xl mt-20">
                   Edu-tap
                 </span>
-                {/* <h4 className='text-3xl ml-16'>E-Learning Platform</h4> */}
                 <img className="rounded-md" src={meta} alt="" />
               </div>
             </div>
@@ -164,8 +144,6 @@ function Otp() {
                         <div className="relative flex flex-col justify-center">
                           <div className="flex items-center">
                             <div className="flex justify-center items-center gap-1.5">
-                              {/* Input fields for OTP */}
-
                               <input
                                 type="text"
                                 name="num1"

@@ -11,13 +11,12 @@ import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-function VendorLogin() {
+function TutorLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [clicked, setClicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tutor, setTutor] = useState([]);
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -257,4 +256,4 @@ function VendorLogin() {
   );
 }
 
-export default VendorLogin;
+export default TutorLogin;

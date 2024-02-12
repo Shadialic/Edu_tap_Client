@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getCourse } from "../../../../api/AdminApi";
 import DetailesCourse from "./DetailesCourse";
 
-function DisplayCourse({userDatas}) {
+function DisplayCourse({ userDatas }) {
   const [course, setCourse] = useState([]);
   const [currentCourseId, setCurrentCourseId] = useState(null);
   const [isOpn, setOpn] = useState(false);
@@ -10,10 +10,9 @@ function DisplayCourse({userDatas}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(userDatas,'ppppgfhfghp');
-        // const res = await getCourse();
-        // const data = res.data.data;
-        const filterData = userDatas.filter((item) => item.is_varified === "true");
+        const filterData = userDatas.filter(
+          (item) => item.is_varified === "true"
+        );
         setCourse(filterData);
       } catch (error) {
         console.error("Error fetching category data:", error);
@@ -28,7 +27,7 @@ function DisplayCourse({userDatas}) {
   };
   return (
     <>
-         {!isOpn ? (
+      {!isOpn ? (
         <div className="flex flex-wrap gap-16">
           {course.map((item) => (
             <div

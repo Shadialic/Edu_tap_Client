@@ -138,32 +138,7 @@ function CourseMange() {
             ):(
               <p className="text-center text-gray-500">No data found</p>
             )}
-              {/* <div className="flex justify-center mt-4">
-              <ReactPaginate
-                previousLabel={
-                  <FontAwesomeIcon icon={faChevronLeft} className="text-xl" />
-                }
-                nextLabel={
-                  <FontAwesomeIcon icon={faChevronRight} className="text-xl" />
-                }
-                breakLabel={"..."}
-                pageCount={Math.ceil(tutorDatas.length / itemsPerPage)}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={(data) => setCurrentPage(data.selected)}
-                containerClassName={"pagination flex gap-2"}
-                activeClassName={
-                  "bg-white-500 text-lightBlue-900 px-3 py-2 rounded"
-                }
-                previousClassName={
-                  "border bg-[#075985] text-white rounded px-3 py-2 hover:bg-lightBlue-950"
-                }
-                nextClassName={
-                  "border  bg-[#075985] text-white rounded px-3 py-2 hover:bg-lightBlue-950"
-                }
-                disabledClassName={"opacity-110"}
-              />
-            </div> */}
+             
               <ToastContainer />
             </div>
           </div>

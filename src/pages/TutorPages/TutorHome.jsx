@@ -3,7 +3,7 @@ import Card_Dashboard from '../../components/TutorComponents/Cards/Card_Dashboar
 import Home from '../../components/TutorComponents/Dashboard/Home'
 import { useLocation } from 'react-router-dom'
 
-function VendorHome() {
+function TutorHome() {
   const location=useLocation()
   return (
     <div>
@@ -14,4 +14,4 @@ function VendorHome() {
   )
 }
 
-export default VendorHome
+export default TutorHome

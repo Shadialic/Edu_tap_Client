@@ -5,7 +5,7 @@ import { FaEyeSlash, FaRegEye } from "react-icons/fa";
 import axios from "axios";
 import {
   TutorSendingOtp,
-  TutorSignUp,
+  TutorsignUp,
   tutorRegisterGoogle,
 } from "../../api/VendorApi";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +16,7 @@ import { FcGoogle } from "react-icons/fc";
 import { setTutorDetailes } from "../../Redux/TutorSlice/TutorSlice";
 import { useDispatch } from "react-redux";
 
-function VendorSignUp() {
+function TutorSignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [clicked, setClicked] = useState(true);
@@ -143,7 +143,7 @@ function VendorSignUp() {
         formDataToSend.append("phone", formData.phone);
         formDataToSend.append("password", formData.password);
         formDataToSend.append("image", formData.image);
-        const tutorData = await TutorSignUp(formDataToSend);
+        const tutorData = await TutorsignUp(formDataToSend);
         dispatch(
           setTutorDetailes({
             id: tutorData.data.newTutor._id,
@@ -395,4 +395,4 @@ function VendorSignUp() {
   );
 }
 
-export default VendorSignUp;
+export default TutorSignUp;
