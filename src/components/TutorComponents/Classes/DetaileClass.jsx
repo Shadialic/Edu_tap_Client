@@ -1,30 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChapterForm from "../Add_form/ChapterForm";
-import { fetchChapter } from "../../../api/VendorApi";
+import {
+  blockUnBlockcourse,
+  fetchChapter,
+  manageChapter,
+} from "../../../api/VendorApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+
 function DetaileClass({ courseId }) {
-  console.log(courseId, "courseId");
   const [isOpn, setOpn] = useState(false);
   const [chapter, setChpter] = useState([]);
   const [manageControle, setmanageControle] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [size, setSize] = useState(null);
+  const [deleteChapterId, setDeleteChapterId] = useState(null);
 
-  const addChapter = () => {
-    setOpn(true);
-  };
+  const handleOpen = (value) => setSize(value);
+
   useEffect(() => {
     const fetch = async () => {
       await fetchChapter().then((res) => {
         const filterData = res.data.data;
-        console.log(filterData, "llllfilterData");
         const data = filterData.filter((item) => item.course_id === courseId);
-        console.log(data, "ddd");
         setChpter(data);
       });
     };
     fetch();
   }, []);
-  console.log(chapter, ";;;;;;a");
 
   const videoRef = useRef(null);
 
@@ -39,53 +51,135 @@ function DetaileClass({ courseId }) {
     }
   };
 
+  const addChapter = () => {
+    setOpn(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (deleteChapterId) {
+        await blockUnBlockcourse(deleteChapterId);
+        setConfirm(false);
+        const res = await fetchChapter();
+        const filterData = res.data.data;
+        const data = filterData.filter((item) => item.course_id === courseId);
+        setChpter(data);
+        toast.success("Chapter deleted successfully.");
+      }
+    } catch (error) {
+      console.error("Failed to delete chapter:", error);
+      toast.error("Failed to delete chapter.");
+    }
+  };
+
+  const handleDeleteClick = (id) => {
+    setDeleteChapterId(id);
+    setConfirm(true);
+  };
+
+  const handleCancel = () => {
+    setConfirm(false);
+  };
+
   return (
     <>
-      {isOpn ? (
-        <ChapterForm setOpn={setOpn} courseId={courseId} />
+      {confirm ? (
+        <>
+          <Dialog
+            open={"sm"}
+            handler={handleOpen}
+            animate={{
+              mount: { scale: 1, y: 0 },
+              unmount: { scale: 1, y: -100 },
+            }}
+          >
+            <DialogHeader>Delete Chapter</DialogHeader>
+            <DialogBody>
+              Are you sure you want to delete this chapter?
+            </DialogBody>
+            <DialogFooter>
+              <Button
+                variant="text"
+                color="red"
+                onClick={handleCancel}
+                className="mr-1"
+              >
+                Cancel
+              </Button>
+              <Button variant="gradient" color="green" onClick={handleDelete}>
+                Confirm
+              </Button>
+            </DialogFooter>
+          </Dialog>
+        </>
       ) : (
-        <div className="w-screen h-screen">
-          <div className="flex flex-row justify-between items-center">
-            <h1 className="text-3xl font-prompt font-semibold p-6 mb-6">
-              Chapters
-            </h1>
-            <button
-              onClick={addChapter}
-              className="w-32 h-12 bg-violet-600 font-prompt text-white mr-14 mt-2 rounded-lg"
-            >
-              Add Chapter
-            </button>
-          </div>
-          <div className="">
-            {chapter.map((item, index) => (
-              <div className="ml-12 border-2 flex flex-col border-gray-300 w-[80%] h-32">
-                <div className="video-container w-[300px] h-[200px]">
-                  <video
-                    ref={videoRef}
-                    src={item.chapterVideo}
-                    width="300"
-                    height="300"
-                    controls={manageControle ? "controls" : ""}
-                  />
-                  <div className="custom-controls">
-                    <button
-                     className={`absolute top-10 left-20 ${!manageControle ? 'bg-white rounded-full pl-3 pr-3 pt-1 pb-1' : ''}`}
-                      onClick={togglePlayPause}
+        <>
+          {isOpn ? (
+            <ChapterForm setOpn={setOpn} courseId={courseId} />
+          ) : (
+            <div className="w-screen h-screen">
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between items-center p-6 bg-gray-200">
+                  <h1 className="text-3xl font-prompt font-semibold m-0">
+                    Chapters
+                  </h1>
+                  <button
+                    onClick={addChapter}
+                    className="px-4 py-2 bg-violet-600 font-prompt text-white rounded-lg"
+                  >
+                    Add Chapter
+                  </button>
+                </div>
+                <div className="flex flex-col gap-6 p-6 overflow-auto">
+                  {chapter.map((item, index) => (
+                    <div
+                      key={index + 1}
+                      className="border-2 border-gray-100 rounded-lg"
                     >
-                      {manageControle ? (
-                        <FontAwesomeIcon icon={faPause} />
-                        
-                      ) : (
-                        <FontAwesomeIcon icon={faPlay} />
-                      )}
-                    </button>
-                  </div>
+                      <div className="video-container relative">
+                        <video
+                          className="w-full"
+                          ref={videoRef}
+                          src={item.chapterVideo}
+                          controls={manageControle ? "controls":""}
+                        />
+                        <div className="custom-controls flex justify-center items-center absolute inset-0 ">
+                          <button
+                            className={`${
+                              !manageControle
+                                ? "bg-white rounded-full p-1 pl-4 pr-3"
+                                : ""
+                            }`}
+                            onClick={togglePlayPause}
+                          >
+                            {manageControle ? (
+                              <FontAwesomeIcon icon={faPause} />
+                            ) : (
+                              <FontAwesomeIcon icon={faPlay} />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-4 flex justify-between items-center">
+                        <h1 className="text-xl font-prompt-semibold">
+                          #{index + 1} {item.chapterTitle}
+                        </h1>
+                        <button
+                          className="text-purple-600"
+                          onClick={() => handleDeleteClick(item._id)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          )}
+        </>
       )}
+      <ToastContainer />
     </>
   );
 }

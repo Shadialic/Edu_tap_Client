@@ -3,7 +3,11 @@ import empty from "../../../public/images/tutor/noData.png";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchCoures, manageCourse } from "../../api/VendorApi";
+import {
+  blockUnBlockcourse,
+  fetchCoures,
+  manageCourse,
+} from "../../api/VendorApi";
 import DetaileClass from "../../components/TutorComponents/Classes/DetaileClass";
 
 function RunningClasses() {
@@ -11,25 +15,44 @@ function RunningClasses() {
   const tutorMail = tutor.email;
   const [data, setData] = useState([]);
   const [isOpn, setOpn] = useState(true);
-  const [courseId, setCourseId] = useState(null); 
+  const [courseId, setCourseId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetchCoures({ author: tutorMail });
         const updateData = res.data.course;
-        const filteredData = updateData.filter((item) => item.is_varified === 'true');
+        const filteredData = updateData.filter(
+          (item) => item.is_varified === "true"
+        );
         setData(filteredData);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [tutorMail]); 
+  }, [tutorMail]);
 
   const handleCourse = (id) => {
     setOpn(false);
-    setCourseId(id); 
+    setCourseId(id);
+  };
+
+  const toggleBlock = async (courseId, isBlock) => {
+    try {
+      const response = await blockUnBlockcourse(courseId);
+      toast.success(response.data.alert);
+      const updatedData = data.map(course => {
+        if (course._id === courseId) {
+          return { ...course, is_Block: !isBlock };
+        }
+        return course;
+      });
+      setData(updatedData);
+    } catch (error) {
+      console.log(error);
+      toast.error(`Failed to ${isBlock ? "block" : "unblock"} chapter!`);
+    }
   };
 
   return (
@@ -45,7 +68,7 @@ function RunningClasses() {
             <div
               key={course._id}
               className="relative flex mb-6 flex-col text-gray-700 bg-white shadow-md shadow-[#8a51abf1] rounded-xl w-64 max-h-80 justify-center items-center transition-property: box-shadow;
-              transition-duration: 150ms duration-200 transform hover:scale-105 hover:shadow-md"
+    transition-duration: 150ms duration-200 transform hover:scale-105 hover:shadow-md"
             >
               <div
                 onClick={() => handleCourse(course._id)}
@@ -68,13 +91,23 @@ function RunningClasses() {
                   * {course.payment}
                 </p>
               </div>
+
               <div className="flex w-[50%] h-[15%] bg-blue-800 justify-center items-center mb-4 rounded-md text-white">
-                <button
-                  // onClick={() => canceldata(course._id)}
-                  className="font-prompt justify-center items-center"
-                >
-                  Block
-                </button>
+                {course.is_Block ? (
+                  <button
+                    onClick={() => toggleBlock(course._id, true)}
+                    className="font-prompt justify-center items-center"
+                  >
+                    Unblock
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => toggleBlock(course._id, false)}
+                    className="font-prompt justify-center items-center"
+                  >
+                    Block
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -86,7 +119,7 @@ function RunningClasses() {
           </div>
         )
       )}
-      {!isOpn && <DetaileClass courseId={courseId} />} 
+      {!isOpn && <DetaileClass courseId={courseId} />}
       <ToastContainer />
     </>
   );

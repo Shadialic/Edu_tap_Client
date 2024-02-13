@@ -60,7 +60,6 @@ function Users() {
         const updatedUsers = users.map((user) =>
           user._id === userId ? { ...user, is_Active: !is_Active } : user
         );
-        // setUsers(updatedUsers);
         localStorage.setItem("users", JSON.stringify(updatedUsers));
         console.log(updatedUsers, "updatedUsers");
         setUsers(updatedUsers);
@@ -82,7 +81,6 @@ function Users() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedUserDatas = userDatas.slice(startIndex, endIndex);
 
-  // console.log(userDatas, "userDatasuserDatasuserDatasuserDatasuserDatas");
   return (
     <div>
       <Sidebar state={"users"} />

@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import empty from "../../../public/images/tutor/empty.png";
 import Header from "../../components/UserComponents/Layouts/Header";
+import { enrollments } from "../../api/UserApi";
+import { useSelector } from "react-redux";
 function Enrollments() {
+  const userInfo = useSelector((state) => state.user.userInfo);
+ const userid=userInfo.id
+ console.log(userid,'aaa');
+  useEffect(()=>{
+    const fetch=async()=>{
+      await enrollments(userid).then((res)=>{
+
+      })
+
+    }
+    fetch();
+
+  },[])
   return (
     <div>
       <Header state="Home" />

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { manageCourse } from "../../../api/AdminApi";
-import { useDispatch } from "react-redux";
-import { setCourseDetailes } from "../../../Redux/CourseSlice/CourseSlice";
 
 function ApproveCourse({ courseId, course, setOpn }) {
   const [data, setData] = useState([]);

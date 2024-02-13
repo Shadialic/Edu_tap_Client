@@ -143,5 +143,28 @@ export async function LoadCategory() {
     console.log(error);
   }
 }
+export async function purchaseCourse(id, userId) {
+  try {
+    console.log(id, 'popopop0000000000000op', userId);
+    const response = await UserApi.put(`/purchaseCourse/${id}`, { userid: userId });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function enrollments(userId) {
+  try {
+    console.log('popopop0000000000000op', userId);
+    const response = await UserApi.post('/enrollments', { userId });
+    return response.data; 
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+}
+
+
+
 
 

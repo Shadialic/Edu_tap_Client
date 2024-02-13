@@ -124,11 +124,27 @@ export async function addChapter(formData, id) {
 }
 
 export async function fetchChapter() {
-
   try {
-
     const response = await TutorApi.get('/vendor/getChapter');
     console.log(response, "p");
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function manageChapter(id) {
+  try {
+    console.log(id,'pop');
+    const response = await TutorApi.put(`/vendor/manageChapter/${id}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function blockUnBlockcourse(id) {
+  try {
+    const response = await TutorApi.put(`/vendor/blockunblcoCourse/${id}`);
     return response;
   } catch (error) {
     console.log(error);
