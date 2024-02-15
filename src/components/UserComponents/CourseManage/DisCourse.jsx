@@ -173,12 +173,12 @@ function DisCourse() {
                 />
               </div>
             </div>
-            <div className="flex mb-6">
+            <div className="flex flex-wrap mb-6">
               {filteredCourses && filteredCourses.length > 0 ? (
-                filteredCourses.map((item) => (
+                filteredCourses.map((item, index) => (
                   <div
                     onClick={() => detailsCourse(item._id)}
-                    className="flex flex-row w-[30%] h-72 border-2  shadow shadow-violet-700 rounded-xl ml-6 mt-8 hover:scale-105 hover:shadow-md"
+                    className="flex flex-row w-[30%] h-72 border-2 shadow shadow-violet-700 rounded-xl ml-6 mt-8 hover:scale-105 hover:shadow-md"
                     key={item.id}
                   >
                     <div className="flex flex-col w-[90%] mx-auto">

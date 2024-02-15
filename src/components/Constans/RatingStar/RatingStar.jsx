@@ -11,13 +11,15 @@ function RatingStar() {
   };
 
   return (
-    <div className="flex flex-row ml-6">
-      <p className="mt-2.5 pl-2 font-prompt ml-2 ">{rating}</p> {/* Display current rating */}
+    <>
+      <h1 className="font-prompt">Your Rating <span className="ml-2 text-md">{rating}</span></h1>
+    <div className="flex flex-row ">
+      <p className="mt-1 pl-2 font-prompt  "></p> {/* Display current rating */}
 
       {[...Array(totalStars)].map((star, index) => {
         const currentRating = index + 1;
         return (
-          <label key={index} className="pl-2">
+          <label key={index} className="">
             <input
               type="radio"
               name="rating"
@@ -50,6 +52,7 @@ function RatingStar() {
         onClick={handleRating}
       /> */}
     </div>
+    </>
   );
 }
 

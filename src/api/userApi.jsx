@@ -1,6 +1,6 @@
-import userInterseption from '../utils/intreceptors/userinterceptors';
-const UserApi=userInterseption;
-console.log(UserApi,'UserApiUserApiUserApiUserApi');
+import userInterseption from "../utils/intreceptors/userinterceptors";
+const UserApi = userInterseption;
+console.log(UserApi, "UserApiUserApiUserApiUserApi");
 export async function userSignUp(signUpData) {
   try {
     console.log(signUpData);
@@ -145,8 +145,10 @@ export async function LoadCategory() {
 }
 export async function purchaseCourse(id, userId) {
   try {
-    console.log(id, 'popopop0000000000000op', userId);
-    const response = await UserApi.put(`/purchaseCourse/${id}`, { userid: userId });
+    console.log(id, "popopop0000000000000op", userId);
+    const response = await UserApi.put(`/purchaseCourse/${id}`, {
+      userid: userId,
+    });
     return response;
   } catch (error) {
     console.log(error);
@@ -155,16 +157,52 @@ export async function purchaseCourse(id, userId) {
 
 export async function enrollments(userId) {
   try {
-    console.log('popopop0000000000000op', userId);
-    const response = await UserApi.post('/enrollments', { userId });
-    return response.data; 
+    console.log("popopop0000000000000op", userId);
+    const response = await UserApi.post("/enrollments", { userId });
+    return response.data;
   } catch (error) {
     console.error(error);
-    throw error; 
+    throw error;
   }
 }
 
+export async function checkout(courseid) {
+  try {
+    console.log("courseid", courseid);
+    const response = await UserApi.post(
+      "/checkout",
+      { courseid },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
+export async function postReview(data) {
+  try {
+    console.log("courseid", data);
+    const response = await UserApi.post("/addReview",{data});
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-
-
+export async function fetchReviews() {
+  try {
+  
+    const response = await UserApi.get("/fetchReview");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
