@@ -44,38 +44,22 @@ function DetailsCourses({ data }) {
   const handleRating = (rate) => {
     console.log(rate);
   };
+
   const activeCourse = async (courseid) => {
     if (data.payment === "price") {
-      console.log(
-        import.meta.env.REACT_APP_PUBLISHABLE_KEY,
-        "REACT_APP_PUBLISHABLE_KEY"
-      );
-      const stripePromise = loadStripe(
-        "pk_test_51OjhcBSCmKXJfQ9QbMFSjnnLyfHIFOqYvctxFLrvt3jCVMU6xmHvvHJJr9LA9wVEREoj6zQuzKWNfcjb7zclG47E00rE54fILg"
-      );
-      const stripe = await stripePromise;
-      const result = await checkout(courseid);
-      const { clientSecret } = result;
-      console.log(clientSecret, "clientSecret");
-      // Confirm the PaymentIntent with Stripe
-      const { error } = await stripe.confirmCardPayment(clientSecret);
-
-      if (error) {
-        console.error("Payment failed:", error);
-      } else {
-        console.log("Payment successful.");
-        // Redirect to a success page or handle success flow
-      }
-
-      // Confirm the PaymentIntent with Stripe
-      // const { error } = await stripe.confirmCardPayment(clientSecret);
-
-      // if (error) {
-      //   console.error("Payment failed:", error);
-      // } else {
-      //   console.log("Payment successful.");
-      // Redirect to a success page or handle success flow
-      // }
+      const stripe = await loadStripe("pk_test_51ODm4bSHaENjV1jr6QBv93m7yUjiUR2bCql3CNylL2bhvGcr3Fr8ZUEzlInPA3zAyDN8k8EUUUzGChUNHKWZXzAh00Q4Z4tzgS");
+                                       
+    const result = await checkout(courseid);
+    const { sessionId } = result;
+    console.log(sessionId, "sessionId");
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: sessionId,
+    });
+    if (error) {
+      console.error("Payment failed:", error);
+    } else {
+      console.log("Redirecting to checkout page...");
+    }
       console.log(result, "989");
     } else {
       await purchaseCourse(courseid, userId).then((res) => {
@@ -133,7 +117,10 @@ function DetailsCourses({ data }) {
             {reviews.length > 0 ? (
               <div className="">
                 {reviews.map((review, index) => (
-                  <div key={index} className="w-[95%] h-[10%]  p-4  font-prompt">
+                  <div
+                    key={index}
+                    className="w-[95%] h-[10%]  p-4  font-prompt"
+                  >
                     <div className=" flex flex-col  border-2 border-gray-100 ">
                       <div className="mb-2">
                         <h1 className="p-2 ">{review.description}</h1>

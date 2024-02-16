@@ -3,10 +3,18 @@ import meta from "../../assets/images/home.jpeg";
 import Header from "../../components/UserComponents/Layouts/Header";
 import Banner from "../../components/UserComponents/Home/Banner";
 import { Footer } from "../../components/UserComponents/Layouts/Footer";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { FaComment } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 function Home() {
+  const navigate=useNavigate()
+  const handleChat=()=>{
+    navigate('/chat')
+  }
   return (
     <div>
-      <Header state='Home'/>
+      <Header state="Home" />
       <section>
         <div className="container mx-auto">
           <div className="home-container flex-auto">
@@ -47,9 +55,15 @@ function Home() {
             </div>
           </div>
         </div>
+      <div onClick={handleChat} className="w-full h-full flex justify-end">
+        <h1 className="fixed bg-[#7d0fc6] w-10 rounded-full text-white p-2 mr-10">
+          <FaComment  className="w-6 h-5 "/>
+        </h1>
+      </div>
       </section>
-      <Banner/>
-      <Footer/>
+      <Banner />
+
+      <Footer />
     </div>
   );
 }

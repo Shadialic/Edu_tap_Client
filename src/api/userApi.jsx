@@ -169,9 +169,7 @@ export async function enrollments(userId) {
 export async function checkout(courseid) {
   try {
     console.log("courseid", courseid);
-    const response = await UserApi.post(
-      "/checkout",
-      { courseid },
+    const response = await UserApi.post("/checkout",{ courseid },
       {
         headers: {
           "Content-Type": "application/json",

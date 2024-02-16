@@ -13,6 +13,9 @@ import Course from "../pages/UserPages/Course";
 import Enrollments from "../pages/UserPages/Enrollments";
 import About from "../pages/UserPages/About";
 import Blog from "../pages/UserPages/Blog";
+import Success from "../components/Payment/Success";
+import Faild from "../components/Payment/Faild";
+import UserChat from "../components/Chat/UserChat";
 
 function UserRouter() {
   return (
@@ -35,6 +38,12 @@ function UserRouter() {
       <Route path="/enrollments" element={<Enrollments />} />
       <Route path="/about" element={<About />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/success" element={<Success />} />
+      <Route path="/cancel" element={<Faild />} />
+      <Route path="/chat" element={<UserChat />} />
+
+      
+
 
 
     </Routes>
