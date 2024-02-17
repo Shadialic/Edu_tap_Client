@@ -1,57 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Header from "../UserComponents/Layouts/Header";
 import {
   Typography,
-  Button,
   Avatar,
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { LinkIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import { getChats } from "../../api/UserApi";
+import { getChats, getMessages } from "../../api/UserApi";
 
 function UserChat() {
   const [userChats, setUserChats] = useState([]);
-  const [members, setMembers] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [currentChat, setCurrentChat] = useState(null);
+  const [messages, setMessages] = useState();
   const userInfo = useSelector((state) => state.user.userInfo);
-  console.log(userInfo, "userInfo");
 
   useEffect(() => {
     const fetchChats = async () => {
       try {
         const res = await getChats(userInfo.id);
         const chatsData = res.chats;
-        const membersData = chatsData.map((chat) => chat.members).flat();
-        
         setUserChats(chatsData);
-        setMembers(membersData);
-
-        console.log(res, "res");
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
     };
-
     fetchChats();
-  }, []);
+  }, [userInfo.id]);
 
-  const handleMemberClick = (member) => {
-    setSelectedMember(member);
-  };
+  useEffect(() => {
+    const fetchMesaages = async () => {
+      try {
+        const res = await getMessages(currentChat._id);
+        console.log(res.message, "messages");
+        const messageData = res.message;
+        const filter = messageData.map((msg) => msg.text);
+        setMessages(messageData);
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+    fetchMesaages();
+  }, [currentChat]);
+
+  const updateCurrentChat = useCallback((chat) => {
+    setCurrentChat(chat);
+  }, []);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredMembers = members.filter((member) =>
-    member.tutorName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredMembers = userChats.map((chat) => chat.members).flat();
 
   return (
     <>
@@ -69,63 +73,76 @@ function UserChat() {
                 onChange={handleSearch}
               />
             </div>
-            {filteredMembers.map((member, index) => (
+            {filteredMembers.map((chat, index) => (
               <div
                 key={index}
                 className="h-[13%] hover:bg-violet-700 hover:text-white hover:rounded-md cursor-pointer"
-                onClick={() => handleMemberClick(member)}
+                onClick={() => updateCurrentChat(chat)}
               >
-                <div className="flex items-center gap-4 mt-4  p-2">
-                  <Avatar src={member.image} alt="avatar" size="md" />
-                  <div>
-                    <Typography variant="h6" className="text-xl font-prompt-semibold">
-                      {member.tutorName}
-                    </Typography>
+                <div className="flex flex-row justify-between items-center gap-4 mt-4 p-2">
+                  <div className="flex items-center gap-4">
+                    <Avatar src={chat.image} alt="avatar" size="md" />
+                    <div>
+                      <Typography
+                        variant="h6"
+                        className="text- font-prompt font- uppercase mb-4"
+                      >
+                        {chat.tutorName}
+                      </Typography>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <h1 className="text-end font-prompt text-sm text-gray-500 font-prompt-light">
+                      {chat.lastMessageDate} {/* Assuming this is the date */}
+                    </h1>
                   </div>
                 </div>
               </div>
             ))}
           </div>
           <div className="w-[70%] h-[500px] border-2 border-b-0 mb-2">
-            <div className="flex flex-row w-full h-[13%] border-2 bor border-gray-100  justify-between items-center">
-              <div className="flex items-center gap-4 pl-2">
-                {selectedMember ? (
-                  <>
-                    <Avatar src={selectedMember.image} alt="avatar" size="md" />
-                    <div>
-                      <Typography variant="h6">{selectedMember.tutorName}</Typography>
-                      <Typography variant="small" color="gray" className="font-normal">
-                        {selectedMember.role}
-                      </Typography>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <Avatar
-                      src="https://docs.material-tailwind.com/img/face-2.jpg"
-                      alt="avatar"
-                      size="md"
-                    />
-                    <div>
-                      <Typography variant="h6">Tania Andrew</Typography>
-                      <Typography variant="small" color="gray" className="font-normal">
-                        Web Developer
-                      </Typography>
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className="flex flex-row icon-container transition-colors duration-300">
-                <FontAwesomeIcon icon={faVideo} className="pr-6 text-violet-600 mt-1" />
-                <div className="relative">
+            {currentChat && (
+              <div className="flex flex-row w-full h-[13%] border-2 bor border-gray-100  justify-between items-center">
+                <div className="flex items-center gap-4 pl-2">
+                  <Avatar src={currentChat.image} alt="avatar" size="md" />
+                  <div>
+                    <Typography variant="h6">
+                      {currentChat.tutorName}
+                    </Typography>
+                    <Typography
+                      variant="small"
+                      color="gray"
+                      className="font-normal"
+                    >
+                      {currentChat.role}
+                    </Typography>
+                  </div>
+                </div>
+
+                <div className="flex flex-row icon-container transition-colors duration-300">
                   <FontAwesomeIcon
-                    fill="none"
-                    icon={faEllipsisVertical}
-                    className="pr-4 text-violet-600 cursor-pointer"
+                    icon={faVideo}
+                    className="pr-6 text-violet-600 mt-1"
                   />
+                  <div className="relative">
+                    <FontAwesomeIcon
+                      fill="none"
+                      icon={faEllipsisVertical}
+                      className="pr-4 text-violet-600 cursor-pointer"
+                    />
+                  </div>
                 </div>
               </div>
+            )}
+
+            <div className="messages-container">
+              {messages&&messages.map((message, index) => (
+                <div key={index} className="message">
+                  <h1>{message.text}</h1>
+                </div>
+              ))}
             </div>
+
             <div className="flex w-[100%] flex-row  items-center gap-2 rounded-md border border-gray-900/10 p-2 mt-[52%] border-b-0 border-x-0 ">
               <div className="flex  ">
                 <IconButton

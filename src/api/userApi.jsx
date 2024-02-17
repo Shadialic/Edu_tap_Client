@@ -214,3 +214,12 @@ export async function getChats(id) {
     throw error;
   }
 }
+export async function getMessages(id) {
+  try {
+    const response = await UserApi.get(`/getMeassage/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
