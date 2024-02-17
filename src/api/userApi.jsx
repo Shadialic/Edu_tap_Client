@@ -204,3 +204,13 @@ export async function fetchReviews() {
     throw error;
   }
 }
+
+export async function getChats(id) {
+  try {
+    const response = await UserApi.get(`/findUserChats/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

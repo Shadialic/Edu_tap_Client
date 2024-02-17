@@ -19,7 +19,7 @@
 //   const [notification, setNotification] = useState([]);
 //   const [tutorNotification, setTutorNotification] = useState([]);
 
-  const userOnline = useSelector((state) => state.user.userInfo); // Uncomment this line
+  // const userOnline = useSelector((state) => state.user.userInfo); // Uncomment this line
 // const ownerOnline = useSelector((state) => state.tutor.tutorInfo); // Uncomment this line
 
 //   useEffect(() => {

@@ -16,6 +16,10 @@
     height: 100%;
   }
   
+
+  .hidescroll::-webkit-scrollbar {
+    display: none;
+}
   /* Center play button */
   video::cue {
     display: flex;

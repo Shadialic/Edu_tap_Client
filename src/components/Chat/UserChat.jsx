@@ -1,34 +1,137 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../UserComponents/Layouts/Header";
-import { Textarea, Button, IconButton, Input } from "@material-tailwind/react";
+import {
+  Typography,
+  Button,
+  Avatar,
+  IconButton,
+  Input,
+} from "@material-tailwind/react";
 import { LinkIcon } from "@heroicons/react/24/outline";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { getChats } from "../../api/UserApi";
 
 function UserChat() {
+  const [userChats, setUserChats] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const userInfo = useSelector((state) => state.user.userInfo);
+  console.log(userInfo, "userInfo");
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const res = await getChats(userInfo.id);
+        const chatsData = res.chats;
+        const membersData = chatsData.map((chat) => chat.members).flat();
+        
+        setUserChats(chatsData);
+        setMembers(membersData);
+
+        console.log(res, "res");
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+
+    fetchChats();
+  }, []);
+
+  const handleMemberClick = (member) => {
+    setSelectedMember(member);
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredMembers = members.filter((member) =>
+    member.tutorName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <Header state="Home" />
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-screen h-screen py-7 px-5">
-        <div className="bg-white w-full h-fit sm:max-w-[90%] min-h-[90%] overflow-auto rounded-md flex justify-center items-center shadow-xl p-3 gap-5 flex-row mb-16">
-          <div className="w-[29%] h-[500px] border-2 border-t-0 border-x-0 ">
+        <div className="bg-white w-full h-fit sm:max-w-[90%] min-h-[90%] hidescroll overflow-auto rounded-md flex justify-center items-center shadow-xl p-3 gap-5 flex-row mb-16">
+          <div className="w-[29%] h-[500px] border-2 border-t-0 border-b-0 border-x-0">
             <h1 className="font-prompt text-xl font-prompt-semibold">Chats</h1>
             <div className="border-2 border-gray-100 shadow-lg shadow-gray-100 h-10 rounded-md mt-8">
               <input
                 type="text"
-                className="w-[95%] h-full outline-none font-prompt text-sm border-b-2 border-violet-600 "
+                className="w-[95%] h-full outline-none font-prompt text-sm border-b-2 border-violet-600"
                 placeholder="Search or start a new chat"
+                value={searchQuery}
+                onChange={handleSearch}
               />
             </div>
+            {filteredMembers.map((member, index) => (
+              <div
+                key={index}
+                className="h-[13%] hover:bg-violet-700 hover:text-white hover:rounded-md cursor-pointer"
+                onClick={() => handleMemberClick(member)}
+              >
+                <div className="flex items-center gap-4 mt-4  p-2">
+                  <Avatar src={member.image} alt="avatar" size="md" />
+                  <div>
+                    <Typography variant="h6" className="text-xl font-prompt-semibold">
+                      {member.tutorName}
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
           <div className="w-[70%] h-[500px] border-2 border-b-0 mb-2">
-            <div className="w-full h-[12%] border-2  border-gray-100 ">
-            <FontAwesomeIcon icon={faUser} />
-              <h1 className="text-xl font-prompt-semibold">You</h1>
+            <div className="flex flex-row w-full h-[13%] border-2 bor border-gray-100  justify-between items-center">
+              <div className="flex items-center gap-4 pl-2">
+                {selectedMember ? (
+                  <>
+                    <Avatar src={selectedMember.image} alt="avatar" size="md" />
+                    <div>
+                      <Typography variant="h6">{selectedMember.tutorName}</Typography>
+                      <Typography variant="small" color="gray" className="font-normal">
+                        {selectedMember.role}
+                      </Typography>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Avatar
+                      src="https://docs.material-tailwind.com/img/face-2.jpg"
+                      alt="avatar"
+                      size="md"
+                    />
+                    <div>
+                      <Typography variant="h6">Tania Andrew</Typography>
+                      <Typography variant="small" color="gray" className="font-normal">
+                        Web Developer
+                      </Typography>
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="flex flex-row icon-container transition-colors duration-300">
+                <FontAwesomeIcon icon={faVideo} className="pr-6 text-violet-600 mt-1" />
+                <div className="relative">
+                  <FontAwesomeIcon
+                    fill="none"
+                    icon={faEllipsisVertical}
+                    className="pr-4 text-violet-600 cursor-pointer"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex w-[100%] flex-row  items-center gap-2 rounded-md border border-gray-900/10 bg-gray-900/5 p-2 mt-[51%] ">
+            <div className="flex w-[100%] flex-row  items-center gap-2 rounded-md border border-gray-900/10 p-2 mt-[52%] border-b-0 border-x-0 ">
               <div className="flex  ">
-                <IconButton variant="text" className="rounded-full">
+                <IconButton
+                  variant="text"
+                  className="rounded-full  text-violet-600"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -44,7 +147,10 @@ function UserChat() {
                     />
                   </svg>
                 </IconButton>
-                <IconButton variant="text" className="rounded-full">
+                <IconButton
+                  variant="text"
+                  className="rounded-full  text-violet-600"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -62,7 +168,6 @@ function UserChat() {
                 </IconButton>
               </div>
               <Input
-             
                 resize={true}
                 placeholder="Your Message"
                 className="min-h-full !border-0 focus:border-transparent"
@@ -74,7 +179,10 @@ function UserChat() {
                 }}
               />
               <div>
-                <IconButton variant="text" className="rounded-full">
+                <IconButton
+                  variant="text"
+                  className="rounded-full text-violet-600"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

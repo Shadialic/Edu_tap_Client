@@ -35,6 +35,9 @@ function Collections({ chapter, courseId, tutors, course }) {
   const handleReviewChange = (event) => {
     setReview(event.target.value);
   };
+  const handleFollowing=async()=>{
+
+  }
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const userName=userInfo.userName;
@@ -76,8 +79,9 @@ function Collections({ chapter, courseId, tutors, course }) {
               <h1 className="font-prompt-semibold ml-3 mt-1 text-xl">
                 {tutorData.tutorName}
               </h1>
+
               <div className="flex w-24 font-prompt  h-10 bg-violet-500 text-white  justify-center ml-8  rounded-lg ">
-                <button className="p-2">following</button>
+                <button onClick={handleFollowing} className="p-2">following</button>
               </div>
             </div>
             <h1 className="font-prompt text-sm mt-4">
