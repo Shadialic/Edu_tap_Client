@@ -12,25 +12,28 @@ function RatingStar() {
 
   return (
     <>
-      <h1 className="font-prompt">Your Rating <span className="ml-2 text-md">{rating}</span></h1>
     <div className="flex flex-row ">
-      <p className="mt-1 pl-2 font-prompt  "></p> {/* Display current rating */}
+      <h1 className="font-prompt ml-6 mt-2">Course Rating <span className="ml-3 ">{rating}</span></h1>
+      {/* <p className="mt-1 pl-2 ml-2 font-prompt ">{rating}</p>  */}
 
       {[...Array(totalStars)].map((star, index) => {
         const currentRating = index + 1;
         return (
+          <div className="">
+
+         
           <label key={index} className="">
             <input
               type="radio"
               name="rating"
-              value={currentRating}
+              // value={currentRating}
               style={{ display: "none" }}
               onClick={() => setRating(currentRating)}
             />
             <span
               className="star"
               style={{
-                fontSize: 30,
+                fontSize: 25,
                 color: currentRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"
               }}
               onMouseEnter={() => setHover(currentRating)}
@@ -39,18 +42,10 @@ function RatingStar() {
               &#9733;
             </span>
           </label>
+          </div>
         );
       })}
-      {/* Render the react-simple-star-rating component */}
-      {/* <Rating
-        ratingValue={rating}
-        size={20}
-        className="ml-10 flex"
-        transition
-        fillColor="gold"
-        emptyColor="gray"
-        onClick={handleRating}
-      /> */}
+    
     </div>
     </>
   );

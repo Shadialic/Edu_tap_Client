@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Header from "../UserComponents/Layouts/Header";
+
 import { io } from "socket.io-client";
 import {
   Typography,
@@ -17,19 +17,33 @@ import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 
-function UserChat() {
+function TutorChat() {
   const [userChats, setUserChats] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const userInfo = useSelector((state) => state.user.userInfo);
+  const tutorInfo = useSelector((state) => state.tutor.tutorInfo);
   const [textMessage, setTextMessage] = useState("");
   const [newMessage, setNewMessage] = useState(null);
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
   const scroll = useRef();
+  console.log(currentChat,'currentChat',tutorInfo.id);
+  useEffect(() => {
+    console.log('ppppppppppppppppppppppppppppp');
+    const fetchChats = async () => {
+      try {
+        const res = await getChats(tutorInfo.id);
+        console.log(res,'//////////');
+        setUserChats(res.chats);
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+    fetchChats();
+  }, [tutorInfo.id]);
 
   useEffect(() => {
     const newSocket = io(import.meta.env.VITE_SOCKET_BASE_URL);
@@ -37,11 +51,11 @@ function UserChat() {
     return () => {
       newSocket.disconnect();
     };
-  }, [userInfo.id]);
+  }, [tutorInfo.id]);
 
   useEffect(() => {
     if (socket === null) return;
-    socket.emit("addNewUser", userInfo.id);
+    socket.emit("addNewUser", tutorInfo.id);
     socket.on("getOnlineUsers", (res) => {
       setOnlineUsers(res);
     });
@@ -79,18 +93,7 @@ function UserChat() {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        const res = await getChats(userInfo.id);
-        setUserChats(res.chats);
-      } catch (error) {
-        console.error("Error fetching chats:", error);
-      }
-    };
-    fetchChats();
-  }, [userInfo.id]);
-
+  
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -117,7 +120,7 @@ function UserChat() {
     );
 
   const sendTextMessage = async () => {
-    const senderId = userInfo.id;
+    const senderId = tutorInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
     try {
@@ -133,7 +136,7 @@ function UserChat() {
 
   return (
     <>
-      <Header state="Home" />
+     
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-screen h-screen py-7 px-5">
         <div className="bg-white w-full sm:max-w-[90%] min-h-[90%] overflow-hidden rounded-md flex flex-col sm:flex-row mb-16">
           <div className="w-full sm:w-[29%] h-full border-r-0 sm:border-r-2 border-b-0 sm:border-b-2 border-gray-200">
@@ -241,4 +244,4 @@ function UserChat() {
   );
 }
 
-export default UserChat;
+export default TutorChat;

@@ -196,8 +196,17 @@ export async function postReview(data) {
 
 export async function fetchReviews() {
   try {
-  
     const response = await UserApi.get("/fetchReview");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function createChat(data) {
+  console.log(data,'ipppppp');
+  try {
+    const response = await UserApi.post(`/createChat`,data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -206,6 +215,7 @@ export async function fetchReviews() {
 }
 
 export async function getChats(id) {
+  console.log(id,'wwwwwwww');
   try {
     const response = await UserApi.get(`/findUserChats/${id}`);
     return response.data;
@@ -217,6 +227,15 @@ export async function getChats(id) {
 export async function getMessages(id) {
   try {
     const response = await UserApi.get(`/getMeassage/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function sendMessage(data) {
+  try {
+    const response = await UserApi.post(`/createMessage`,{data});
     return response.data;
   } catch (error) {
     console.error(error);

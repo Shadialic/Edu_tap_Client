@@ -38,7 +38,7 @@ function Header() {
       display: "Running Classes",
     },
     {
-      path: "/payment-report",
+      path: "/vendor/chat",
       display: "Payment Report",
     },
   ];

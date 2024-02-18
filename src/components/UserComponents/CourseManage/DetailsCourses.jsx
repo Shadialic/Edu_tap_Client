@@ -89,7 +89,7 @@ function DetailsCourses({ data }) {
           <RatingStar />
 
           {data.payment === "price" ? (
-            <div className="pl-6 ">
+            <div className="pl-6 mt-2 ">
               <button
                 onClick={() => activeCourse(data._id)}
                 className="w-[34%]  rounded-md h-9 bg-violet-600 font-prompt text-white"
@@ -132,7 +132,7 @@ function DetailsCourses({ data }) {
                 ))}
               </div>
             ) : (
-              <h1 className="justify-center font-prompt">No reviews yet</h1>
+              <h1 className="flex justify-center font-prompt">No reviews yet</h1>
             )}
           </div>
         </div>

@@ -4,14 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetState } from "../../../Redux/userSlice/userSlice";
 
+import Notification from "../Notification/Notification";
+
 function Header({ state }) {
+  const [isOpn, setOpn] = useState(false);
+  const notificationModal = () => {
+    setOpn(true);
+  };
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const userName = userInfo.userName;
-  
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -78,6 +83,9 @@ function Header({ state }) {
               {item.display}
             </h4>
           ))}
+          <div className="text-center  hover:text-violet-600">
+            <Notification />
+          </div>
 
           {localStorage.getItem("token") ? (
             <button

@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
 import RatingStar from "../../Constans/RatingStar/RatingStar";
-import { postReview } from "../../../api/UserApi";
+import { createChat, postReview } from "../../../api/UserApi";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Collections({ chapter, courseId, tutors, course }) {
+  const navigate=useNavigate()
   console.log(chapter, "lll", tutors);
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
   const [review, setReview] = useState("");
   const [tutorData, setTutorData] = useState();
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
   const userInfo = useSelector((state) => state.user.userInfo);
- console.log(userInfo,'userInfo');
+  console.log(userInfo, "userInfo");
   useEffect(() => {
     const filteredData = chapter.filter((item) => item.course_id === courseId);
     const tutorDetail = course.find((item) => item._id === courseId);
@@ -35,23 +38,33 @@ function Collections({ chapter, courseId, tutors, course }) {
   const handleReviewChange = (event) => {
     setReview(event.target.value);
   };
-  const handleFollowing=async()=>{
-
+  const handleFollowing = async () => {
+   const firstId=userInfo.id;
+   const secondId=tutorData._id
+   console.log(secondId,'secondId');
+    const response=await createChat({firstId,secondId})
+    console.log(response,'----------------');
+    setShowMessage(true);
+  };
+  const sendMessage=()=>{
+    navigate('/chat')
   }
+  const handleUnFollowing = () => {
+    setShowMessage(false);
+  };
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    const userName=userInfo.userName;
-    console.log(userName,'tutorName');
-    const reviewData={
+    const userName = userInfo.userName;
+    console.log(userName, "tutorName");
+    const reviewData = {
       review,
       userName,
-      currntDate:new Date(),
-      courseId
-    }
-    console.log(reviewData,'reviewData');
-     await postReview(reviewData)
-};
-
+      currntDate: new Date(),
+      courseId,
+    };
+    console.log(reviewData, "reviewData");
+    await postReview(reviewData);
+  };
 
   return (
     <div className="flex flex-row w-screen h-fit">
@@ -79,10 +92,24 @@ function Collections({ chapter, courseId, tutors, course }) {
               <h1 className="font-prompt-semibold ml-3 mt-1 text-xl">
                 {tutorData.tutorName}
               </h1>
-
-              <div className="flex w-24 font-prompt  h-10 bg-violet-500 text-white  justify-center ml-8  rounded-lg ">
-                <button onClick={handleFollowing} className="p-2">following</button>
-              </div>
+              {!showMessage ? (
+                <div className="flex w-24 font-prompt h-10 bg-violet-500 text-white justify-center ml-8 rounded-lg">
+                  <button onClick={handleFollowing} className="p-2">
+                    following
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex w-24 font-prompt h-10 bg-violet-500 text-white justify-center ml-8 rounded-lg">
+                    <button onClick={handleUnFollowing} className="p-2">
+                      followed
+                    </button>
+                  </div>
+                  <div className="flex w-24 font-prompt h-10 bg-violet-500 text-white justify-center ml-2 rounded-lg">
+                    <button onClick={sendMessage} className="p-2">message</button>
+                  </div>
+                </>
+              )}
             </div>
             <h1 className="font-prompt text-sm mt-4">
               {" "}
@@ -147,7 +174,7 @@ function Collections({ chapter, courseId, tutors, course }) {
           ></textarea>
           <div className="mt-3">
             <button
-             onClick={handleReviewSubmit}
+              onClick={handleReviewSubmit}
               className="w-[95%] h-10 bg-violet-600 font-prompt text-white rounded-lg"
             >
               Submit
