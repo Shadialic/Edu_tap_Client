@@ -242,3 +242,25 @@ export async function sendMessage(data) {
     throw error;
   }
 }
+
+export async function postCommnets(data) {
+  try {
+    const response = await UserApi.post(`/postCommnets`,{data});
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function LoadComments(id) {
+  console.log(id,'000');
+  try {
+    const response = await UserApi.get(`/getCommnets/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+

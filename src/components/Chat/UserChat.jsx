@@ -135,6 +135,7 @@ function UserChat() {
       const res = await sendMessage({text,chatId,senderId });
       const response = res.saveMeassage;
       setNewMessage(response); 
+      
       setTextMessage("");
     } catch (error) {
       console.error("Error sending message:", error);

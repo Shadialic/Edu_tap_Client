@@ -7,16 +7,21 @@ import { fetchChapter } from "../../../api/VendorApi";
 import RatingStar from "../../Constans/RatingStar/RatingStar";
 import { checkout, fetchReviews, purchaseCourse } from "../../../api/UserApi";
 import { useNavigate } from "react-router-dom";
+import { LoadTutorList } from "../../../api/AdminApi";
 
 function DetailsCourses({ data }) {
   const navigate = useNavigate();
-  console.log(data, "popop");
+  console.log(data, "poddddddddddddddddddddddpop");
   const [chapter, setChapter] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [auther, setAuther] = useState();
   // const [payment, setPayment] = useState(false);
   useEffect(() => {
+    console.log("pppppppppp====================ppppppp");
+
     const fetch = async () => {
       await fetchChapter().then((res) => {
+        console.log(res, "ppppppppppppppppppppppp");
         const updateData = res.data.data;
         console.log(data._id, "ppp");
         const filterData = updateData.filter(
@@ -25,6 +30,12 @@ function DetailsCourses({ data }) {
         console.log(filterData, "filterData");
         setChapter(filterData);
         console.log(res, "slsls");
+      });
+      await LoadTutorList().then((res) => {
+        const auther = res.data.tutordata;
+        const tutorData = auther.find((item) => item.email === data.auther);
+        console.log(tutorData, "turoror");
+        setAuther(tutorData);
       });
       const response = await fetchReviews();
       const filterdata = response.data.filter(
@@ -38,28 +49,28 @@ function DetailsCourses({ data }) {
   const tutorInfo = useSelector((state) => state.tutor.tutorInfo);
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = userInfo.id;
-  console.log(userInfo, "userInfo");
 
-  console.log(tutorInfo, "p999pp");
   const handleRating = (rate) => {
     console.log(rate);
   };
 
   const activeCourse = async (courseid) => {
     if (data.payment === "price") {
-      const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY);
-                                       
-    const result = await checkout(courseid);
-    const { sessionId } = result;
-    console.log(sessionId, "sessionId");
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: sessionId,
-    });
-    if (error) {
-      console.error("Payment failed:", error);
-    } else {
-      console.log("Redirecting to checkout page...");
-    }
+      const stripe = await loadStripe(
+        import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
+      );
+
+      const result = await checkout(courseid);
+      const { sessionId } = result;
+      console.log(sessionId, "sessionId");
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: sessionId,
+      });
+      if (error) {
+        console.error("Payment failed:", error);
+      } else {
+        console.log("Redirecting to checkout page...");
+      }
       console.log(result, "989");
     } else {
       await purchaseCourse(courseid, userId).then((res) => {
@@ -68,7 +79,7 @@ function DetailsCourses({ data }) {
     }
     console.log(courseid, "lock", userId);
   };
-  console.log(reviews, "filterdatafilterdatafilterdatafilterdata");
+  console.log(chapter, "chapterchapterchapter");
   return (
     <>
       <div className="flex flex-row w-screen h-full p-4">
@@ -83,8 +94,10 @@ function DetailsCourses({ data }) {
             <p className="font-prompt p-2">{data.description}</p>
           </div>
           <div className="flex flex-row pl-8 mt-4">
-            <img className="w-8 h-8" src={tutorInfo.image} alt="" />
-            <h1 className="font-prompt text-lg ml-2">{tutorInfo.name}</h1>
+            <img className="w-8 h-8" src={auther && auther.image} alt="" />
+            <h1 className="font-prompt text-lg ml-2">
+              {auther && auther.tutorName}
+            </h1>
           </div>
           <RatingStar />
 
@@ -108,22 +121,19 @@ function DetailsCourses({ data }) {
             </div>
           )}
         </div>
-        <div className=" w-[30%] h-94 bg-white ml-5 border-1 shadow-xl ">
+        <div className=" w-[30%] h-94 bg-white ml-5 border-1 shadow-xl  ">
           <div className="flex flex-row">
             <img className="w-4 h-5 mt-5 ml-4" src={review} alt="" />
             <h1 className="font-prompt p-4  pl-2">Reviews</h1>
           </div>
-          <div className="">
+          <div className="flex-1 overflow-y-auto">
             {reviews.length > 0 ? (
-              <div className="">
+              <div className="flex-1 overflow-y-auto">
                 {reviews.map((review, index) => (
-                  <div
-                    key={index}
-                    className="w-[95%] h-[10%]  p-4  font-prompt"
-                  >
-                    <div className=" flex flex-col  border-2 border-gray-100 ">
+                  <div key={index} className="w-[95%] h-[10%] p-4 font-prompt">
+                    <div className="flex flex-col border-2 border-gray-100">
                       <div className="mb-2">
-                        <h1 className="p-2 ">{review.description}</h1>
+                        <h1 className="p-2">{review.description}</h1>
                         <h1 className="p-2 text-sm">{review.author}</h1>
                         <h1 className="p-2 text-sm">{review.date}</h1>
                       </div>
@@ -132,7 +142,9 @@ function DetailsCourses({ data }) {
                 ))}
               </div>
             ) : (
-              <h1 className="flex justify-center font-prompt">No reviews yet</h1>
+              <h1 className="flex justify-center font-prompt">
+                No reviews yet
+              </h1>
             )}
           </div>
         </div>

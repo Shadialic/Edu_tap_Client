@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
 import RatingStar from "../../Constans/RatingStar/RatingStar";
-import { createChat, postReview } from "../../../api/UserApi";
+import { createChat, fetchReviews, postReview } from "../../../api/UserApi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Comment from "../Comments/Comment";
+
 
 function Collections({ chapter, courseId, tutors, course }) {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   console.log(chapter, "lll", tutors);
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
@@ -14,16 +16,27 @@ function Collections({ chapter, courseId, tutors, course }) {
   const [tutorData, setTutorData] = useState();
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
+  const [showReview, setShowReiview] = useState([]);
   const userInfo = useSelector((state) => state.user.userInfo);
-  console.log(userInfo, "userInfo");
+  console.log(showReview, "showReview");
   useEffect(() => {
     const filteredData = chapter.filter((item) => item.course_id === courseId);
     const tutorDetail = course.find((item) => item._id === courseId);
     const tutor = tutors.find((item) => item.email === tutorDetail.auther);
     setTutorData(tutor);
-
     setData(filteredData);
-  }, [chapter, courseId]);
+    const fetch = async () => {
+      const response = await fetchReviews();
+      console.log(response, "response");
+      const filterdata = response.data.filter(
+        (item) => item.courseId === courseId
+      );
+      console.log(filterdata, "filterdata");
+
+      setShowReiview(filterdata);
+    };
+    fetch();
+  }, [chapter, courseId, review]);
 
   console.log(data, "pppppppp[p");
 
@@ -39,16 +52,16 @@ function Collections({ chapter, courseId, tutors, course }) {
     setReview(event.target.value);
   };
   const handleFollowing = async () => {
-   const firstId=userInfo.id;
-   const secondId=tutorData._id
-   console.log(secondId,'secondId');
-    const response=await createChat({firstId,secondId})
-    console.log(response,'----------------');
+    const firstId = userInfo.id;
+    const secondId = tutorData._id;
+    console.log(secondId, "secondId");
+    const response = await createChat({ firstId, secondId });
+    console.log(response, "----------------");
     setShowMessage(true);
   };
-  const sendMessage=()=>{
-    navigate('/chat')
-  }
+  const sendMessage = () => {
+    navigate("/chat");
+  };
   const handleUnFollowing = () => {
     setShowMessage(false);
   };
@@ -62,10 +75,16 @@ function Collections({ chapter, courseId, tutors, course }) {
       currntDate: new Date(),
       courseId,
     };
-    console.log(reviewData, "reviewData");
-    await postReview(reviewData);
-  };
 
+    await postReview(reviewData);
+    setReview("");
+  };
+  function formatDate(dateString) {
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", options);
+  }
+console.log(data,'selectedVideo',userInfo.id);
   return (
     <div className="flex flex-row w-screen h-fit">
       {/* Video Player */}
@@ -106,7 +125,9 @@ function Collections({ chapter, courseId, tutors, course }) {
                     </button>
                   </div>
                   <div className="flex w-24 font-prompt h-10 bg-violet-500 text-white justify-center ml-2 rounded-lg">
-                    <button onClick={sendMessage} className="p-2">message</button>
+                    <button onClick={sendMessage} className="p-2">
+                      message
+                    </button>
                   </div>
                 </>
               )}
@@ -119,6 +140,8 @@ function Collections({ chapter, courseId, tutors, course }) {
             </h1>
           </div>
         </div>
+        <Comment chapterId={data} userInfo={userInfo} /> 
+
       </div>
 
       {/* Chapters */}
@@ -152,15 +175,36 @@ function Collections({ chapter, courseId, tutors, course }) {
         <div className="mt-4">
           <RatingStar />
         </div>
-        <div className="flex flex-row w-[95%] h-48 bg-white  border-1 shadow-xl ">
-          <h1 className="font-prompt p-4">Reviews</h1>
-          <img className="w-4 h-4 mt-5 mr-1" src={reviewimg} alt="" />
-          <div className="flex items-center justify-ceter">
-            <h1 className=" text-center font-prompt mt-6 ml-10">
-              No reviews yet
-            </h1>
+        <div className="flex flex-col w-[95%] bg-white border-1 shadow-xl">
+          <div className="flex flex-row items-center p-4">
+            <h1 className="font-prompt">Reviews</h1>
+            <img className="w-4 h-4 mt-1 ml-2" src={reviewimg} alt="" />
+          </div>
+          <div className="flex-1 overflow-y-auto mb-2  ">
+            {showReview && showReview.length > 0 ? (
+              showReview.map((review, index) => (
+                <div key={index} className="w-[95%] h-[10%] pl-2 font-prompt">
+                  <div className="flex flex-col border-2 border-x-0 border-t-0  border-gray-100 gap-3">
+                    <div className="mb-2">
+                      <h1 className="p-2">{review.description}</h1>
+                      <div className="flex flex-row justify-between">
+                        <h1 className="p-2 text-sm">{review.author}</h1>
+                        <h1 className="p-2 text-sm">
+                          {formatDate(review.date)}
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-64">
+                <h1 className="text-center font-prompt">No reviews yet</h1>
+              </div>
+            )}
           </div>
         </div>
+
         <div className="mt-4">
           <textarea
             className="w-[95%] border-none border-gray-300 font-prompt border-2 shadow-xl shadow-gray-300 p-2"
