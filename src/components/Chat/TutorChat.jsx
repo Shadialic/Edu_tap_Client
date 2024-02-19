@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { io } from "socket.io-client";
 import {
@@ -9,13 +9,11 @@ import {
 } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faVideo,
-  faEllipsisVertical,
-} from "@fortawesome/free-solid-svg-icons";
+import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
+import { getTutorChats } from "../../api/VendorApi";
 
 function TutorChat() {
   const [userChats, setUserChats] = useState([]);
@@ -30,13 +28,12 @@ function TutorChat() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
   const scroll = useRef();
-  console.log(currentChat,'currentChat',tutorInfo.id);
+  console.log(selectedMember, "selectedMember",currentChat);
   useEffect(() => {
-    console.log('ppppppppppppppppppppppppppppp');
     const fetchChats = async () => {
       try {
-        const res = await getChats(tutorInfo.id);
-        console.log(res,'//////////');
+        const res = await getTutorChats(tutorInfo.id);
+        console.log(res, "//////////");
         setUserChats(res.chats);
       } catch (error) {
         console.error("Error fetching chats:", error);
@@ -46,37 +43,40 @@ function TutorChat() {
   }, [tutorInfo.id]);
 
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_SOCKET_BASE_URL);
+    const newSocket = io('http://localhost:3000');
+    console.log(newSocket,"uurrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
     setSocket(newSocket);
     return () => {
       newSocket.disconnect();
     };
   }, [tutorInfo.id]);
 
-  useEffect(() => {
-    if (socket === null) return;
-    socket.emit("addNewUser", tutorInfo.id);
-    socket.on("getOnlineUsers", (res) => {
-      setOnlineUsers(res);
-    });
-    return () => {
-      socket.off("getOnlineUsers");
-    };
-  }, [socket]);
+  // useEffect(() => {
+  //   if (socket === null) return;
+  //   socket.emit("addNewUser", tutorInfo.id);
+  //   socket.on("getOnlineUsers", (res) => {
+  //     setOnlineUsers(res);
+  //   });
+  //   return () => {
+  //     socket.off("getOnlineUsers");
+  //   };
+  // }, [socket]);
 
   useEffect(() => {
     if (socket === null) return;
-    const recipientId = currentChat?._id;
+    const recipientId =socket.id;
     socket.emit("sendMessage", { ...newMessage, recipientId });
   }, [newMessage, socket, currentChat]);
 
   useEffect(() => {
     if (socket === null) return;
     socket.on("getMessage", (res) => {
+      console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
       if (currentChat?._id !== res.chatId) return;
+      
       setMessages((prev) => [...prev, res]);
     });
-    socket.on("getNotification", (res) => {
+      socket.on("getNotification", (res) => {
       if (currentChat?._id === res.senderId) {
         setNotification((prev) => [{ ...res, isRead: true }, ...prev]);
       } else {
@@ -87,13 +87,12 @@ function TutorChat() {
       socket.off("getMessage");
       socket.off("getNotification");
     };
-  }, [socket, currentChat]);
+  }, [socket, currentChat,messages]);
 
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -112,12 +111,15 @@ function TutorChat() {
     setSearchQuery(e.target.value);
   };
 
-  const filteredMembers = userChats
-    .map((chat) => chat.members)
-    .flat()
-    .filter((member) =>
-      member.tutorName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  // const filteredMembers = userChats
+  //   .map((chat) => chat.members)
+  //   .flat()
+  //   .filter((member) =>
+  //     member.userName.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+  // console.log(filteredMembers,'filteredMembers');
+  console.log(userChats, "userChats");
+  console.log(currentChat, "currentChat");
 
   const sendTextMessage = async () => {
     const senderId = tutorInfo.id;
@@ -136,11 +138,12 @@ function TutorChat() {
 
   return (
     <>
-     
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-screen h-screen py-7 px-5">
         <div className="bg-white w-full sm:max-w-[90%] min-h-[90%] overflow-hidden rounded-md flex flex-col sm:flex-row mb-16">
           <div className="w-full sm:w-[29%] h-full border-r-0 sm:border-r-2 border-b-0 sm:border-b-2 border-gray-200">
-            <h1 className="font-prompt text-xl font-prompt-semibold p-3 border-b border-gray-200">Chats</h1>
+            <h1 className="font-prompt text-xl font-prompt-semibold p-3 border-b border-gray-200">
+              Chats
+            </h1>
             <div className="p-3">
               <input
                 type="text"
@@ -151,33 +154,42 @@ function TutorChat() {
               />
             </div>
             <div className="overflow-auto flex-1">
-              {filteredMembers.map((member, index) => (
+              {userChats.map((chat, index) => (
                 <div
                   key={index}
                   className={`p-3 border-b border-gray-200 hover:bg-violet-700 hover:text-white hover:rounded-md cursor-pointer ${
-                    selectedMember && selectedMember.tutorName === member.tutorName ? "bg-violet-700 text-white rounded-md" : ""
+                    selectedMember && selectedMember._id === chat._id
+                      ? "bg-violet-700 text-white rounded-md"
+                      : ""
                   }`}
                   onClick={() => {
-                    setSelectedMember(member);
-                    setCurrentChat(member); 
+                    setSelectedMember(chat);
+                    setCurrentChat(chat);
                   }}
                 >
                   <div className="flex justify-between items-center">
+                    {/* Assuming you want to display only the first member's information */}
                     <div className="flex items-center">
-                      <Avatar src={member.image} alt="avatar" size="md" />
+                      <Avatar
+                        src={chat.members[0].image}
+                        alt="avatar"
+                        size="md"
+                      />
                       <div>
-                        <Typography variant="h6" className="text-font-prompt font- uppercase mb-2">
-                          {member.tutorName}
+                        <Typography
+                          variant="h6"
+                          className="text-font-prompt font- uppercase mb-2"
+                        >
+                          {chat.members[0].userName}
                         </Typography>
-                        {!onlineUsers.some((user) => user.userId === member._id) && (
-                          <div className="flex items-end">
-                            <Typography variant="small" className="text-sm font-prompt-xlight">online</Typography>
-                          </div>
-                        )}
+                        {/* You can add online status logic here */}
                       </div>
                     </div>
-                    <Typography variant="small" className="text-sm font-prompt-light">
-                      {/* Assuming this is the date */}
+                    <Typography
+                      variant="small"
+                      className="text-sm font-prompt-light"
+                    >
+                      {moment(chat.createdAt).calendar()}
                     </Typography>
                   </div>
                 </div>
@@ -191,22 +203,43 @@ function TutorChat() {
                   <div className="flex items-center">
                     <Avatar src={currentChat.image} alt="avatar" size="md" />
                     <div className="ml-3">
-                      <Typography variant="h6">{currentChat.tutorName}</Typography>
-                      {!onlineUsers.some((user) => user.userId === currentChat._id) && (
-                        <Typography variant="small" color="gray" className="text-sm font-normal">online</Typography>
+                      <Typography variant="h6">
+                        {currentChat.userName}
+                      </Typography>
+                      {!onlineUsers.some(
+                        (user) => user.userId === currentChat._id
+                      ) && (
+                        <Typography
+                          variant="small"
+                          color="gray"
+                          className="text-sm font-normal"
+                        >
+                          online
+                        </Typography>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <FontAwesomeIcon icon={faVideo} className="text-violet-600 mr-4" />
-                    <FontAwesomeIcon icon={faEllipsisVertical} className="text-violet-600 cursor-pointer" />
+                    <FontAwesomeIcon
+                      icon={faVideo}
+                      className="text-violet-600 mr-4"
+                    />
+                    <FontAwesomeIcon
+                      icon={faEllipsisVertical}
+                      className="text-violet-600 cursor-pointer"
+                    />
                   </div>
                 </div>
                 <div className="flex-1 overflow-auto p-4">
                   {messages.map((message, index) => (
-                    <div key={index} className="message p-4 bg-gray-200 mb-2 rounded-md">
+                    <div
+                      key={index}
+                      className="message p-4 bg-gray-200 mb-2 rounded-md"
+                    >
                       <h1>{message.text}</h1>
-                      <span className="text-sm font-prompt-light">{moment(message.createdAt).calendar()}</span>
+                      <span className="text-sm font-prompt-light">
+                        {moment(message.createdAt).calendar()}
+                      </span>
                     </div>
                   ))}
                   <div ref={scroll}></div>
@@ -226,8 +259,18 @@ function TutorChat() {
                     variant="text"
                     className="rounded-full text-violet-600 ml-2"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-5 w-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                      />
                     </svg>
                   </IconButton>
                 </div>

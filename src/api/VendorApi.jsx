@@ -150,3 +150,14 @@ export async function blockUnBlockcourse(id) {
     console.log(error);
   }
 }
+
+export async function getTutorChats(id) {
+  console.log(id,'wwwwwwww');
+  try {
+    const response = await TutorApi.get(`/findTutorChats/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

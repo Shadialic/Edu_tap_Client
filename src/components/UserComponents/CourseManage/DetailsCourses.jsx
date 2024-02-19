@@ -47,7 +47,7 @@ function DetailsCourses({ data }) {
 
   const activeCourse = async (courseid) => {
     if (data.payment === "price") {
-      const stripe = await loadStripe("pk_test_51ODm4bSHaENjV1jr6QBv93m7yUjiUR2bCql3CNylL2bhvGcr3Fr8ZUEzlInPA3zAyDN8k8EUUUzGChUNHKWZXzAh00Q4Z4tzgS");
+      const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY);
                                        
     const result = await checkout(courseid);
     const { sessionId } = result;
