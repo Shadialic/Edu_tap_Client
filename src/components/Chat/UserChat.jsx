@@ -9,13 +9,11 @@ import {
 } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faVideo,
-  faEllipsisVertical,
-} from "@fortawesome/free-solid-svg-icons";
+import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
+import { toast } from "react-toastify";
 
 function UserChat() {
   const [userChats, setUserChats] = useState([]);
@@ -50,16 +48,14 @@ function UserChat() {
     };
   }, [socket]);
 
-
   useEffect(() => {
     if (socket === null) return;
-    const recipientId =socket.id;
+    const recipientId = socket.id;
     socket.emit("sendMessage", { ...newMessage, recipientId });
   }, [newMessage, socket, currentChat]);
   useEffect(() => {
     if (socket === null) return;
     socket.on("getMessage", (res) => {
-      console.log(res,'getMessage');
       if (currentChat?._id !== res.chatId) return;
       setMessages((prev) => [...prev, res]);
     });
@@ -110,46 +106,64 @@ function UserChat() {
     setSearchQuery(e.target.value);
   };
 
+  useEffect(() => {
+    if (newMessage !== null) {
+      setMessages((prev) => [...prev, newMessage]);
+    }
+  }, [newMessage, currentChat]);
 
-
-   
-  // useEffect(() => {
-  //   if (newMessage !== null) {
-  //     setMessages((prev) => [...prev, newMessage]);
-  //   }
-  // }, [newMessage,currentChat]);
-
-
-  // const filteredMembers = userChats
-  //   .map((chat) => chat.members)
-  //   .flat()
-  //   .filter((member) =>
-  //     member.tutorName.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
+  const filteredMembers = userChats
+    .map((chat) => chat.members)
+    .flat()
+    .filter((member) =>
+      member.tutorName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   const sendTextMessage = async () => {
+    const recipientId = currentChat.members[0]._id;
     const senderId = userInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
     try {
-      const res = await sendMessage({text,chatId,senderId });
+      const res = await sendMessage({ text, chatId, senderId, recipientId });
       const response = res.saveMeassage;
-      setNewMessage(response); 
-      
+      setNewMessage(response);
+
       setTextMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
-  
- console.log(userChats,'pppppppppppppppppp');
+
+  useEffect(() => {
+    if (!currentChat) {
+      return;
+    }
+
+    const handleNewMessage = async (message) => {
+      console.log("Working             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+      if (message.chatId === currentChat._id) {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
+    };
+
+    socket?.on("newMessage", handleNewMessage);
+
+    return () => {
+      socket?.off("newMessage", handleNewMessage);
+    };
+  }, [socket]);
+  console.log(selectedMember, "[[[[[[[[[[[[[[[[[[[[[[[[", currentChat);
+
   return (
     <>
       <Header state="Home" />
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-screen h-screen py-7 px-5">
         <div className="bg-white w-full sm:max-w-[90%] min-h-[90%] overflow-hidden rounded-md flex flex-col sm:flex-row mb-16">
           <div className="w-full sm:w-[29%] h-full border-r-0 sm:border-r-2 border-b-0 sm:border-b-2 border-gray-200">
-            <h1 className="font-prompt text-xl font-prompt-semibold p-3 border-b border-gray-200">Chats</h1>
+            <h1 className="font-prompt text-xl font-prompt-semibold p-3 border-b border-gray-200">
+              Chats
+            </h1>
             <div className="p-3">
               <input
                 type="text"
@@ -160,7 +174,7 @@ function UserChat() {
               />
             </div>
             <div className="overflow-auto flex-1">
-            {userChats.map((chat, index) => (
+              {userChats.map((chat, index) => (
                 <div
                   key={index}
                   className={`p-3 border-b border-gray-200 hover:bg-violet-700 hover:text-white hover:rounded-md cursor-pointer ${
@@ -207,24 +221,52 @@ function UserChat() {
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-3 border-b border-gray-200">
                   <div className="flex items-center">
-                    <Avatar src={currentChat.image} alt="avatar" size="md" />
+                    <Avatar
+                      src={currentChat.members[0].image}
+                      alt="avatar"
+                      size="md"
+                    />
                     <div className="ml-3">
-                      <Typography variant="h6">{currentChat.tutorName}</Typography>
-                      {!onlineUsers.some((user) => user.userId === currentChat._id) && (
-                        <Typography variant="small" color="gray" className="text-sm font-normal">online</Typography>
+                      <Typography variant="h6">
+                        {currentChat.members[0].tutorName}
+                      </Typography>
+                      {!onlineUsers.some(
+                        (user) => user.userId === currentChat._id
+                      ) && (
+                        <Typography
+                          variant="small"
+                          color="gray"
+                          className="text-sm font-normal"
+                        >
+                          online
+                        </Typography>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <FontAwesomeIcon icon={faVideo} className="text-violet-600 mr-4" />
-                    <FontAwesomeIcon icon={faEllipsisVertical} className="text-violet-600 cursor-pointer" />
+                    <FontAwesomeIcon
+                      icon={faVideo}
+                      className="text-violet-600 mr-4"
+                    />
+                    <FontAwesomeIcon
+                      icon={faEllipsisVertical}
+                      className="text-violet-600 cursor-pointer"
+                    />
                   </div>
                 </div>
-                <div className="flex-1 overflow-auto p-4">
+                <div className="flex-1 overflow-auto p-4 hidescroll">
                   {messages.map((message, index) => (
-                    <div key={index} className="message p-4 bg-gray-200 mb-2 rounded-md">
+              
+                    <div
+                      key={index}
+                      className={`message p-4 mb-2 rounded-md w-fit ${
+                        message.senderId === userInfo.id ? "bg-blue-200 ml-auto" : "bg-gray-200 mr-auto"
+                      }`}
+                    >
                       <h1>{message.text}</h1>
-                      <span className="text-sm font-prompt-light">{moment(message.createdAt).calendar()}</span>
+                      <span className="text-sm font-prompt-light">
+                        {moment(message.createdAt).calendar()}
+                      </span>
                     </div>
                   ))}
                   <div ref={scroll}></div>
@@ -244,8 +286,18 @@ function UserChat() {
                     variant="text"
                     className="rounded-full text-violet-600 ml-2"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-5 w-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                      />
                     </svg>
                   </IconButton>
                 </div>

@@ -14,6 +14,7 @@ import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { getTutorChats } from "../../api/VendorApi";
+import Header from "../TutorComponents/TutorLayouts/Header";
 
 function TutorChat() {
   const [userChats, setUserChats] = useState([]);
@@ -28,7 +29,7 @@ function TutorChat() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
   const scroll = useRef();
-  console.log(selectedMember, "selectedMember",currentChat);
+  console.log(selectedMember, "selectedMember", currentChat);
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -43,40 +44,38 @@ function TutorChat() {
   }, [tutorInfo.id]);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
-    console.log(newSocket,"uurrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+    const newSocket = io("http://localhost:3000");
     setSocket(newSocket);
     return () => {
       newSocket.disconnect();
     };
   }, [tutorInfo.id]);
 
-  // useEffect(() => {
-  //   if (socket === null) return;
-  //   socket.emit("addNewUser", tutorInfo.id);
-  //   socket.on("getOnlineUsers", (res) => {
-  //     setOnlineUsers(res);
-  //   });
-  //   return () => {
-  //     socket.off("getOnlineUsers");
-  //   };
-  // }, [socket]);
+  useEffect(() => {
+    if (socket === null) return;
+    socket.emit("addNewUser", tutorInfo.id);
+    socket.on("getOnlineUsers", (res) => {
+      setOnlineUsers(res);
+    });
+    return () => {
+      socket.off("getOnlineUsers");
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (socket === null) return;
-    const recipientId =socket.id;
+    const recipientId = socket.id;
     socket.emit("sendMessage", { ...newMessage, recipientId });
   }, [newMessage, socket, currentChat]);
 
   useEffect(() => {
     if (socket === null) return;
     socket.on("getMessage", (res) => {
-      console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
       if (currentChat?._id !== res.chatId) return;
-      
+
       setMessages((prev) => [...prev, res]);
     });
-      socket.on("getNotification", (res) => {
+    socket.on("getNotification", (res) => {
       if (currentChat?._id === res.senderId) {
         setNotification((prev) => [{ ...res, isRead: true }, ...prev]);
       } else {
@@ -87,7 +86,7 @@ function TutorChat() {
       socket.off("getMessage");
       socket.off("getNotification");
     };
-  }, [socket, currentChat,messages]);
+  }, [socket, currentChat, messages]);
 
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
@@ -122,11 +121,12 @@ function TutorChat() {
   console.log(currentChat, "currentChat");
 
   const sendTextMessage = async () => {
+    const recipientId = currentChat.members[0]._id;
     const senderId = tutorInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
     try {
-      const res = await sendMessage({ text, chatId, senderId });
+      const res = await sendMessage({ text, chatId, senderId, recipientId });
       const response = res.saveMeassage;
       setNewMessage(response);
       setMessages((prev) => [...prev, response]);
@@ -136,10 +136,27 @@ function TutorChat() {
     }
   };
 
+  useEffect(() => {
+    if (!currentChat) {
+      return;
+    }
+
+    const handleNewMessage = async (message) => {
+      if (message.chatId === currentChat._id) {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
+    };
+    socket?.on("newMessage", handleNewMessage);
+    return () => {
+      socket?.off("newMessage", handleNewMessage);
+    };
+  }, [socket]);
+
   return (
     <>
+    <Header/>
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-screen h-screen py-7 px-5">
-        <div className="bg-white w-full sm:max-w-[90%] min-h-[90%] overflow-hidden rounded-md flex flex-col sm:flex-row mb-16">
+        <div className="bg-white  w-full sm:max-w-[90%] min-h-[90%] overflow-hidden rounded-md flex flex-col sm:flex-row mb-16">
           <div className="w-full sm:w-[29%] h-full border-r-0 sm:border-r-2 border-b-0 sm:border-b-2 border-gray-200">
             <h1 className="font-prompt text-xl font-prompt-semibold p-3 border-b border-gray-200">
               Chats
@@ -168,7 +185,6 @@ function TutorChat() {
                   }}
                 >
                   <div className="flex justify-between items-center">
-                    {/* Assuming you want to display only the first member's information */}
                     <div className="flex items-center">
                       <Avatar
                         src={chat.members[0].image}
@@ -201,10 +217,14 @@ function TutorChat() {
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-3 border-b border-gray-200">
                   <div className="flex items-center">
-                    <Avatar src={currentChat.image} alt="avatar" size="md" />
+                    <Avatar
+                      src={currentChat.members[0].image}
+                      alt="avatar"
+                      size="md"
+                    />
                     <div className="ml-3">
                       <Typography variant="h6">
-                        {currentChat.userName}
+                        {currentChat.members[0].userName}
                       </Typography>
                       {!onlineUsers.some(
                         (user) => user.userId === currentChat._id
@@ -230,19 +250,21 @@ function TutorChat() {
                     />
                   </div>
                 </div>
-                <div className="flex-1 overflow-auto p-4">
+                <div className="flex-1 overflow-auto p-4 hidescroll">
                   {messages.map((message, index) => (
                     <div
                       key={index}
-                      className="message p-4 bg-gray-200 mb-2 rounded-md"
+                      className={`message p-4 mb-2 rounded-md w-fit ${
+                        message.senderId === tutorInfo.id ? "bg-blue-200 ml-auto" : "bg-gray-200 mr-auto"
+                      }`}
                     >
                       <h1>{message.text}</h1>
                       <span className="text-sm font-prompt-light">
                         {moment(message.createdAt).calendar()}
                       </span>
+                      <div ref={scroll}></div>
                     </div>
                   ))}
-                  <div ref={scroll}></div>
                 </div>
                 <div className="flex items-center p-4 border-t border-gray-200">
                   <InputEmoji
@@ -250,7 +272,7 @@ function TutorChat() {
                     onChange={setTextMessage}
                     cleanOnEnter
                     onEnter={() => {
-                      // handle send message logic here
+      
                       sendTextMessage();
                     }}
                   />

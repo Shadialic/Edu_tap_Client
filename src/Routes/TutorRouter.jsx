@@ -49,12 +49,12 @@ function TutorRouter() {
         <Route path="/:category" element={<AddForm />} />
         <Route path="/waitinglist" element={<WaitingList />} />
         <Route path="/runningClasses" element={<RunningClasses  />} />
-        <Route path="/chat" element={<TutorChat />} />
-      <Route path="/chattest" element={<Chat />} />
+      
 
 
 
       </Route>
+        <Route path="/chat" element={<TutorChat />} />
     </Routes>
   );
 }

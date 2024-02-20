@@ -32,7 +32,7 @@ function Comment({ chapterId, userInfo }) {
     };
     console.log(data, "eeeeeeeeeeeeeeeeeeee");
     const response = await postCommnets(data);
-    const comments = response.data.saveComment;
+    // const comments = response.data.saveComment;
 
     console.log(response, "Comment submitted:", comment);
 
@@ -62,6 +62,7 @@ function Comment({ chapterId, userInfo }) {
             </div>
           </div>
         </div>
+       
       </div>
     </>
   );

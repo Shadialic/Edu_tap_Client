@@ -56,6 +56,7 @@ function DetailsCourses({ data }) {
 
   const activeCourse = async (courseid) => {
     if (data.payment === "price") {
+      const response=await purchaseCourse(courseid, userId)
       const stripe = await loadStripe(
         import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
       );
