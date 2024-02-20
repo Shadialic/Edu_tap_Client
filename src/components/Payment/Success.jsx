@@ -15,8 +15,8 @@ function Success() {
   }, [navigate]);
 
   return (
-    <div className="w-[80%] h-[80%] bg-white shadow-lg">
-      <div className="w-[80%] h-[80%] bg-white shadow-lg flex justify-center items-center">
+    <div className="w-screen h-screen bg-white shadow-lg">
+      <div className="w-[100%] h-[100%] bg-white shadow-lg flex justify-center items-center">
         <video className="justify-center items-center" src={success} ></video>
       </div>
     </div>

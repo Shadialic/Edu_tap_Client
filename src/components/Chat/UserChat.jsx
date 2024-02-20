@@ -5,7 +5,6 @@ import {
   Typography,
   Avatar,
   IconButton,
-  Input,
 } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +12,7 @@ import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
-import { toast } from "react-toastify";
+
 
 function UserChat() {
   const [userChats, setUserChats] = useState([]);
@@ -28,6 +27,29 @@ function UserChat() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
   const scroll = useRef();
+
+  const filteredMembers = userChats
+    .map((chat) => chat.members)
+    .flat()
+    .filter((member) =>
+      member.tutorName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+  const sendTextMessage = async () => {
+    const recipientId = currentChat.members[0]._id;
+    const senderId = userInfo.id;
+    const chatId = currentChat._id;
+    const text = textMessage;
+    try {
+      const res = await sendMessage({ text, chatId, senderId, recipientId });
+      const response = res.saveMeassage;
+      setNewMessage(response);
+
+      setTextMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
 
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
@@ -53,6 +75,7 @@ function UserChat() {
     const recipientId = socket.id;
     socket.emit("sendMessage", { ...newMessage, recipientId });
   }, [newMessage, socket, currentChat]);
+
   useEffect(() => {
     if (socket === null) return;
     socket.on("getMessage", (res) => {
@@ -112,48 +135,21 @@ function UserChat() {
     }
   }, [newMessage, currentChat]);
 
-  const filteredMembers = userChats
-    .map((chat) => chat.members)
-    .flat()
-    .filter((member) =>
-      member.tutorName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-  const sendTextMessage = async () => {
-    const recipientId = currentChat.members[0]._id;
-    const senderId = userInfo.id;
-    const chatId = currentChat._id;
-    const text = textMessage;
-    try {
-      const res = await sendMessage({ text, chatId, senderId, recipientId });
-      const response = res.saveMeassage;
-      setNewMessage(response);
-
-      setTextMessage("");
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
-  };
-
   useEffect(() => {
     if (!currentChat) {
       return;
     }
 
     const handleNewMessage = async (message) => {
-      console.log("Working             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
       if (message.chatId === currentChat._id) {
         setMessages((prevMessages) => [...prevMessages, message]);
       }
     };
-
     socket?.on("newMessage", handleNewMessage);
-
     return () => {
       socket?.off("newMessage", handleNewMessage);
     };
   }, [socket]);
-  console.log(selectedMember, "[[[[[[[[[[[[[[[[[[[[[[[[", currentChat);
 
   return (
     <>
@@ -256,11 +252,12 @@ function UserChat() {
                 </div>
                 <div className="flex-1 overflow-auto p-4 hidescroll">
                   {messages.map((message, index) => (
-              
                     <div
                       key={index}
                       className={`message p-4 mb-2 rounded-md w-fit ${
-                        message.senderId === userInfo.id ? "bg-blue-200 ml-auto" : "bg-gray-200 mr-auto"
+                        message.senderId === userInfo.id
+                          ? "bg-blue-200 ml-auto"
+                          : "bg-gray-200 mr-auto"
                       }`}
                     >
                       <h1>{message.text}</h1>

@@ -16,7 +16,7 @@ import Blog from "../pages/UserPages/Blog";
 import Success from "../components/Payment/Success";
 import Faild from "../components/Payment/Faild";
 import UserChat from "../components/Chat/UserChat";
-import Chat from "../components/Chat/Chat";
+import Error from "../components/Error/Error";
 
 function UserRouter() {
   return (
@@ -42,11 +42,8 @@ function UserRouter() {
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Faild />} />
       <Route path="/chat" element={<UserChat />} />
-      <Route path="/chattest" element={<Chat />} />
-
-      
-
-
+     
+      <Route path="/error" element={<Error />} />
 
     </Routes>
   );

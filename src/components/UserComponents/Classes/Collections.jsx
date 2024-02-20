@@ -6,10 +6,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Comment from "../Comments/Comment";
 
-
 function Collections({ chapter, courseId, tutors, course }) {
   const navigate = useNavigate();
-  console.log(chapter, "lll", tutors);
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
   const [review, setReview] = useState("");
@@ -18,7 +16,7 @@ function Collections({ chapter, courseId, tutors, course }) {
   const [showMessage, setShowMessage] = useState(false);
   const [showReview, setShowReiview] = useState([]);
   const userInfo = useSelector((state) => state.user.userInfo);
-  console.log(showReview, "showReview");
+
   useEffect(() => {
     const filteredData = chapter.filter((item) => item.course_id === courseId);
     const tutorDetail = course.find((item) => item._id === courseId);
@@ -27,18 +25,19 @@ function Collections({ chapter, courseId, tutors, course }) {
     setData(filteredData);
     const fetch = async () => {
       const response = await fetchReviews();
-      console.log(response, "response");
+      console.log(response.chat, "---------------------");
       const filterdata = response.data.filter(
         (item) => item.courseId === courseId
       );
-      console.log(filterdata, "filterdata");
+      const chatId = response.chat.find((item) => item.active === "true");
 
+      if (chatId) {
+        setShowMessage(true);
+      }
       setShowReiview(filterdata);
     };
     fetch();
   }, [chapter, courseId, review]);
-
-  console.log(data, "pppppppp[p");
 
   if (!chapter.length || !data.length) {
     return <div>No data available</div>;
@@ -48,46 +47,47 @@ function Collections({ chapter, courseId, tutors, course }) {
     setCount(index);
     setSelectedVideo(index);
   };
+
   const handleReviewChange = (event) => {
     setReview(event.target.value);
   };
+
   const handleFollowing = async () => {
     const firstId = userInfo.id;
     const secondId = tutorData._id;
-    console.log(secondId, "secondId");
     const response = await createChat({ firstId, secondId });
-    console.log(response, "----------------");
     setShowMessage(true);
   };
+
   const sendMessage = () => {
     navigate("/chat");
   };
+
   const handleUnFollowing = () => {
     setShowMessage(false);
   };
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const userName = userInfo.userName;
-    console.log(userName, "tutorName");
     const reviewData = {
       review,
       userName,
       currntDate: new Date(),
       courseId,
     };
-
     await postReview(reviewData);
     setReview("");
   };
+
   function formatDate(dateString) {
     const options = { day: "numeric", month: "long", year: "numeric" };
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
-console.log(data,'selectedVideo',userInfo.id);
+
   return (
     <div className="flex flex-row w-screen h-fit">
-      {/* Video Player */}
       <div className="w-[65%] h-fit p-4">
         <video
           className="w-full h-auto"
@@ -114,7 +114,7 @@ console.log(data,'selectedVideo',userInfo.id);
               {!showMessage ? (
                 <div className="flex w-24 font-prompt h-10 bg-violet-500 text-white justify-center ml-8 rounded-lg">
                   <button onClick={handleFollowing} className="p-2">
-                    following
+                    follow
                   </button>
                 </div>
               ) : (
@@ -140,11 +140,9 @@ console.log(data,'selectedVideo',userInfo.id);
             </h1>
           </div>
         </div>
-        <Comment chapterId={data} userInfo={userInfo} /> 
-
+        <Comment chapterId={data} userInfo={userInfo} />
       </div>
 
-      {/* Chapters */}
       <div className="flex flex-col w-[35%] p-4 pr-4">
         <div className="w-[95%] h-10 border-2 border-gray-100 font-prompt p-1">
           <span className="mb-2 text-sm">

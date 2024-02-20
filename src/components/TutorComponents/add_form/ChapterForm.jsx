@@ -13,7 +13,6 @@ function ChapterForm({ setOpn, courseId }) {
     chapterDescription: "",
     demoVideo: null,
     chapterVideo: null,
-   
   });
   const uploadVideo = async (file) => {
     try {
@@ -34,14 +33,11 @@ function ChapterForm({ setOpn, courseId }) {
         );
       }
       const cloudinaryData = await cloudinaryResponse.json();
-      console.log(cloudinaryData, "llll");
-
       if (cloudinaryData.error) {
         console.log(cloudinaryData.error);
         return;
       }
       const uploadedVideoUrl = cloudinaryData.secure_url;
-      console.log(uploadedVideoUrl, "uploadedVideoUrl");
       return uploadedVideoUrl;
     } catch (error) {
       console.log("Error during video upload:", error);
@@ -49,7 +45,6 @@ function ChapterForm({ setOpn, courseId }) {
   };
 
   const handleVideoChange = async (event, type) => {
-    console.log(type, "1111111111111");
     const file = event.target.files[0];
     const url = await uploadVideo(file);
     setVideo(url);
@@ -59,12 +54,9 @@ function ChapterForm({ setOpn, courseId }) {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({...formData, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
-  console.log(formData, "---------");
-
   const handleSubmit = async (event) => {
-    console.log(courseId,"nenjikkull peithidum ");
     event.preventDefault();
     if (
       !formData.chapterTitle ||
@@ -76,7 +68,7 @@ function ChapterForm({ setOpn, courseId }) {
       return;
     } else {
       try {
-        const response = await addChapter(formData, courseId );
+        const response = await addChapter(formData, courseId);
         console.log(response, "lllllllllllllll");
         setOpn(false);
       } catch (error) {
@@ -85,8 +77,6 @@ function ChapterForm({ setOpn, courseId }) {
       }
     }
   };
-  
-  
 
   return (
     <>

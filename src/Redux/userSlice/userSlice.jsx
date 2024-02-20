@@ -15,12 +15,16 @@ export const userSlice = createSlice({
         },
         resetState: (state) => {
             return INITIAL_STATE;
-        }
+        },
+        getOnlineUsers: (state, action) => {
+            state.socketInfo = action.payload;
+            
+        },
 
     }
 
 })
 
-export const { setUserDetails,resetState } = userSlice.actions; 
+export const { setUserDetails,resetState,getOnlineUsers } = userSlice.actions; 
 
 export default userSlice.reducer;

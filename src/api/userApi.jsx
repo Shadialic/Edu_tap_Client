@@ -204,7 +204,6 @@ export async function fetchReviews() {
   }
 }
 export async function createChat(data) {
-  console.log(data,'ipppppp');
   try {
     const response = await UserApi.post(`/createChat`,data);
     return response.data;
@@ -244,6 +243,7 @@ export async function sendMessage(data) {
 }
 
 export async function postCommnets(data) {
+  console.log(data,'commmeeeeeeee');
   try {
     const response = await UserApi.post(`/postCommnets`,{data});
     return response.data;

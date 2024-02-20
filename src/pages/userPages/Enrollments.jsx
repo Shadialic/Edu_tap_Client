@@ -50,7 +50,7 @@ function Enrollments() {
             Learn New Skill
           </h1>
           {course.length > 0 ? (
-            <div className="flex flex-wrap p-6">
+            <div className="flex flex-wrap p-6 gap-6">
               {course.map((course) => (
                 <div
                   onClick={() => handleClass(course._id)}

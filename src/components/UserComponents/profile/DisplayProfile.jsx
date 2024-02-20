@@ -77,6 +77,11 @@ function DisplayProfile() {
         console.log(formData,'l');
         const response = await UpdateProfile(formData);
         const updatedImage = response.data.userData.image;
+        dispatch(
+          setUserDetails({
+            image:response.data.userData.image,
+          })
+        );
         setImage(updatedImage);
         toast(response.data.alert);
       }

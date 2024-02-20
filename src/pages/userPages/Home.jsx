@@ -5,13 +5,13 @@ import Banner from "../../components/UserComponents/Home/Banner";
 import { Footer } from "../../components/UserComponents/Layouts/Footer";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FaComment } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Home() {
-  const navigate=useNavigate()
-  const handleChat=()=>{
-    navigate('/chat')
-  }
+  const navigate = useNavigate();
+  const handleChat = () => {
+    navigate("/chat");
+  };
   return (
     <div>
       <Header state="Home" />
@@ -33,11 +33,17 @@ function Home() {
                   accident
                 </a>
 
-                <div className="flex items-center gap-8 mt-8 mr-7 ">
-                  <button className="bg-[#7d0fc6] text-white rounded-md text-xl px-4 py-2 ">
+                <div className="flex items-center gap-8 mt-8 mr-7">
+                  <button
+                    onClick={() => navigate("/course")}
+                    className="bg-[#7d0fc6] text-white rounded-md text-xl px-4 py-2"
+                  >
                     Get Started
                   </button>
-                  <button className="bg-[#7d0fc6] text-white rounded-md text-xl px-4 py-2 ">
+                  <button
+                    onClick={() => navigate("/enrollments")}
+                    className="bg-[#7d0fc6] text-white rounded-md text-xl px-4 py-2"
+                  >
                     Watch Now!!
                   </button>
                 </div>
@@ -55,11 +61,11 @@ function Home() {
             </div>
           </div>
         </div>
-      <div onClick={handleChat} className="w-full h-full flex justify-end">
-        <h1 className="fixed bg-[#7d0fc6] w-10 rounded-full text-white p-2 mr-10">
-          <FaComment  className="w-6 h-5 "/>
-        </h1>
-      </div>
+        <div onClick={handleChat} className="w-full h-full flex justify-end">
+          <h1 className="fixed bg-[#7d0fc6] w-10 rounded-full text-white p-2 mr-10">
+            <FaComment className="w-6 h-5 " />
+          </h1>
+        </div>
       </section>
       <Banner />
 

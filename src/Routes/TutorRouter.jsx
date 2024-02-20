@@ -13,7 +13,7 @@ import Otp from "../components/otp/Otp";
 import WaitingList from "../pages/TutorPages/WaitingList";
 import RunningClasses from "../pages/TutorPages/RunningClasses";
 import TutorChat from "../components/Chat/TutorChat";
-import Chat from "../components/Chat/Chat";
+
 
 
 const Lyouts = () => {
@@ -49,10 +49,6 @@ function TutorRouter() {
         <Route path="/:category" element={<AddForm />} />
         <Route path="/waitinglist" element={<WaitingList />} />
         <Route path="/runningClasses" element={<RunningClasses  />} />
-      
-
-
-
       </Route>
         <Route path="/chat" element={<TutorChat />} />
     </Routes>

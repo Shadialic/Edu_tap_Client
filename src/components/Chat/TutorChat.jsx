@@ -29,12 +29,40 @@ function TutorChat() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
   const scroll = useRef();
-  console.log(selectedMember, "selectedMember", currentChat);
+ 
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // const filteredMembers = userChats
+  //   .map((chat) => chat.members)
+  //   .flat()
+  //   .filter((member) =>
+  //     member.userName.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+  // console.log(filteredMembers,'filteredMembers');
+
+  const sendTextMessage = async () => {
+    const recipientId = currentChat.members[0]._id;
+    const senderId = tutorInfo.id;
+    const chatId = currentChat._id;
+    const text = textMessage;
+    try {
+      const res = await sendMessage({ text, chatId, senderId, recipientId });
+      const response = res.saveMeassage;
+      setNewMessage(response);
+      setMessages((prev) => [...prev, response]);
+      setTextMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchChats = async () => {
       try {
         const res = await getTutorChats(tutorInfo.id);
-        console.log(res, "//////////");
         setUserChats(res.chats);
       } catch (error) {
         console.error("Error fetching chats:", error);
@@ -72,7 +100,6 @@ function TutorChat() {
     if (socket === null) return;
     socket.on("getMessage", (res) => {
       if (currentChat?._id !== res.chatId) return;
-
       setMessages((prev) => [...prev, res]);
     });
     socket.on("getNotification", (res) => {
@@ -106,36 +133,6 @@ function TutorChat() {
     }
   }, [currentChat]);
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  // const filteredMembers = userChats
-  //   .map((chat) => chat.members)
-  //   .flat()
-  //   .filter((member) =>
-  //     member.userName.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
-  // console.log(filteredMembers,'filteredMembers');
-  console.log(userChats, "userChats");
-  console.log(currentChat, "currentChat");
-
-  const sendTextMessage = async () => {
-    const recipientId = currentChat.members[0]._id;
-    const senderId = tutorInfo.id;
-    const chatId = currentChat._id;
-    const text = textMessage;
-    try {
-      const res = await sendMessage({ text, chatId, senderId, recipientId });
-      const response = res.saveMeassage;
-      setNewMessage(response);
-      setMessages((prev) => [...prev, response]);
-      setTextMessage("");
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
-  };
-
   useEffect(() => {
     if (!currentChat) {
       return;
@@ -154,7 +151,7 @@ function TutorChat() {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-screen h-screen py-7 px-5">
         <div className="bg-white  w-full sm:max-w-[90%] min-h-[90%] overflow-hidden rounded-md flex flex-col sm:flex-row mb-16">
           <div className="w-full sm:w-[29%] h-full border-r-0 sm:border-r-2 border-b-0 sm:border-b-2 border-gray-200">
@@ -255,7 +252,9 @@ function TutorChat() {
                     <div
                       key={index}
                       className={`message p-4 mb-2 rounded-md w-fit ${
-                        message.senderId === tutorInfo.id ? "bg-blue-200 ml-auto" : "bg-gray-200 mr-auto"
+                        message.senderId === tutorInfo.id
+                          ? "bg-blue-200 ml-auto"
+                          : "bg-gray-200 mr-auto"
                       }`}
                     >
                       <h1>{message.text}</h1>
@@ -272,7 +271,6 @@ function TutorChat() {
                     onChange={setTextMessage}
                     cleanOnEnter
                     onEnter={() => {
-      
                       sendTextMessage();
                     }}
                   />
