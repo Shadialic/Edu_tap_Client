@@ -6,7 +6,7 @@ function Notification() {
   const [isOpn, setIsOpn] = useState(false);
 
   const toggleNotificationModal = () => {
-    setIsOpn(!isOpn); // Toggles the value of isOpn
+    setIsOpn(!isOpn); 
   };
 
   return (

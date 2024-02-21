@@ -13,22 +13,17 @@ function Enrollments() {
   const [isOpn, setOpn] = useState(false);
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = userInfo.id;
-  console.log(userId, "aaa");
 
   useEffect(() => {
     const fetchEnrollments = async () => {
       try {
         const response = await enrollments(userId);
-        console.log(response, "lpop");
         const fetchedCourses = response.courses;
         const chapters = response.chapter;
         const tutors = response.tutors;
-        console.log(chapters, "p");
         setCourses(fetchedCourses);
         setChapter(chapters);
-        setTutors(tutors)
-
-        
+        setTutors(tutors);
       } catch (error) {
         console.error("Error fetching enrollments:", error);
       }
@@ -39,7 +34,6 @@ function Enrollments() {
     setId(id);
     setOpn(true);
   };
-  console.log(tutors,'tutorstutors');
 
   return (
     <div>
@@ -84,7 +78,12 @@ function Enrollments() {
           )}
         </div>
       ) : (
-        <Collections chapter={chapter} courseId={Id} tutors={tutors} course={course}/>
+        <Collections
+          chapter={chapter}
+          courseId={Id}
+          tutors={tutors}
+          course={course}
+        />
       )}
     </div>
   );

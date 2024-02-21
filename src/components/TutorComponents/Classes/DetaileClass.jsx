@@ -36,7 +36,7 @@ function DetaileClass({ courseId }) {
       });
     };
     fetch();
-  }, []);
+  }, [chapter]);
 
   const videoRef = useRef(null);
 
@@ -55,11 +55,13 @@ function DetaileClass({ courseId }) {
     setOpn(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (id) => {
     try {
+      await manageChapter(id)
       if (deleteChapterId) {
-        await blockUnBlockcourse(deleteChapterId);
-        setConfirm(false);
+        // await blockUnBlockcourse(deleteChapterId);
+
+         setConfirm(false);
         const res = await fetchChapter();
         const filterData = res.data.data;
         const data = filterData.filter((item) => item.course_id === courseId);

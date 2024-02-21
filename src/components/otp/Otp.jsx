@@ -54,7 +54,6 @@ function Otp() {
   }, [seconds, minutes]);
 
   const resendOTP = (current) => {
-    console.log(current);
     setMinutes(1);
     setSeconds(0);
     if (current.type == "user") {

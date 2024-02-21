@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import review from "../../../../public/images/user/reviews.png";
 import { fetchChapter } from "../../../api/VendorApi";
@@ -11,30 +10,21 @@ import { LoadTutorList } from "../../../api/AdminApi";
 
 function DetailsCourses({ data }) {
   const navigate = useNavigate();
-  console.log(data, "poddddddddddddddddddddddpop");
   const [chapter, setChapter] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [auther, setAuther] = useState();
-  // const [payment, setPayment] = useState(false);
   useEffect(() => {
-    console.log("pppppppppp====================ppppppp");
-
     const fetch = async () => {
       await fetchChapter().then((res) => {
-        console.log(res, "ppppppppppppppppppppppp");
         const updateData = res.data.data;
-        console.log(data._id, "ppp");
         const filterData = updateData.filter(
           (item) => item.course_id === data._id
         );
-        console.log(filterData, "filterData");
         setChapter(filterData);
-        console.log(res, "slsls");
       });
       await LoadTutorList().then((res) => {
         const auther = res.data.tutordata;
         const tutorData = auther.find((item) => item.email === data.auther);
-        console.log(tutorData, "turoror");
         setAuther(tutorData);
       });
       const response = await fetchReviews();
@@ -42,7 +32,6 @@ function DetailsCourses({ data }) {
         (item) => item.courseId === data._id
       );
       setReviews(filterdata);
-      console.log(response.data, "ddddddddddddddddddddddddddddd");
     };
     fetch();
   }, []);
@@ -50,37 +39,29 @@ function DetailsCourses({ data }) {
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = userInfo.id;
 
-  const handleRating = (rate) => {
-    console.log(rate);
-  };
+ 
 
   const activeCourse = async (courseid) => {
     if (data.payment === "price") {
-      const response=await purchaseCourse(courseid, userId)
+      await purchaseCourse(courseid, userId)
       const stripe = await loadStripe(
         import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
       );
 
       const result = await checkout(courseid);
       const { sessionId } = result;
-      console.log(sessionId, "sessionId");
       const { error } = await stripe.redirectToCheckout({
         sessionId: sessionId,
       });
       if (error) {
         console.error("Payment failed:", error);
-      } else {
-        console.log("Redirecting to checkout page...");
-      }
-      console.log(result, "989");
+      } 
     } else {
       await purchaseCourse(courseid, userId).then((res) => {
         navigate("/enrollments");
       });
     }
-    console.log(courseid, "lock", userId);
   };
-  console.log(chapter, "chapterchapterchapter");
   return (
     <>
       <div className="flex flex-row w-screen h-full p-4">
@@ -94,7 +75,7 @@ function DetailsCourses({ data }) {
             <h1 className="text-3xl font-prompt-semibold">{data.title}</h1>
             <p className="font-prompt p-2">{data.description}</p>
           </div>
-          <div className="flex flex-row pl-8 mt-4">
+          <div className="flex flex-row pl-6 mt-4">
             <img className="w-8 h-8" src={auther && auther.image} alt="" />
             <h1 className="font-prompt text-lg ml-2">
               {auther && auther.tutorName}
@@ -103,7 +84,7 @@ function DetailsCourses({ data }) {
           <RatingStar />
 
           {data.payment === "price" ? (
-            <div className="pl-6 mt-2 ">
+            <div className="pl-4 mt-2 ">
               <button
                 onClick={() => activeCourse(data._id)}
                 className="w-[34%]  rounded-md h-9 bg-violet-600 font-prompt text-white"

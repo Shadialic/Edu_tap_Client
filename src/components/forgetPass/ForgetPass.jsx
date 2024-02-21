@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { forgotPass } from "../../api/UserApi";
@@ -12,7 +11,7 @@ function ForgetPass() {
   const [isOpn, setOpn] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState(""); 
+  const [email, setEmail] = useState("");
   const backhandle = (e) => {
     setOpn(true);
     <LoginForm />;
@@ -27,7 +26,6 @@ function ForgetPass() {
       } else {
         setLoading(true);
         await forgotPass(data).then((res) => {
-          console.log(data, "33333333333");
           navigate("/otp", {
             state: {
               type: "forgot",
@@ -47,7 +45,6 @@ function ForgetPass() {
         <LoginForm onClose={() => setOpn(false)} />
       ) : (
         <form onSubmit={handleSubmit}>
-          {/* Add a form element for proper submission handling */}
           <div className="flex flex-col gap-1">
             <label htmlFor="email" className="text-[14px] text-shadow-black">
               Enter Your Email

@@ -41,7 +41,6 @@ function LoginForm() {
           toast(result.data.alert);
           if (result.data.created) {
             toast(result.data.alert);
-            console.log(result);
             dispatch(
               setUserDetails({
                 userName: result.data.userName,
@@ -92,8 +91,6 @@ function LoginForm() {
           credential: formData.credential,
           password: formData.password,
         });
-        console.log(loginResponse.data.userData,'========================>>>loginResponse');
-
         if (loginResponse.data && loginResponse.data.userData) {
           localStorage.setItem("token", loginResponse.data.token);
 
@@ -115,9 +112,7 @@ function LoginForm() {
     } catch (err) {
       console.log(err);
     }
-
     setLoading(false);
-    console.log("Form submitted with data:", formData);
   };
 
   return (

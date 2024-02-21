@@ -1,9 +1,7 @@
 import userInterseption from "../utils/intreceptors/userinterceptors";
 const UserApi = userInterseption;
-console.log(UserApi, "UserApiUserApiUserApiUserApi");
 export async function userSignUp(signUpData) {
   try {
-    console.log(signUpData);
     const data = await UserApi.post("/signup", signUpData, {
       withCredentials: true,
     });
@@ -23,9 +21,7 @@ export async function UserSendingOtp(otpData) {
 
 export async function UserVerifyOtp(otpData) {
   try {
-    console.log("ssssssqqqqqq");
     const data = await UserApi.post("/verifyotp", otpData);
-    console.log(data, "///////////////////////////");
     return data;
   } catch (err) {
     console.log(err);
@@ -36,7 +32,6 @@ export async function userLogin(loginData) {
     const data2 = await UserApi.post("/login", loginData, {
       withCredentials: true,
     });
-    console.log(data2, "ttttttttttttttttt");
     return data2;
   } catch (error) {
     console.log(error);
@@ -45,7 +40,6 @@ export async function userLogin(loginData) {
 export async function verifyuser(userData) {
   try {
     const data2 = await UserApi.post("/", userData, { withCredentials: true });
-    console.log(data2, "ttttttttttttttttt");
     return data2;
   } catch (error) {
     console.log(error);
@@ -54,7 +48,6 @@ export async function verifyuser(userData) {
 
 export async function forgotPass(forgotData) {
   try {
-    console.log(forgotData, "forgotpass");
     const data = await UserApi.post("/forgotPass", forgotData);
     return data;
   } catch (error) {
@@ -145,7 +138,6 @@ export async function LoadCategory() {
 }
 export async function purchaseCourse(id, userId) {
   try {
-    console.log(id, "popopop0000000000000op", userId);
     const response = await UserApi.put(`/purchaseCourse/${id}`, {
       userid: userId,
     });
@@ -157,7 +149,6 @@ export async function purchaseCourse(id, userId) {
 
 export async function enrollments(userId) {
   try {
-    console.log("popopop0000000000000op", userId);
     const response = await UserApi.post("/enrollments", { userId });
     return response.data;
   } catch (error) {
@@ -168,7 +159,6 @@ export async function enrollments(userId) {
 
 export async function checkout(courseid) {
   try {
-    console.log("courseid", courseid);
     const response = await UserApi.post("/checkout",{ courseid },
       {
         headers: {
@@ -185,7 +175,6 @@ export async function checkout(courseid) {
 
 export async function postReview(data) {
   try {
-    console.log("courseid", data);
     const response = await UserApi.post("/addReview",{data});
     return response.data;
   } catch (error) {
@@ -214,7 +203,6 @@ export async function createChat(data) {
 }
 
 export async function getChats(id) {
-  console.log(id,'wwwwwwww');
   try {
     const response = await UserApi.get(`/findUserChats/${id}`);
     return response.data;
@@ -243,7 +231,6 @@ export async function sendMessage(data) {
 }
 
 export async function postCommnets(data) {
-  console.log(data,'commmeeeeeeee');
   try {
     const response = await UserApi.post(`/postCommnets`,{data});
     return response.data;
@@ -254,7 +241,6 @@ export async function postCommnets(data) {
 }
 
 export async function LoadComments(id) {
-  console.log(id,'000');
   try {
     const response = await UserApi.get(`/getCommnets/${id}`);
     return response.data;
@@ -264,3 +250,15 @@ export async function LoadComments(id) {
   }
 }
 
+export async function createBlog(data) {
+  try {
+    const response = await UserApi.post("/createBlog", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}

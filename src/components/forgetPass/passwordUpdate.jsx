@@ -14,7 +14,6 @@ const PasswordUpdate = ({ email }) => {
     try {
       e.preventDefault();
       const data = { password: password, email };
-      console.log(data, "00000000");
       if (password === "") {
         toast("Please add password");
       } else if (!/[a-z]/.test(password)) {
@@ -27,9 +26,7 @@ const PasswordUpdate = ({ email }) => {
         toast.error("Password must contain at least one number");
         return;
       } else {
-        console.log(data, "0000211111110");
         await updatePass(data).then((res) => {
-          console.log(res, "res");
           if (res.status === 200) {
             toast("Your Password Updated");
             navigate("/login");
@@ -50,7 +47,6 @@ const PasswordUpdate = ({ email }) => {
               <span className="font-prompt-semibold text-4xl mt-20">
                 Edu-tap
               </span>
-              {/* <h4 className='text-3xl ml-16'>E-Learning Platform</h4> */}
               <img className="rounded-md" src={meta} alt="" />
             </div>
           </div>

@@ -44,7 +44,6 @@ function Signup() {
           toast(result.data.alert);
           if (result.data.created) {
             toast(result.data.alert);
-            console.log(result);
             dispatch(
               setUserDetails({
                 userName: result.data.userName,
@@ -119,9 +118,7 @@ function Signup() {
         setLoading(true);
         toast.success("Form submitted successfully!");
         const userData = await userSignUp(formData);
-        console.log(userData, "userDatauserDatauserDatauserDatauserData");
         toast(userData.data.alert);
-        console.log(userData);
         if (userData.status === 201) {
           const dataOtp = { email: formData.credential };
           const tutorOtp = await UserSendingOtp(dataOtp);

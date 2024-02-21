@@ -1,10 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import "./App.css";
-
-import UserRouter from "./Routes/userRouter";
-import TutorRouter from "./Routes/TutorRouter";
-import AdminRouter from "./Routes/AdminRouter";
+import UserRouter from "./routes/userRouter";
+import TutorRouter from "./routes/TutorRouter";
+import AdminRouter from "./routes/AdminRouter";
 
 function App() {
   return (

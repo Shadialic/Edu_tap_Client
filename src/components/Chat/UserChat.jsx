@@ -13,7 +13,6 @@ import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 
-
 function UserChat() {
   const [userChats, setUserChats] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -57,7 +56,7 @@ function UserChat() {
     return () => {
       newSocket.disconnect();
     };
-  }, [userInfo.id]);
+  }, [userInfo.id,newMessage]);
 
   useEffect(() => {
     if (socket === null) return;
@@ -184,7 +183,6 @@ function UserChat() {
                   }}
                 >
                   <div className="flex justify-between items-center">
-                    {/* Assuming you want to display only the first member's information */}
                     <div className="flex items-center">
                       <Avatar
                         src={chat.members[0].image}
@@ -198,7 +196,6 @@ function UserChat() {
                         >
                           {chat.members[0].tutorName}
                         </Typography>
-                        {/* You can add online status logic here */}
                       </div>
                     </div>
                     <Typography
@@ -274,7 +271,6 @@ function UserChat() {
                     onChange={setTextMessage}
                     cleanOnEnter
                     onEnter={() => {
-                      // handle send message logic here
                       sendTextMessage();
                     }}
                   />

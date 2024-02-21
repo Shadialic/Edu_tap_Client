@@ -4,11 +4,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ForgetPass from "../../components/ForgetPass/ForgetPass";
 import LoginForm from "../../components/UserComponents/Login/LoginForm";
 
-
-
 function Login() {
   const [isOpn, setOpn] = useState(false);
-
 
   return (
     <>
@@ -19,7 +16,6 @@ function Login() {
               <span className="font-prompt-semibold text-4xl mt-20">
                 Edu-tap
               </span>
-              {/* <h4 className='text-3xl ml-16'>E-Learning Platform</h4> */}
               <img className="w-full h-full rounded-md" src={meta} alt="" />
             </div>
           </div>

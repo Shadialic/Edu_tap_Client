@@ -11,7 +11,6 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-// import ok from '../../../public/images/admin/icons/ok.png'
 import approval from "../../../public/images/admin/icons/approval.png";
 import { TuotoApporuval } from "../../components/AdminComponents/modals/TuotoApporuval";
 
@@ -28,7 +27,6 @@ function Tutors() {
   useEffect(() => {
     LoadTutorList()
       .then((res) => {
-        console.log(res,';ld');
         const tutorList = res.data.tutordata;
         const activeTutors = tutorList.filter(
           (item) => item.is_Actived === "pending"
@@ -44,7 +42,6 @@ function Tutors() {
     try {
       setOpn(true);
       const data = tutor.find((item) => item._id == userId);
-      console.log(data, "dssa");
       setfiler(data);
     } catch (error) {
       console.error(error);
@@ -64,8 +61,6 @@ function Tutors() {
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedUserDatas = tutorDatas.slice(startIndex, endIndex);
-  console.log(tutorDatas, "[q[q[q[q[");
-
   return (
     <div>
       {!isOpn ? (

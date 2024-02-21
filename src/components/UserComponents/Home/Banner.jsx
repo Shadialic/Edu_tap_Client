@@ -14,9 +14,8 @@ function Banner() {
         console.error("Error loading courses:", error);
       }
     };
-
     fetchCourses();
-  }, []);
+  },[]);
 
   const settings = {
     infinite: true,

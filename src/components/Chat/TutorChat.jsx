@@ -1,16 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { io } from "socket.io-client";
-import {
-  Typography,
-  Avatar,
-  IconButton,
-  Input,
-} from "@material-tailwind/react";
+import { Typography, Avatar, IconButton } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import { getChats, getMessages, sendMessage } from "../../api/UserApi";
+import { getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { getTutorChats } from "../../api/VendorApi";
@@ -29,19 +23,10 @@ function TutorChat() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
   const scroll = useRef();
- 
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
-
-  // const filteredMembers = userChats
-  //   .map((chat) => chat.members)
-  //   .flat()
-  //   .filter((member) =>
-  //     member.userName.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
-  // console.log(filteredMembers,'filteredMembers');
 
   const sendTextMessage = async () => {
     const recipientId = currentChat.members[0]._id;
@@ -77,7 +62,7 @@ function TutorChat() {
     return () => {
       newSocket.disconnect();
     };
-  }, [tutorInfo.id]);
+  }, [tutorInfo.id,newMessage]);
 
   useEffect(() => {
     if (socket === null) return;

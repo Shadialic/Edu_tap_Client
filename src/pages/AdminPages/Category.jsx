@@ -194,22 +194,22 @@ function Category() {
                       <div className="flex items-center gap-4  justify-around">
                         {!retrieveBlockStatus(values._id) ? (
                           <button
-                          className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20 rounded-lg py-0.5 px-2 text-[11px] font-medium w-auto"
-                          data-projection-id="1"
-                          style={{ opacity: 1 }}
-                          onClick={() => handleBlockCategory(values._id)}
-                        >
-                          <span>Block</span>
-                        </button>
+                            className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20 rounded-lg py-0.5 px-2 text-[11px] font-medium w-auto"
+                            data-projection-id="1"
+                            style={{ opacity: 1 }}
+                            onClick={() => handleBlockCategory(values._id)}
+                          >
+                            <span>Block</span>
+                          </button>
                         ) : (
                           <button
-                          className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20 rounded-lg py-0.5 px-2 text-[11px] font-medium w-auto"
-                          data-projection-id="1"
-                          style={{ opacity: 1 }}
-                          onClick={() => handleUnBlockCategory(values._id)}
-                        >
-                          <span>Unblock</span>
-                        </button>
+                            className="relative grid items-center font-sans uppercase whitespace-nowrap select-none bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20 rounded-lg py-0.5 px-2 text-[11px] font-medium w-auto"
+                            data-projection-id="1"
+                            style={{ opacity: 1 }}
+                            onClick={() => handleUnBlockCategory(values._id)}
+                          >
+                            <span>Unblock</span>
+                          </button>
                         )}
                       </div>
                     </td>

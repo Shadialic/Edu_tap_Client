@@ -43,10 +43,9 @@ function TutorLogin() {
           toast(result.data.alert);
           if (result.data.created) {
             toast(result.data.alert);
-            console.log(result);
             dispatch(
               setTutorDetailes({
-                id: result.data.tutorData._id, 
+                id: result.data.tutorData._id,
                 tutorName: result.data.tutorName,
                 email: result.data.email,
                 phone: result.data.phone,
@@ -84,12 +83,10 @@ function TutorLogin() {
       } else if (formData.password === "") {
         toast("Please add password");
       } else {
-        // Corrected the typo here
         const loginResponse = await tutorLogin({
           email: formData.email,
           password: formData.password,
         });
-        console.log(loginResponse.data.status,'p-p-p-');
         if (loginResponse.data && loginResponse.data.status) {
           localStorage.setItem("tutortoken", loginResponse.data.token);
           dispatch(
@@ -99,21 +96,19 @@ function TutorLogin() {
               phone: loginResponse.data.tutorData.phone,
               email: loginResponse.data.tutorData.email,
               image: loginResponse.data.tutorData.image,
-              role:'tutor',
+              role: "tutor",
             })
           );
           navigate("/vendor/");
         } else {
-          console.log('pppppppp[pp-p');
           toast(loginResponse.data.alert);
         }
       }
     } catch (err) {
       console.log(err);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
-    console.log("Form submitted with data:", formData);
   };
 
   return (
@@ -251,7 +246,6 @@ function TutorLogin() {
           </div>
         </div>
       </div>
-
     </>
   );
 }

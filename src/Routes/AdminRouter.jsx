@@ -11,11 +11,9 @@ import DisCourses from '../pages/AdminPages/DisCourses';
 import AdminPublic from './AdminPublic';
 import Adminprotect from './AdminProtect';
 function AdminRouter() {
+  
   return (
     <div>
-      
-
-      
       <Routes>
       <Route path="/" exact element={<AdminPublic><AdminLoginPage/></AdminPublic>} /> 
       <Route path="/dashboard" exact element={<Adminprotect><Dashboard/></Adminprotect>} /> 
@@ -25,11 +23,6 @@ function AdminRouter() {
       <Route path="/category" exact element={<Adminprotect><Category/></Adminprotect>} /> 
       <Route path="/course" exact element={<Adminprotect><CourseList/></Adminprotect>} /> 
       <Route path="/displayCourse" element={<Adminprotect><DisCourses /></Adminprotect>} />
-
-
-
-
-
       </Routes>
     </div>
   )

@@ -20,7 +20,6 @@ function AboutPage() {
     };
     fetch();
   }, []);
-  console.log(category, "p");
   return (
     <>
       <div className="w-screen h-screen overflow-x-hidden ">
@@ -125,11 +124,11 @@ function AboutPage() {
             </div>
           </div>
         </div>
-      <div className="flex ml-14">
+      {/* <div className="flex ml-14">
         <div className="w-[40%]  h-80 bg-gray-200 ">
           <img className="w-full h-full " src={view} alt="" />
         </div>
-      </div>
+      </div> */}
       </div>
     </>
   );

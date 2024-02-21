@@ -136,7 +136,6 @@ function TutorSignUp() {
         handleBlurBackground();
         setLoading(true);
         toast.success("Form submitted successfully!");
-        console.log("Form submitted with data:", formData);
         const formDataToSend = new FormData();
         formDataToSend.append("tutorName", formData.tutorName);
         formDataToSend.append("email", formData.email);
@@ -175,7 +174,6 @@ function TutorSignUp() {
     } finally {
       setLoading(false);
     }
-    console.log("Form submitted with data:", formData);
   };
   const [activeTab, setActiveTab] = useState("student");
   const handleTabClick = (tab) => {

@@ -8,15 +8,12 @@ function WaitingList() {
   const tutor = useSelector((state) => state.tutor.tutorInfo);
   const tutorMail = tutor.email;
   const [data, setData] = useState([]);
-  const [isOpn, setOpn] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(tutorMail,'ssss');
         const res = await fetchCoures({ auther: tutorMail });
         const updateData = res.data.course;
-        console.log(res,'llllllll');
         const filterData = updateData.filter((item) => item.is_varified === 'false');
         setData(filterData);
       } catch (error) {

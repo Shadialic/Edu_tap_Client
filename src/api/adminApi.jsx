@@ -8,7 +8,6 @@ const AdminApi = axios.create({
 export async function AdminSignIn(userData) {
   try {
     const response = await AdminApi.post("/login", userData);
-    console.log(response.data,']');
     return response.data;
   } catch (error) {
     console.error(error);
@@ -18,7 +17,6 @@ export async function AdminSignIn(userData) {
 export async function LoadUserList(userData) {
   try {
     const admindata = await AdminApi.post("/loadusers", userData);
-    console.log(admindata, "admindata");
     return admindata;
   } catch (error) {
     console.log(error);
@@ -27,10 +25,8 @@ export async function LoadUserList(userData) {
 
 export async function LoadTutorList(tutorData) {
   try {
-    console.log(tutorData,'llldfgdfgdl');
 
     const admindata = await AdminApi.get("/loadtutor", tutorData);
-    console.log(admindata,'admindataadmindata');
     return admindata;
   } catch (error) {
     console.log(error);
@@ -40,7 +36,6 @@ export async function LoadTutorList(tutorData) {
 export async function BlockUnblockuser(id) {
   try {
     const admindata = await AdminApi.put(`/blockuser/${id}`);
-    console.log(admindata, "admindata");
     return admindata;
   } catch (error) {
     console.log(error);
@@ -57,7 +52,6 @@ export async function BlockUnblockTutor(tutorData) {
 }
 export async function apporvTutor(tutorId) {
   try {
-    console.log(tutorId,'tutorIdtutorId');
     const response = await AdminApi.put("/approvTutor", tutorId);
     return response;
   } catch (error) {
@@ -77,7 +71,6 @@ export async function ManageCategory(category) {
 export async function loadCategory(category) {
   try {
     const response = await AdminApi.get("/getCategory", category);
-    console.log(response, "\\\\\\");
     return response;
   } catch (error) {
     console.log(error);
@@ -86,9 +79,7 @@ export async function loadCategory(category) {
 
 export async function LoadCourse(newData) {
   try {
-    console.log(newData,';');
     const response = await AdminApi.get("/getCourse", newData);
-    console.log(response, "\\\\\\");
     return response;
   } catch (error) {
     console.log(error);
@@ -111,7 +102,6 @@ export async function getCourse(data) {
   }
 }
 export async function BlockingCourse(course_id) {
-  console.log(course_id);
   try {
     const response = await AdminApi.put("/blockCourse", course_id);
     return response;
@@ -121,7 +111,6 @@ export async function BlockingCourse(course_id) {
 }
 
 export async function manageBlock(course_id) {
-  console.log(course_id);
   try {
     const response = await AdminApi.put(`/managecategory/${course_id}`, );
     return response;

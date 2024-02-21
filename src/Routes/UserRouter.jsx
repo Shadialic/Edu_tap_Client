@@ -5,9 +5,7 @@ import Login from "../pages/UserPages/Login";
 import Home from "../pages/UserPages/Home";
 import Signup from "../pages/UserPages/Signup";
 import Otp from "../components/otp/Otp";
-
 import UserPublic from "./UserPublic";
-import UserLayout from "../pages/UserPages/Layout";
 import Profile from "../pages/UserPages/Profile";
 import Course from "../pages/UserPages/Course";
 import Enrollments from "../pages/UserPages/Enrollments";
@@ -17,6 +15,7 @@ import Success from "../components/Payment/Success";
 import Faild from "../components/Payment/Faild";
 import UserChat from "../components/Chat/UserChat";
 import Error from "../components/Error/Error";
+import UserProtect from "./UserProtect";
 
 function UserRouter() {
   return (
@@ -36,15 +35,13 @@ function UserRouter() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/course" element={<Course />} />
-      <Route path="/enrollments" element={<Enrollments />} />
+       <Route path="/enrollments"element={<UserProtect><Enrollments /> </UserProtect> }/>
       <Route path="/about" element={<About />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Faild />} />
-      <Route path="/chat" element={<UserChat />} />
-     
-      <Route path="/error" element={<Error />} />
-
+      <Route path="/chat" element={  <UserProtect><UserChat/></UserProtect>} />
+      <Route path="*" element={<Error />} />
     </Routes>
   );
 }

@@ -13,8 +13,7 @@ import Otp from "../components/otp/Otp";
 import WaitingList from "../pages/TutorPages/WaitingList";
 import RunningClasses from "../pages/TutorPages/RunningClasses";
 import TutorChat from "../components/Chat/TutorChat";
-
-
+import Error from "../components/Error/Error";
 
 const Lyouts = () => {
   return (
@@ -28,29 +27,28 @@ const Lyouts = () => {
 function TutorRouter() {
   return (
     <Routes>
-      <Route path="/signup" exact element={<TutorSignUp/>} />
-
+      <Route path="/signup" exact element={<TutorSignUp />} />
       <Route
         path="/login"
-        exact
         element={
           <>
-            <TutorPublic />
-            <TutorLogin />
-            <TutorPublic />
+            {" "}
+            <TutorPublic /> <TutorLogin />
+            <TutorPublic />{" "}
           </>
         }
       />
-
       <Route path="/otp" exact element={<Otp />} />
       <Route path="/" exact element={<Lyouts />}>
         <Route path="/" exact element={<TutorHome />} />
         <Route path="/profile" exact element={<TutorProfile />} />
         <Route path="/:category" element={<AddForm />} />
         <Route path="/waitinglist" element={<WaitingList />} />
-        <Route path="/runningClasses" element={<RunningClasses  />} />
+        <Route path="/runningClasses" element={<RunningClasses />} />
       </Route>
-        <Route path="/chat" element={<TutorChat />} />
+      <Route path="/chat" element={<TutorChat />} />
+
+      <Route path="*" element={<Error />} />
     </Routes>
   );
 }

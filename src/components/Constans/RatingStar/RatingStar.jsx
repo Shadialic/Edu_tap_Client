@@ -13,7 +13,7 @@ function RatingStar() {
   return (
     <>
     <div className="flex flex-row ">
-      <h1 className="font-prompt ml-6 mt-2">Course Rating <span className="ml-3 ">{rating}</span></h1>
+      <h1 className="font-prompt ml-5 mt-2">Course Rating <span className="ml-3 ">{rating}</span></h1>
       {/* <p className="mt-1 pl-2 ml-2 font-prompt ">{rating}</p>  */}
 
       {[...Array(totalStars)].map((star, index) => {

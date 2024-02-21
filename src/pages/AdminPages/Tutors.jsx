@@ -47,12 +47,10 @@ function Tutors() {
   };
 
   useEffect(() => {
-    console.log('030');
     const fetchTutors = async () => {
       try {
         const res = await LoadTutorList();
         const tutorList = res.data.tutordata;
-        console.log(tutorList,'tutorList');
         const activeTutors = tutorList.filter((item) => item.is_Actived === "approved");
         setTutor(activeTutors);
         localStorage.setItem("tutors", JSON.stringify(activeTutors));

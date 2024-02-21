@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import meta from "../../assets/images/tutor.gif";
 import { FaEyeSlash, FaRegEye } from "react-icons/fa";
-
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AdminSignIn } from "../../api/AdminApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { resetState } from "../../Redux/UserSlice/UserSlice";
 
 function VendorLogin() {
-  const dispatch=useDispatch();
   const navigate=useNavigate()
   const [clicked, setClicked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,22 +38,11 @@ function VendorLogin() {
           credential: formData.credential,
           password: formData.password,
         });
-        console.log(loginResponse,';;;');
         if (loginResponse.loginData) {
-          console.log(loginResponse.loginData,'8888');
           // toast(loginResponse.data.alert)
           localStorage.setItem("admintoken", loginResponse.admintoken);
-          // dispatch(
-          //   resetState({
-          //     id: loginResponse.data.loginData._id,
-          //     userName: loginResponse.data.loginData.userName,
-          //     phone: loginResponse.data.loginData.phone,
-          //     email: loginResponse.data.loginData.credential,
-          //   })
-          // );
           navigate("/admin/dashboard");
         } else {
-          console.log('pepe');
           toast(loginResponse.alert);
         }
       }
@@ -65,7 +51,6 @@ function VendorLogin() {
     }finally{
       setLoading(false);
     }
-    console.log("Form submitted with data:", formData);
   };
 
   return (

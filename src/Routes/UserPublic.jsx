@@ -7,7 +7,6 @@ function UserPublic(props) {
       if(localStorage.getItem('token')){
         return <Navigate to='/'/>
       }else{
-          
         <Navigate to='/login'/>
         return props.children
       }

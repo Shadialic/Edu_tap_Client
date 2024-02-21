@@ -9,7 +9,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import add from "../../../../public/images/user/add.png";
 import edit from "../../../../public/images/user/edit.png";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +21,6 @@ function DisplayProfile() {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
 
-  const [value, onChange] = useState(new Date());
   // const [image, setImage] = useState();
   const [isOpn, setOpn] = useState("profile");
   const [data, setData] = useState([]);
@@ -42,7 +40,6 @@ function DisplayProfile() {
       await getUserData().then((res) => {
         const userData = res.data.userData;
         const data = userData.find((item) => item.email == userInfo.email);
-        console.log(data.userName, "aaaaa");
         setData(data);
       });
     };
@@ -74,7 +71,6 @@ function DisplayProfile() {
         const formData = new FormData();
         formData.append("image", selectedFile);
         formData.append("email", userInfo.email);
-        console.log(formData,'l');
         const response = await UpdateProfile(formData);
         const updatedImage = response.data.userData.image;
         dispatch(

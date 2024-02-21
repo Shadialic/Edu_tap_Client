@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { BlockUnblockuser, LoadUserList } from "../../api/AdminApi";
 import { resetState } from "../../Redux/UserSlice/UserSlice";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,7 +26,7 @@ function Users() {
         const res = await LoadUserList();
         const userList = res.data.userdata;
         setUsers(userList);
-      } catch (err) { 
+      } catch (err) {
         console.log(err);
       }
     };
@@ -61,7 +60,6 @@ function Users() {
           user._id === userId ? { ...user, is_Active: !is_Active } : user
         );
         localStorage.setItem("users", JSON.stringify(updatedUsers));
-        console.log(updatedUsers, "updatedUsers");
         setUsers(updatedUsers);
       }
     } catch (error) {

@@ -5,7 +5,6 @@ function ApproveCourse({ courseId, course, setOpn }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     const filteredData = course.filter((element) => element._id === courseId);
-    console.log(filteredData, "element.id", courseId);
     setData(filteredData);
   }, [course, courseId]);
   const allowcourse = async (course_id) => {
@@ -14,7 +13,7 @@ function ApproveCourse({ courseId, course, setOpn }) {
     });
   };
   const denycourse = async (course_id) => {
-      setOpn(false);
+    setOpn(false);
   };
   return (
     <>

@@ -25,7 +25,6 @@ function Collections({ chapter, courseId, tutors, course }) {
     setData(filteredData);
     const fetch = async () => {
       const response = await fetchReviews();
-      console.log(response.chat, "---------------------");
       const filterdata = response.data.filter(
         (item) => item.courseId === courseId
       );

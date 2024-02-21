@@ -42,7 +42,7 @@ function RunningClasses() {
     try {
       const response = await blockUnBlockcourse(courseId);
       toast.success(response.data.alert);
-      const updatedData = data.map(course => {
+      const updatedData = data.map((course) => {
         if (course._id === courseId) {
           return { ...course, is_Block: !isBlock };
         }
@@ -50,7 +50,6 @@ function RunningClasses() {
       });
       setData(updatedData);
     } catch (error) {
-      console.log(error);
       toast.error(`Failed to ${isBlock ? "block" : "unblock"} chapter!`);
     }
   };
@@ -93,7 +92,7 @@ function RunningClasses() {
               </div>
 
               <div className="flex w-[50%] h-[15%] bg-blue-800 justify-center items-center mb-4 rounded-md text-white">
-                {course.is_Block ? (
+                {!course.is_Block ? (
                   <button
                     onClick={() => toggleBlock(course._id, true)}
                     className="font-prompt justify-center items-center"

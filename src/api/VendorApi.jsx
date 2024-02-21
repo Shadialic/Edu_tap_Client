@@ -13,7 +13,6 @@ export async function TutorsignUp(signUpData) {
     console.log(err);
   }
 }
-
 export async function TutorSendingOtp(otpData) {
   try {
     const data = await TutorApi.post("/vendor/sendotp", otpData);
@@ -22,7 +21,6 @@ export async function TutorSendingOtp(otpData) {
     console.log(err);
   }
 }
-
 export async function TutorVerifyOtp(otpData) {
   try {
     const data = await TutorApi.post("/vendor/verifyotp", otpData);
@@ -31,11 +29,9 @@ export async function TutorVerifyOtp(otpData) {
     console.log(err);
   }
 }
-
 export async function tutorLogin(loginData) {
   try {
     const data2 = await TutorApi.post("/vendor/login", loginData);
-    console.log(data2, "sadasa2wewq");
     return data2;
   } catch (error) {
     console.log(error);
@@ -52,7 +48,6 @@ export async function tutorRegisterGoogle(tutorData) {
     console.log(error);
   }
 }
-
 export async function CoursrManage(newData) {
   try {
     const response = await TutorApi.post("/vendor/loadCourse", newData);
@@ -61,7 +56,6 @@ export async function CoursrManage(newData) {
     console.log(error);
   }
 }
-
 export async function getCategory(category) {
   try {
     const response = await TutorApi.get("/vendor/getCategory", category);
@@ -92,17 +86,14 @@ export async function UpdateProfile(updateData) {
     console.log(error);
   }
 }
-
 export async function fetchCoures(data) {
   try {
-    console.log(data, "ppppp");
     const response = await TutorApi.post("/vendor/getcoures", data);
     return response;
   } catch (error) {
     console.log(error);
   }
 }
-
 export async function manageCourse(id) {
   try {
     const response = await TutorApi.put(`/vendor/manageCourse/${id}`);
@@ -112,30 +103,23 @@ export async function manageCourse(id) {
   }
 }
 export async function addChapter(formData, id) {
-  console.log(id,"course idd in vendour apiiiiiiiiiii");
   try {
-    console.log(formData, "popo==================");
     const response = await TutorApi.post(`/vendor/addChapter/${id}`,formData);
-    console.log(response, "p");
     return response;
   } catch (error) {
     console.log(error);
   }
 }
-
 export async function fetchChapter() {
   try {
     const response = await TutorApi.get('/vendor/getChapter');
-    console.log(response, "p");
     return response;
   } catch (error) {
     console.log(error);
   }
 }
-
 export async function manageChapter(id) {
   try {
-    console.log(id,'pop');
     const response = await TutorApi.put(`/vendor/manageChapter/${id}`);
     return response;
   } catch (error) {
@@ -150,9 +134,7 @@ export async function blockUnBlockcourse(id) {
     console.log(error);
   }
 }
-
 export async function getTutorChats(id) {
-  console.log(id,'wwwwwwww');
   try {
     const response = await TutorApi.get(`/findTutorChats/${id}`);
     return response.data;

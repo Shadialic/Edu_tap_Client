@@ -8,7 +8,6 @@ function About() {
     <>
       <Header />
       <AboutPage />
-      {/* <Footer /> */}
     </>
   );
 }
