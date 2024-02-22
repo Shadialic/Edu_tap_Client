@@ -5,6 +5,7 @@ import { createChat, fetchReviews, postReview } from "../../../api/UserApi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Comment from "../Comments/Comment";
+import StarRating from "../../Constans/StarRating";
 
 function Collections({ chapter, courseId, tutors, course }) {
   const navigate = useNavigate();
@@ -170,7 +171,7 @@ function Collections({ chapter, courseId, tutors, course }) {
           ))}
         </div>
         <div className="mt-4">
-          <RatingStar stars={stars} reviews={showReview} />
+          <StarRating  courseId={courseId} userId={userInfo.id} />
         </div>
         <div className="flex flex-col w-[95%] bg-white border-1 shadow-xl">
           <div className="flex flex-row items-center p-4">

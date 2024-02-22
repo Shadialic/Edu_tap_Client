@@ -90,7 +90,6 @@ export async function getUserData(userData) {
   }
 }
 export async function UpdateProfile(updateData) {
-  console.log('------------------');
   try {
     const response = await UserApi.post("/updateProfile", updateData, {
       headers: {
@@ -258,6 +257,24 @@ export async function createBlog(data) {
         "Content-Type": "multipart/form-data",
       },
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function updateRating(data) {
+  try {
+    console.log(data,'-------------------');
+    const response = await UserApi.put('/courseRating', {data});
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function getUserCourseRating(data) {
+  try {
+    console.log(data, '888888888888888');
+    const response = await UserApi.post('/getRating', data);
     return response;
   } catch (error) {
     console.log(error);

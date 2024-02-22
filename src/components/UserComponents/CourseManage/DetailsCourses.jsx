@@ -4,7 +4,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import review from "../../../../public/images/user/reviews.png";
 import { fetchChapter } from "../../../api/VendorApi";
 import RatingStar from "../../Constans/RatingStar/RatingStar";
-import { checkout, fetchReviews, purchaseCourse } from "../../../api/UserApi";
+import { checkout, fetchReviews, getUserCourseRating, purchaseCourse } from "../../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 import { LoadTutorList } from "../../../api/AdminApi";
 
@@ -32,6 +32,7 @@ function DetailsCourses({ data }) {
         (item) => item.courseId === data._id
       );
       setReviews(filterdata);
+      const response=await getUserCourseRating(data._id)
     };
     fetch();
   }, []);
