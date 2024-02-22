@@ -90,6 +90,7 @@ export async function getUserData(userData) {
   }
 }
 export async function UpdateProfile(updateData) {
+  console.log('------------------');
   try {
     const response = await UserApi.post("/updateProfile", updateData, {
       headers: {

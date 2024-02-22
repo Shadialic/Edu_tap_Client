@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Rating } from "react-simple-star-rating";
-
-function RatingStar() {
-  const [rating, setRating] = useState(0); // Initialize rating state with a default value
+import { FaStar ,FaStarHalfAlt } from "react-icons/fa";
+import { AiOutlineStar } from "react-icons/ai";
+function RatingStar({stars,reviews}) {
+  const [rating, setRating] = useState(null); 
   const [hover, setHover] = useState(null);
   const totalStars = 5;
 
@@ -10,11 +11,25 @@ function RatingStar() {
     setRating(rate);
   };
 
+  
   return (
     <>
+   {/* {[...Array[5]].map((star,index)=>{
+    const currentTating=index+1
+    return (
+
+  <label htmlFor="
+  ">
+    <input type="radio" name="rating"  style={{ display: "none" }} value={currentTating} onClick={()=>setRating(currentTating)}/>
+    <FaStar size={50}
+    color={currentTating<=(hover||rating)?'#ffc187':'#e4e5e9'}
+    className=""/>
+  </label>
+    )
+    })} */}
+   
     <div className="flex flex-row ">
       <h1 className="font-prompt ml-5 mt-2">Course Rating <span className="ml-3 ">{rating}</span></h1>
-      {/* <p className="mt-1 pl-2 ml-2 font-prompt ">{rating}</p>  */}
 
       {[...Array(totalStars)].map((star, index) => {
         const currentRating = index + 1;
@@ -26,7 +41,6 @@ function RatingStar() {
             <input
               type="radio"
               name="rating"
-              // value={currentRating}
               style={{ display: "none" }}
               onClick={() => setRating(currentRating)}
             />

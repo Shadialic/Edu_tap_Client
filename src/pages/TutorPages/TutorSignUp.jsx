@@ -341,7 +341,6 @@ function TutorSignUp() {
                       </div>
                     </div>
                   </div>
-
                   <div className="flex flex-col items-center mt-3">
                     <button
                       className="bg-violet-600 h-8 rounded-md w-full flex justify-center items-center gap-2 text-white"
@@ -349,7 +348,6 @@ function TutorSignUp() {
                     >
                       SignUp
                     </button>
-
                     {loading && (
                       <PropagateLoader className="mt-3" color="#8b44ef" />
                     )}

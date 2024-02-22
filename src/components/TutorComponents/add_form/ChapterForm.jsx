@@ -4,10 +4,12 @@ import upload from "../../../../public/images/tutor/upload.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addChapter } from "../../../api/VendorApi";
-
+import { Button } from "@material-tailwind/react";
 function ChapterForm({ setOpn, courseId }) {
   console.log(courseId, "kaka");
   const [video, setVideo] = useState();
+  const [demoFileName, setDemoFileName] = useState("");
+  const [chapterFileName, setChapterFileName] = useState("");
   const [formData, setFormData] = useState({
     chapterTitle: "",
     chapterDescription: "",
@@ -46,8 +48,15 @@ function ChapterForm({ setOpn, courseId }) {
 
   const handleVideoChange = async (event, type) => {
     const file = event.target.files[0];
+    const fileName = file.name;
+  
     const url = await uploadVideo(file);
     setVideo(url);
+    if (type === "demo") {
+      setDemoFileName(fileName);
+    } else if (type === "chapter") {
+      setChapterFileName(fileName);
+    }
     console.log(url, "url");
     setFormData({ ...formData, [`${type}Video`]: url });
   };
@@ -70,13 +79,15 @@ function ChapterForm({ setOpn, courseId }) {
       try {
         const response = await addChapter(formData, courseId);
         console.log(response, "lllllllllllllll");
-        setOpn(false);
       } catch (error) {
         console.error("Error adding chapter:", error);
         toast("Error adding chapter. Please try again later.");
       }
     }
   };
+  // useEffect(()=>{
+
+  // },[video])
 
   return (
     <>
@@ -136,9 +147,19 @@ function ChapterForm({ setOpn, courseId }) {
                   <div className="p-1 flex justify-start items-start">
                     <img className="w-10 h-6" src={upload} alt="Upload" />
                   </div>
-                  <span className="flex text-[12px] justify-center items-center">
-                    MP4, AVI, MOV, MKV or WEBM
-                  </span>
+                  {demoFileName && demoFileName ? (
+                    <div className="">
+                      <label className="text-[14px] text-shadow-black">
+                        Selected Demo File:{" "}
+                      </label>
+                      <span className="text-[16px]">{demoFileName}</span>
+                    </div>
+                  ) : (
+                    <span className="flex text-[12px] justify-center items-center">
+                      MP4, AVI, MOV, MKV or WEBM
+                    </span>
+                  )}
+
                   <input
                     id="demoFileInput"
                     className="hidden w-[250px] sm:w-[480px] h-[40px] outline-none rounded-md shadow-md p-2"
@@ -149,7 +170,7 @@ function ChapterForm({ setOpn, courseId }) {
                   />
                 </div>
               </div>
-              <div className="font-promt p-8 col-span-full">
+              <div className="font-promt p-1 pl-8 col-span-full">
                 <label htmlFor="" className="text-[14px] text-shadow-black">
                   Chapter Video
                 </label>
@@ -162,21 +183,46 @@ function ChapterForm({ setOpn, courseId }) {
                   <div className="p-1 flex justify-start items-start">
                     <img className="w-10 h-6" src={upload} alt="Upload" />
                   </div>
-                  <span className="flex text-[12px] justify-center items-center">
-                    MP4, AVI, MOV, MKV or WEBM
-                  </span>
+                  {chapterFileName && chapterFileName ? (
+                    <div className="">
+                      <label className="text-[14px] text-shadow-black">
+                        Selected File:{" "}
+                      </label>
+                      <span className="text-[16px]">{chapterFileName}</span>
+                    </div>
+                  ) : (
+                    <span className="flex text-[12px] justify-center items-center">
+                      MP4, AVI, MOV, MKV or WEBM
+                    </span>
+                  )}
+
                   <input
                     id="chapterFileInput"
                     className="hidden w-[250px] sm:w-[480px] h-[40px] outline-none rounded-md shadow-md p-2"
                     type="file"
                     name="file"
+                    accept="file/*"
                     placeholder=""
                     onChange={(event) => handleVideoChange(event, "chapter")}
                   />
                 </div>
               </div>
+              <div className="flex justify-end mb-3 pr-8 pb-3">
+                <Button
+                  type="submit"
+                  size="xl"
+                  color="white"
+                  className="flex items-center gap-3"
+                >
+                  Add
+                </Button>
+              </div>
               <div className="flex w-[88%] rounded-md h-[40px] bg-[#ab1ad7ef] items-center justify-center mx-auto mb-8">
-                <button type="submit" className="font-prompt text-white">
+                <button
+                  onClick={() => setOpn(false)}
+                  type="button"
+                  className="font-prompt text-white"
+                >
                   Submit
                 </button>
               </div>

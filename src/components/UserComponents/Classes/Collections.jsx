@@ -170,7 +170,7 @@ function Collections({ chapter, courseId, tutors, course }) {
           ))}
         </div>
         <div className="mt-4">
-          <RatingStar />
+          <RatingStar stars={stars} reviews={showReview} />
         </div>
         <div className="flex flex-col w-[95%] bg-white border-1 shadow-xl">
           <div className="flex flex-row items-center p-4">

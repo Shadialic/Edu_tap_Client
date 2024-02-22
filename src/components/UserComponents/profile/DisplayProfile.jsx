@@ -31,7 +31,7 @@ function DisplayProfile() {
   const [country, setCountry] = useState(userInfo.country);
 
   //Add Education
-  const [Qualification, setQualification] = useState(data.Qualification);
+  const [Qualification, setQualification] = useState('');
   const [Year, setYear] = useState("");
   const [Institute, setInstitute] = useState("");
 
@@ -40,11 +40,12 @@ function DisplayProfile() {
       await getUserData().then((res) => {
         const userData = res.data.userData;
         const data = userData.find((item) => item.email == userInfo.email);
+        console.log(data,'dddddddddddddddddddddddddddddd');
         setData(data);
       });
     };
     fetch();
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     if (isOpn === "editeducation") {
@@ -75,6 +76,13 @@ function DisplayProfile() {
         const updatedImage = response.data.userData.image;
         dispatch(
           setUserDetails({
+            userName: response.data.userData.userName,
+            phone: response.data.userData.phone,
+            country: response.data.userData.country,
+            is_Active: response.data.userData.is_Active,
+            email: response.data.userData.email,
+            is_Admin: response.data.userData.is_Admin,
+            id: response.data.userData._id,
             image:response.data.userData.image,
           })
         );

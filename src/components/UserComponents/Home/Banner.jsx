@@ -32,11 +32,11 @@ function Banner() {
         <h1 className="p-7 font-prompt font-prompt-semibold text-2xl">
           Most Popular Courses
         </h1>
-        <div className="flex-row ml-6 ">
+        <div className="flex-row ml-6 w-auto">
           <Slider
             {...settings}
-            className="custom-slick-slider p-2"
-            style={{ marginRight: "10px" }}
+            className="custom-slick-slider p-2 "
+             style={{ marginRight: "10px" }}
           >
             {course.map((item) => (
               <div key={item.id}>
