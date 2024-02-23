@@ -42,7 +42,7 @@ function UserRouter() {
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Faild />} />
       <Route path="/chat" element={  <UserProtect><UserChat/></UserProtect>} />
-      <Route path='/room/:recieverId' element={<UserVideoChat/>}/>
+      <Route path='/videocall' element={<UserVideoChat/>}/>
 
       {/* <Route path="/videocall/:roomID" element={<UserProtect><UserVideoChat /></UserProtect>} /> */}
 

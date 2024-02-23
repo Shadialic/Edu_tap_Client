@@ -9,8 +9,10 @@ import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { TimeMange } from "../../helpers/TimeMange";
+import { useNavigate } from "react-router-dom";
 
 function UserChat() {
+  const navigate=useNavigate()
   const [userChats, setUserChats] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -147,6 +149,27 @@ function UserChat() {
     };
   }, [socket]);
 
+  const handleVideoCall = async () => {
+    if (currentChat._id && userInfo.id) {
+      const videoData = [currentChat._id, userInfo.id];
+      if (videoData[1]) {
+        // const messagedata = {
+        //   message: `${window.location.origin}/videocall?roomId=${userInfo.id}&receiverId=${currentChat._id}`,
+        //   senderUsername: userInfo.email,
+        //   recieverUsername: currentChat.email,
+        // };
+
+        //  clientstate.send(JSON.stringify(messagedata));
+
+        navigate("/videocall", { state: { data: videoData } });
+      } else {
+        console.error("Data is empty. Unable to initiate video call.");
+      }
+    } else {
+      console.error("Recipient details or sender details are missing.");
+    }
+  };
+
   return (
     <>
       <Header state="Home" />
@@ -240,6 +263,7 @@ function UserChat() {
             </Link> */}
                   <div className="flex items-center">
                     <FontAwesomeIcon
+                      onClick={handleVideoCall}
                       icon={faVideo}
                       className="text-violet-600 mr-4"
                     />

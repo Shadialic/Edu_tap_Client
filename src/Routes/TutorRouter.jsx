@@ -49,7 +49,7 @@ function TutorRouter() {
       </Route>
       <Route path="/chat" element={<TutorChat />} />
       {/* <Route path="/videocall/:roomID" element={<TutorVideoChat />} /> */}
-      <Route path='/room' element={<TutorVideoChat/>}/>
+      <Route path='/videocall' element={<TutorVideoChat/>}/>
 
       <Route path="*" element={<Error />} />
     </Routes>

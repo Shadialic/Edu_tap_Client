@@ -10,8 +10,10 @@ import InputEmoji from "react-input-emoji";
 import { getTutorChats } from "../../api/VendorApi";
 import Header from "../TutorComponents/TutorLayouts/Header";
 import { TimeMange } from "../../helpers/TimeMange";
+import { useNavigate } from "react-router-dom";
 
 function TutorChat() {
+  const navigate = useNavigate();
   const [userChats, setUserChats] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,10 +25,14 @@ function TutorChat() {
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const scroll = useRef();
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
+  };
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const sendTextMessage = async () => {
@@ -134,16 +140,45 @@ function TutorChat() {
       socket?.off("newMessage", handleNewMessage);
     };
   }, [socket]);
-
+  const handleVideoCall = async () => {
+    if (currentChat._id && tutorInfo.id) {
+      const videoData = [currentChat._id, tutorInfo.id];
+      if (videoData[1]) {
+        navigate("/vendor/videocall", { state: { data: videoData } });
+      } else {
+        console.error("Data is empty. Unable to initiate video call.");
+      }
+    } else {
+      console.error("Recipient details or sender details are missing.");
+    }
+  };
   return (
     <>
       <Header />
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-screen h-screen py-7 px-5">
         <div className="bg-white  w-full sm:max-w-[90%] min-h-[90%] overflow-hidden rounded-md flex flex-col sm:flex-row mb-16">
           <div className="w-full sm:w-[29%] h-full border-r-0 sm:border-r-2 border-b-0 sm:border-b-2 border-gray-200">
-            <h1 className="font-prompt text-xl font-prompt-semibold p-3 border-b border-gray-200">
-              Chats
-            </h1>
+            <div className="flex flex-row justify-between">
+              <h1 className="font-prompt text-xl font-prompt-semibold p-3 border-b border-gray-200">
+                Chats
+              </h1>
+              <div className="flex items-center pr-2 relative">
+                <FontAwesomeIcon
+                  icon={faEllipsisVertical}
+                  className="text-violet-600 cursor-pointer"
+                  onClick={toggleDropdown}
+                />
+                {isDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-1 w-44 font-prompt p-2 bg-white border border-gray-200 rounded shadow-lg">
+                    <ul>
+                      <li>New Group</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+              {/* <button className="pr-2 shadow-lg h-[30px] mt-3 shadow-gray-200 hover:bg-gray-200">New Group Chat</button> */}
+            </div>
+
             <div className="p-3">
               <input
                 type="text"
@@ -226,6 +261,7 @@ function TutorChat() {
                   </div>
                   <div className="flex items-center">
                     <FontAwesomeIcon
+                      onClick={handleVideoCall}
                       icon={faVideo}
                       className="text-violet-600 mr-4"
                     />
@@ -253,6 +289,7 @@ function TutorChat() {
                       </span>
                     </div>
                   ))}
+                  <div ref={scroll}></div>
                 </div>
                 <div className="flex items-center p-4 border-t border-gray-200">
                   <InputEmoji

@@ -1,45 +1,83 @@
-import { useParams } from "react-router-dom";
+
+import React from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-// import toast, { Toaster } from "react-hot-toast";
+
 
 function UserVideoCall() {
-  const { recieverId } = useParams();
-  const currentUserDetails = useSelector((state) =>state.user.userInfo
-  );
 
-  const myMeeting = async (element) => {
-    if (currentUserDetails.id === recieverId) {
-      const appID = 1892667175;
-      const serverSecret = "fb30adc523e092a198d5757d03ca27f2";
-      const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-        appID,
-        serverSecret,
-        recieverId,
-        Date.now().toString(),
-        currentUserDetails.userName
-      );
-      const zc = ZegoUIKitPrebuilt.create(kitToken);
-      zc.joinRoom({
-        container: element,
-        scenario: {
-          mode: ZegoUIKitPrebuilt.OneONoneCall,
-        },
-        showScreenSharingButton: true,
-      });
-    } else {
-      console.log('invalid user');
-      // toast.error("Invalid User link!");
-    }
-  };
-  return (
+   
+  const currentUserDetails = useSelector((state) =>state.user.userInfo );
 
-    <div className="mt-20 ">
-      <div ref={myMeeting} />
-    </div>
+      const location = useLocation();
+      const data = location.state?.data || "";
 
-  );
-}
+      const senderdetails = data[0];
+      const recipientdetails = data[1];
+      let roomId, receiverId;
+      if (data) {
+          roomId = senderdetails.toString();
+          receiverId = recipientdetails.toString();
+      }
 
-export default UserVideoCall;
+      if (!data) {
+          const queryParams = new URLSearchParams(location.search);
+          roomId = queryParams.get("roomId");
+          receiverId = queryParams.get("receiverId");
+      } else {
+          roomId = senderdetails.toString();
+          receiverId = recipientdetails.toString();
+      }
+
+      const myMeeting = async (element) => {
+          try {
+              // generate Kit Token
+              const appID = 1892667175;
+              const serverSecret = 'fb30adc523e092a198d5757d03ca27f2';
+              const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+                  appID,
+                  serverSecret,
+                  roomId,
+                  Date.now().toString(),
+                  currentUserDetails.email
+              );
+      
+              // Create instance object from Kit Token.
+              const zp = ZegoUIKitPrebuilt.create(kitToken);
+      
+              // start the call
+              zp.joinRoom({
+                  container: element,
+                  sharedLinks: [
+                      {
+                          name: "Personal link",
+                          url: window.location.protocol +
+                              "//" +
+                              window.location.host +
+                              "/videocall/" +
+                              "?roomId=" +
+                              roomId +
+                              "&receiverId=" +
+                              receiverId,
+                      },
+                  ],
+                  scenario: {
+                      mode: ZegoUIKitPrebuilt.OneONoneCall,
+                  },
+              });
+          } catch (error) {
+              console.error("Error in myMeeting:", error);
+              // Handle error appropriately
+          }
+      };
+      
+      return (
+          <>
+
+              <div ref={myMeeting} style={{ width: "100vw", height: "100vh" }}></div>
+          </>
+      )
+  }
+
+export default UserVideoCall
