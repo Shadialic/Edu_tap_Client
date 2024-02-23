@@ -9,6 +9,7 @@ import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { getTutorChats } from "../../api/VendorApi";
 import Header from "../TutorComponents/TutorLayouts/Header";
+import { TimeMange } from "../../helpers/TimeMange";
 
 function TutorChat() {
   const [userChats, setUserChats] = useState([]);
@@ -62,7 +63,7 @@ function TutorChat() {
     return () => {
       newSocket.disconnect();
     };
-  }, [tutorInfo.id,newMessage]);
+  }, [tutorInfo.id, newMessage]);
 
   useEffect(() => {
     if (socket === null) return;
@@ -187,7 +188,9 @@ function TutorChat() {
                       variant="small"
                       className="text-sm font-prompt-light"
                     >
-                      {moment(chat.createdAt).calendar()}
+                      {TimeMange(chat.createdAt) === "NaN years ago"
+                        ? "just now"
+                        : TimeMange(chat.createdAt)}
                     </Typography>
                   </div>
                 </div>
@@ -236,17 +239,18 @@ function TutorChat() {
                   {messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`message p-4 mb-2 rounded-md w-fit ${
+                      className={`message p-2  mb-2 rounded-md w-fit h-auto font-prompt ${
                         message.senderId === tutorInfo.id
-                          ? "bg-blue-200 ml-auto"
-                          : "bg-gray-200 mr-auto"
+                          ? "bg-violet-600 text-white   ml-auto"
+                          : "bg-white mr-auto shadow-xl shadow-gray-200"
                       }`}
                     >
                       <h1>{message.text}</h1>
-                      <span className="text-sm font-prompt-light">
-                        {moment(message.createdAt).calendar()}
+                      <span className="flex justify-end items-end text-[10px]  font-prompt-light   ">
+                        {TimeMange(message.createdAt) == "NaN years ago"
+                          ? "just now"
+                          : TimeMange(message.createdAt)}
                       </span>
-                      <div ref={scroll}></div>
                     </div>
                   ))}
                 </div>

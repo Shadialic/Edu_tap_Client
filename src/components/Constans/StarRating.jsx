@@ -21,7 +21,8 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
-const StarRating = ({ userId, courseId }) => {
+const StarRating = ({ userId, courseId ,currentrating}) => {
+  
   const [rating, setRating] = useState(null);
   const [hover, setHover] = useState(-1);
 

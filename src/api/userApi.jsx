@@ -271,10 +271,10 @@ export async function updateRating(data) {
     console.log(error);
   }
 }
-export async function getUserCourseRating(data) {
+export async function getUserCourseRating(id) {
   try {
-    console.log(data, '888888888888888');
-    const response = await UserApi.post('/getRating', data);
+    console.log(id, '888888888888888');
+    const response = await UserApi.get(`/getRating/${id}`);
     return response;
   } catch (error) {
     console.log(error);

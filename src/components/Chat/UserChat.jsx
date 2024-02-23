@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Header from "../UserComponents/Layouts/Header";
 import { io } from "socket.io-client";
-import {
-  Typography,
-  Avatar,
-  IconButton,
-} from "@material-tailwind/react";
+import { Typography, Avatar, IconButton } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
+import { TimeMange } from "../../helpers/TimeMange";
 
 function UserChat() {
   const [userChats, setUserChats] = useState([]);
@@ -56,7 +53,7 @@ function UserChat() {
     return () => {
       newSocket.disconnect();
     };
-  }, [userInfo.id,newMessage]);
+  }, [userInfo.id, newMessage]);
 
   useEffect(() => {
     if (socket === null) return;
@@ -202,7 +199,9 @@ function UserChat() {
                       variant="small"
                       className="text-sm font-prompt-light"
                     >
-                      {moment(chat.createdAt).calendar()}
+                      {TimeMange(chat.createdAt) === "NaN years ago"
+                        ? "just now"
+                        : TimeMange(chat.createdAt)}
                     </Typography>
                   </div>
                 </div>
@@ -236,6 +235,9 @@ function UserChat() {
                       )}
                     </div>
                   </div>
+                  {/* <Link to={`/videocall/${ownerId}`} className="h-full">
+              <MdVideoCall size={30} />
+            </Link> */}
                   <div className="flex items-center">
                     <FontAwesomeIcon
                       icon={faVideo}
@@ -251,15 +253,17 @@ function UserChat() {
                   {messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`message p-4 mb-2 rounded-md w-fit ${
+                      className={`message p-2  mb-2 rounded-md w-fit h-auto font-prompt ${
                         message.senderId === userInfo.id
-                          ? "bg-blue-200 ml-auto"
-                          : "bg-gray-200 mr-auto"
+                          ? "bg-violet-600 text-white   ml-auto"
+                          : "bg-white mr-auto shadow-xl shadow-gray-200"
                       }`}
                     >
                       <h1>{message.text}</h1>
-                      <span className="text-sm font-prompt-light">
-                        {moment(message.createdAt).calendar()}
+                      <span className="flex justify-end items-end text-[10px]  font-prompt-light   ">
+                        {TimeMange(message.createdAt) == "NaN years ago"
+                          ? "just now"
+                          : TimeMange(message.createdAt)}
                       </span>
                     </div>
                   ))}

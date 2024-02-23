@@ -171,36 +171,33 @@ function Collections({ chapter, courseId, tutors, course }) {
           ))}
         </div>
         <div className="mt-4">
-          <StarRating  courseId={courseId} userId={userInfo.id} />
+          <StarRating courseId={courseId} userId={userInfo.id} />
         </div>
         <div className="flex flex-col w-[95%] bg-white border-1 shadow-xl">
           <div className="flex flex-row items-center p-4">
             <h1 className="font-prompt">Reviews</h1>
             <img className="w-4 h-4 mt-1 ml-2" src={reviewimg} alt="" />
           </div>
-          <div className="flex-1 overflow-y-auto mb-2  ">
-            {showReview && showReview.length > 0 ? (
-              showReview.map((review, index) => (
-                <div key={index} className="w-[95%] h-[10%] pl-2 font-prompt">
-                  <div className="flex flex-col border-2 border-x-0 border-t-0  border-gray-100 gap-3">
-                    <div className="mb-2">
-                      <h1 className="p-2">{review.description}</h1>
-                      <div className="flex flex-row justify-between">
-                        <h1 className="p-2 text-sm">{review.author}</h1>
-                        <h1 className="p-2 text-sm">
-                          {formatDate(review.date)}
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="flex items-center justify-center h-64">
-                <h1 className="text-center font-prompt">No reviews yet</h1>
-              </div>
-            )}
+          <div className="flex-1">
+  {showReview && showReview.length > 0 ? (
+    showReview.map((review, index) => (
+      <div key={index} className="w-full mb-4">
+        <div className="border-2 border-gray-100 p-4">
+          <h1 className="mb-2 font-bold">{review.description}</h1>
+          <div className="flex flex-row items-center text-sm">
+            <span className="mr-2">{review.author}</span>
+            <span>{formatDate(review.date)}</span>
           </div>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="flex items-center justify-center h-64">
+      <h1 className="text-center font-prompt">No reviews yet</h1>
+    </div>
+  )}
+</div>
+
         </div>
 
         <div className="mt-4">

@@ -14,6 +14,7 @@ import WaitingList from "../pages/TutorPages/WaitingList";
 import RunningClasses from "../pages/TutorPages/RunningClasses";
 import TutorChat from "../components/Chat/TutorChat";
 import Error from "../components/Error/Error";
+import TutorVideoChat from "../pages/TutorPages/TutorVideoChat";
 
 const Lyouts = () => {
   return (
@@ -47,6 +48,8 @@ function TutorRouter() {
         <Route path="/runningClasses" element={<RunningClasses />} />
       </Route>
       <Route path="/chat" element={<TutorChat />} />
+      {/* <Route path="/videocall/:roomID" element={<TutorVideoChat />} /> */}
+      <Route path='/room' element={<TutorVideoChat/>}/>
 
       <Route path="*" element={<Error />} />
     </Routes>

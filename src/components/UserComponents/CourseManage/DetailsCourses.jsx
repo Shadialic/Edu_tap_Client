@@ -3,16 +3,25 @@ import { useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import review from "../../../../public/images/user/reviews.png";
 import { fetchChapter } from "../../../api/VendorApi";
-import RatingStar from "../../Constans/RatingStar/RatingStar";
-import { checkout, fetchReviews, getUserCourseRating, purchaseCourse } from "../../../api/UserApi";
+import {
+  checkout,
+  fetchReviews,
+  getUserCourseRating,
+  purchaseCourse,
+} from "../../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 import { LoadTutorList } from "../../../api/AdminApi";
+import Rating from "@mui/material/Rating";
+import StarIcon from "@mui/icons-material/Star";
+import moment from "moment";
+import { TimeMange } from "../../../helpers/TimeMange";
 
 function DetailsCourses({ data }) {
   const navigate = useNavigate();
   const [chapter, setChapter] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [auther, setAuther] = useState();
+  const [rating, setRating] = useState(null);
   useEffect(() => {
     const fetch = async () => {
       await fetchChapter().then((res) => {
@@ -32,7 +41,10 @@ function DetailsCourses({ data }) {
         (item) => item.courseId === data._id
       );
       setReviews(filterdata);
-      const response=await getUserCourseRating(data._id)
+      const currentrating = await getUserCourseRating(data._id);
+      const courseRating = currentrating.data.rating;
+      setRating(parseFloat(courseRating.totelrating));
+      console.log(currentrating.data.rating, "-------2-2-2-");
     };
     fetch();
   }, []);
@@ -40,11 +52,9 @@ function DetailsCourses({ data }) {
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = userInfo.id;
 
- 
-
   const activeCourse = async (courseid) => {
     if (data.payment === "price") {
-      await purchaseCourse(courseid, userId)
+      await purchaseCourse(courseid, userId);
       const stripe = await loadStripe(
         import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
       );
@@ -56,7 +66,7 @@ function DetailsCourses({ data }) {
       });
       if (error) {
         console.error("Payment failed:", error);
-      } 
+      }
     } else {
       await purchaseCourse(courseid, userId).then((res) => {
         navigate("/enrollments");
@@ -65,7 +75,7 @@ function DetailsCourses({ data }) {
   };
   return (
     <>
-      <div className="flex flex-row w-screen h-full p-4">
+      <div className="flex flex-row w-screen h-full p-4 overflow-x-hidden">
         <div className="w-[70%] h-[60%] bg-white shadow-lg p-5 border-1">
           <div className="flex flex-row w-14 h-10 bg-red p-3">
             <button className="flex flex-row w-10 h-6 bg-violet-600 font-prompt text-md text-white rounded-lg text-center pl-1">
@@ -76,16 +86,25 @@ function DetailsCourses({ data }) {
             <h1 className="text-3xl font-prompt-semibold">{data.title}</h1>
             <p className="font-prompt p-2">{data.description}</p>
           </div>
+          <div className="flex flex-row mt-2 gap-2">
+            <span className="font-prompt pl-6 ">{rating}</span>
+            <Rating
+              value={rating}
+              precision={0.5}
+              emptyIcon={
+                <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+              }
+            />
+          </div>
           <div className="flex flex-row pl-6 mt-4">
-            <img className="w-8 h-8" src={auther && auther.image} alt="" />
+            <img className="w-7 h-7" src={auther && auther.image} alt="" />
             <h1 className="font-prompt text-lg ml-2">
               {auther && auther.tutorName}
             </h1>
           </div>
-          <RatingStar />
 
           {data.payment === "price" ? (
-            <div className="pl-4 mt-2 ">
+            <div className="p-6 ">
               <button
                 onClick={() => activeCourse(data._id)}
                 className="w-[34%]  rounded-md h-9 bg-violet-600 font-prompt text-white"
@@ -109,27 +128,34 @@ function DetailsCourses({ data }) {
             <img className="w-4 h-5 mt-5 ml-4" src={review} alt="" />
             <h1 className="font-prompt p-4  pl-2">Reviews</h1>
           </div>
-          <div className="flex-1 overflow-y-auto">
-            {reviews.length > 0 ? (
-              <div className="flex-1 overflow-y-auto">
-                {reviews.map((review, index) => (
-                  <div key={index} className="w-[95%] h-[10%] p-4 font-prompt">
+          {reviews.length > 0 ? (
+            <div className="">
+              {reviews &&
+                reviews.map((review, index) => (
+                  <div
+                    key={index}
+                    className="w-[95%] h-[10%] p-1 pl-3 font-prompt"
+                  >
                     <div className="flex flex-col border-2 border-gray-100">
                       <div className="mb-2">
                         <h1 className="p-2">{review.description}</h1>
-                        <h1 className="p-2 text-sm">{review.author}</h1>
-                        <h1 className="p-2 text-sm">{review.date}</h1>
+                        <div className="flex flex-row items-center">
+                          <h1 className="p-2 text-sm">{review.author}</h1>
+                          <h1 className="p-2 text-sm left-2">
+                            {" "}
+                            {TimeMange(review.date) == "NaN years ago"
+                          ? "just now"
+                          : TimeMange(review.date)}
+                          </h1>
+                        </div>
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-            ) : (
-              <h1 className="flex justify-center font-prompt">
-                No reviews yet
-              </h1>
-            )}
-          </div>
+            </div>
+          ) : (
+            <h1 className="flex justify-center font-prompt">No reviews yet</h1>
+          )}
         </div>
       </div>
       <div className="flex p-4 w-[98%] h-20 border-2 border-gray-100 ml-4 justify-around">

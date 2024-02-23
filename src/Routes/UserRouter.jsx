@@ -16,6 +16,7 @@ import Faild from "../components/Payment/Faild";
 import UserChat from "../components/Chat/UserChat";
 import Error from "../components/Error/Error";
 import UserProtect from "./UserProtect";
+import UserVideoChat from "../pages/UserPages/UserVideoChat";
 
 function UserRouter() {
   return (
@@ -41,6 +42,10 @@ function UserRouter() {
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Faild />} />
       <Route path="/chat" element={  <UserProtect><UserChat/></UserProtect>} />
+      <Route path='/room/:recieverId' element={<UserVideoChat/>}/>
+
+      {/* <Route path="/videocall/:roomID" element={<UserProtect><UserVideoChat /></UserProtect>} /> */}
+
       <Route path="*" element={<Error />} />
     </Routes>
   );
