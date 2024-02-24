@@ -143,3 +143,14 @@ export async function getTutorChats(id) {
     throw error;
   }
 }
+
+export async function teacherStudents(id) {
+  try {
+    console.log(id,'1111111111111111111111111');
+    const response = await TutorApi.get(`/teacherUsers/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

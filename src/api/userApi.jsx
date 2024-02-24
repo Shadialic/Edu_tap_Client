@@ -280,3 +280,13 @@ export async function getUserCourseRating(id) {
     console.log(error);
   }
 }
+
+export async function checkConnection(data) {
+  try {
+    console.log(data, '666666666666666');
+    const response = await UserApi.post(`/checkConnection`,data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}

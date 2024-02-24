@@ -20,7 +20,7 @@ function DisCourse() {
   const [data, setData] = useState([]);
 
   const inputHandler = (e) => {
-    var lowerCase = e.target.value.toLowerCase();
+    const lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
   };
 
@@ -50,7 +50,7 @@ function DisCourse() {
         setData(filter);
       });
     };
-    fetchData();
+    fetchData();  
   }, []);
 
   const filteredCourses = data

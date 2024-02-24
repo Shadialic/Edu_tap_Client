@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
 import RatingStar from "../../Constans/RatingStar/RatingStar";
-import { createChat, fetchReviews, postReview } from "../../../api/UserApi";
+import { checkConnection, createChat, fetchReviews, postReview } from "../../../api/UserApi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Comment from "../Comments/Comment";
@@ -29,9 +29,13 @@ function Collections({ chapter, courseId, tutors, course }) {
       const filterdata = response.data.filter(
         (item) => item.courseId === courseId
       );
-      const chatId = response.chat.find((item) => item.active === "true");
+      const firstId = userInfo.id;
+    const secondId = tutor._id;
+      const currentchaters=await checkConnection({firstId,secondId})
+      console.log(currentchaters,'33333333333333333333333333');
+      // const chatId = response.chat.find((item) => item.active === "true");
 
-      if (chatId) {
+      if (currentchaters.data.status===true) {
         setShowMessage(true);
       }
       setShowReiview(filterdata);
@@ -179,25 +183,24 @@ function Collections({ chapter, courseId, tutors, course }) {
             <img className="w-4 h-4 mt-1 ml-2" src={reviewimg} alt="" />
           </div>
           <div className="flex-1">
-  {showReview && showReview.length > 0 ? (
-    showReview.map((review, index) => (
-      <div key={index} className="w-full mb-4">
-        <div className="border-2 border-gray-100 p-4">
-          <h1 className="mb-2 font-bold">{review.description}</h1>
-          <div className="flex flex-row items-center text-sm">
-            <span className="mr-2">{review.author}</span>
-            <span>{formatDate(review.date)}</span>
+            {showReview && showReview.length > 0 ? (
+              showReview.map((review, index) => (
+                <div key={index} className="w-full mb-4">
+                  <div className="border-2 border-gray-100 p-4">
+                    <h1 className="mb-2 font-bold">{review.description}</h1>
+                    <div className="flex flex-row items-center text-sm">
+                      <span className="mr-2">{review.author}</span>
+                      <span>{formatDate(review.date)}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-64">
+                <h1 className="text-center font-prompt">No reviews yet</h1>
+              </div>
+            )}
           </div>
-        </div>
-      </div>
-    ))
-  ) : (
-    <div className="flex items-center justify-center h-64">
-      <h1 className="text-center font-prompt">No reviews yet</h1>
-    </div>
-  )}
-</div>
-
         </div>
 
         <div className="mt-4">

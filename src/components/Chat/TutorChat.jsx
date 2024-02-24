@@ -1,13 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
-import { Typography, Avatar, IconButton } from "@material-tailwind/react";
+import {
+  Typography,
+  Avatar,
+  IconButton,
+  Button,
+  Dialog,
+  Card,
+  CardBody,
+  CardFooter,
+  Input,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemPrefix,
+} from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { getMessages, sendMessage } from "../../api/UserApi";
-import moment from "moment";
 import InputEmoji from "react-input-emoji";
-import { getTutorChats } from "../../api/VendorApi";
+import { getTutorChats, teacherStudents } from "../../api/VendorApi";
 import Header from "../TutorComponents/TutorLayouts/Header";
 import { TimeMange } from "../../helpers/TimeMange";
 import { useNavigate } from "react-router-dom";
@@ -26,13 +39,41 @@ function TutorChat() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notification, setNotification] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [categoryName, setCategoryName] = useState("");
+  const [user, setUsers] = useState("");
+  const [searchUsers, setSearchUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  // const [searchStudents, setSearchStudents] = useState([]);
   const scroll = useRef();
+  console.log(selectedUser, "-----selectedUser");
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
+  const handleSearch = async (e) => {
+    const searchData = e.target.value.toLowerCase();
+    console.log(searchData, "------------------");
+    setSearchQuery(searchData);
+
+    const filterData = searchUsers.filter(
+      (item) =>
+        !searchQuery ||
+        item.userName.toLowerCase().includes(searchQuery) ||
+        item.email.toLowerCase().includes(searchQuery)
+    );
+    setSearchUsers(filterData);
   };
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
+  };
+  const handleSelectUser = (user) => {
+    if (selectedUser && selectedUser === user) {
+      setSelectedUser(null);
+    } else {
+      setSelectedUser(user);
+    }
+  };
+  const handleCancelSelection = () => {
+    setSelectedUser(null);
   };
 
   const sendTextMessage = async () => {
@@ -152,6 +193,33 @@ function TutorChat() {
       console.error("Recipient details or sender details are missing.");
     }
   };
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await teacherStudents(tutorInfo.id);
+      console.log(response, "===========dddddd============");
+      const chats = response.chats;
+      const students = chats.map((item) => {
+        console.log(item.members, "======================");
+        return item.members;
+      });
+      console.log(students, "lllllllllllllllllllllllllllll");
+      setSearchUsers(students);
+    };
+    fetch();
+  }, []);
+  console.log(searchUsers, "searchUsers");
+  // const filterData = searchUsers.filter(item => {
+  //   const lowerCaseSearchQuery = searchQuery.toLowerCase();
+  //   const lowerCaseUserName = item.userName ? item.userName.toLowerCase() : '';
+  //   const lowerCaseEmail = item.email ? item.email.toLowerCase() : '';
+  //   return (
+  //     !searchQuery ||
+  //     lowerCaseUserName.includes(lowerCaseSearchQuery) ||
+  //     lowerCaseEmail.includes(lowerCaseSearchQuery)
+  //   );
+  // });
+  // console.log(filterData, "filterData");
+
   return (
     <>
       <Header />
@@ -171,10 +239,106 @@ function TutorChat() {
                 {isDropdownOpen && (
                   <div className="absolute top-full right-0 mt-1 w-44 font-prompt p-2 bg-white border border-gray-200 rounded shadow-lg">
                     <ul>
-                      <li>New Group</li>
+                      <li onClick={() => setOpen((cur) => !cur)}>New Group</li>
                     </ul>
                   </div>
                 )}
+                <div className="flex flex-row">
+                  <Dialog
+                    open={open}
+                    handler={() => setOpen((cur) => !cur)}
+                    className="w-full"
+                  >
+                    <div className="flex flex-row w-full">
+                      <div className="w-1/2">
+                        <Card className="w-full max-w-[23rem] mx-auto h-full">
+                          <CardBody className="flex flex-col gap-4 ">
+                            <form>
+                              <Typography variant="h6">Group Name</Typography>
+                              <Input label="group Name" size="lg" />
+                              <Typography variant="h6">Add Users</Typography>
+                              {/* Display selected user's image and cancel button */}
+                              {selectedUser && (
+                                <div className="flex items-center">
+                                  <Avatar
+                                    src={selectedUser.image}
+                                    alt="Selected User"
+                                  />
+                                  {/* <Button onClick={() => setSelectedUser(null)}>Cancel</Button> */}
+                                </div>
+                              )}
+                              <div></div>
+
+                              <CardFooter className="pt-0 mt-5">
+                                <Button
+                                  className="bg-violet-600 "
+                                  variant="gradient"
+                                  fullWidth
+                                  type="submit"
+                                >
+                                  Create Group
+                                </Button>
+                              </CardFooter>
+                            </form>
+                          </CardBody>
+                        </Card>
+                      </div>
+
+                      <div className="w-1/2 ">
+                        <input
+                          type="text"
+                          placeholder="Search..."
+                          onChange={handleSearch}
+                          className="w-full px-3 py-2 mb-4 mt-3 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
+                        />
+                        {searchUsers[0] &&
+                          searchUsers[0].map((item, index) => (
+                            <Card key={index}>
+                              <List>
+                                <ListItem className="p-0">
+                                  <label
+                                    htmlFor={`vertical-list-react-${index}`}
+                                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                                  >
+                                    <ListItemPrefix className="mr-3">
+                                      <Checkbox
+                                        id={`vertical-list-react-${index}`}
+                                        ripple={false}
+                                        className="hover:before:opacity-0"
+                                        containerProps={{ className: "p-0" }}
+                                        // Add event handler to select user
+                                        onClick={() => handleSelectUser(item)}
+                                        checked={selectedUser === item} // Check if this user is selected
+                                      />
+                                    </ListItemPrefix>
+                                    <Avatar
+                                      src={item.image}
+                                      alt="avatar"
+                                      size="md"
+                                    />
+                                    <div className="flex flex-col pl-2">
+                                      <Typography
+                                        color="blue-gray"
+                                        className="font-medium"
+                                      >
+                                        {item.userName}
+                                      </Typography>
+                                      <Typography
+                                        color="blue-gray"
+                                        className="text-[12px]"
+                                      >
+                                        {item.email}
+                                      </Typography>
+                                    </div>
+                                  </label>
+                                </ListItem>
+                              </List>
+                            </Card>
+                          ))}
+                      </div>
+                    </div>
+                  </Dialog>
+                </div>
               </div>
               {/* <button className="pr-2 shadow-lg h-[30px] mt-3 shadow-gray-200 hover:bg-gray-200">New Group Chat</button> */}
             </div>
@@ -184,8 +348,8 @@ function TutorChat() {
                 type="text"
                 className="w-full h-10 outline-none font-prompt text-sm border-b-2 border-violet-600"
                 placeholder="Search or start a new chat"
-                value={searchQuery}
-                onChange={handleSearch}
+                // value={searchQuery}
+                // onChange={handleSearch}
               />
             </div>
             <div className="overflow-auto flex-1">
