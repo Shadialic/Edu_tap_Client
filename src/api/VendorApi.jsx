@@ -154,3 +154,28 @@ export async function teacherStudents(id) {
     throw error;
   }
 }
+export async function createGroup(data) {
+  try {
+    console.log(data,'/////////////////////////////');
+    const response = await TutorApi.post(`/createGroupChat`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// export async function getGroupchat(id) {
+//   try {
+//     console.log(id,'444444444444444444444444444444444444444444444444444');
+//     const response = await TutorApi.get(`/createGroupChat${id}`);
+//     return response.data;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }

@@ -222,6 +222,7 @@ export async function getMessages(id) {
 }
 export async function sendMessage(data) {
   try {
+    console.log(data,'-------------------');
     const response = await UserApi.post(`/createMessage`,{data});
     return response.data;
   } catch (error) {

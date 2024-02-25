@@ -12,7 +12,7 @@ import { TimeMange } from "../../helpers/TimeMange";
 import { useNavigate } from "react-router-dom";
 
 function UserChat() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [userChats, setUserChats] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,6 +23,7 @@ function UserChat() {
   const [newMessage, setNewMessage] = useState(null);
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [groupChat, setGroupChat] = useState([]);
   const [notification, setNotification] = useState([]);
   const scroll = useRef();
 
@@ -102,6 +103,7 @@ function UserChat() {
       try {
         const res = await getChats(userInfo.id);
         setUserChats(res.chats);
+        setGroupChat(res.groupchat);
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
@@ -229,6 +231,43 @@ function UserChat() {
                   </div>
                 </div>
               ))}
+              {groupChat &&
+                groupChat.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`p-3 border-b border-gray-200 hover:bg-violet-700 hover:text-white hover:rounded-md cursor-pointer ${
+                      selectedMember && selectedMember._id === item._id
+                        ? "bg-violet-700 text-white rounded-md"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedMember(item);
+                      setCurrentChat(item);
+                    }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <Avatar src={item.image} alt="avatar" size="md" />
+                        <div>
+                          <Typography
+                            variant="h6"
+                            className="text-font-prompt font- uppercase mb-2"
+                          >
+                            {item.groupName}
+                          </Typography>
+                        </div>
+                      </div>
+                      <Typography
+                        variant="small"
+                        className="text-sm font-prompt-light"
+                      >
+                        {TimeMange(item.createdAt) === "NaN years ago"
+                          ? "just now"
+                          : TimeMange(item.createdAt)}
+                      </Typography>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
           <div className="w-full sm:w-[70%] h-[500px] border-t sm:border-t-0 border-gray-200">
@@ -237,13 +276,14 @@ function UserChat() {
                 <div className="flex justify-between items-center p-3 border-b border-gray-200">
                   <div className="flex items-center">
                     <Avatar
-                      src={currentChat.members[0].image}
+                      src={currentChat.members[0].image || currentChat.image}
                       alt="avatar"
                       size="md"
                     />
                     <div className="ml-3">
                       <Typography variant="h6">
-                        {currentChat.members[0].tutorName}
+                        {currentChat.members[0].tutorName ||
+                          currentChat.groupName}
                       </Typography>
                       {!onlineUsers.some(
                         (user) => user.userId === currentChat._id

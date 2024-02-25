@@ -15,12 +15,18 @@ import {
   ListItem,
   ListItemPrefix,
 } from "@material-tailwind/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { getMessages, sendMessage } from "../../api/UserApi";
 import InputEmoji from "react-input-emoji";
-import { getTutorChats, teacherStudents } from "../../api/VendorApi";
+import {
+  createGroup,
+  getTutorChats,
+  teacherStudents,
+} from "../../api/VendorApi";
 import Header from "../TutorComponents/TutorLayouts/Header";
 import { TimeMange } from "../../helpers/TimeMange";
 import { useNavigate } from "react-router-dom";
@@ -41,13 +47,13 @@ function TutorChat() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [groupName, setGroupName] = useState("");
-  const [categoryName, setCategoryName] = useState("");
-  const [user, setUsers] = useState("");
+  const [groupChat, setGroupChat] = useState([]);
+  const [image, setImage] = useState(null);
   const [searchUsers, setSearchUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   // const [searchStudents, setSearchStudents] = useState([]);
   const scroll = useRef();
-  console.log(selectedUser, "-----selectedUser");
+  console.log(selectedMember, "-----selectedMember");
 
   const handleSearch = async (e) => {
     const searchData = e.target.value.toLowerCase();
@@ -66,26 +72,74 @@ function TutorChat() {
     setIsDropdownOpen((prev) => !prev);
   };
   const handleSelectUser = (user) => {
-    if (selectedUser && selectedUser === user) {
-      setSelectedUser(null);
+    console.log(user, "-00000000000000000000000000000000000000000000");
+    // Check if the user is already selected
+    const isSelected = selectedUsers.some(
+      (selectedUser) => selectedUser === user
+    );
+
+    if (isSelected) {
+      // If user is already selected, remove it from the array
+      const updatedUsers = selectedUsers.filter(
+        (selectedUser) => selectedUser !== user
+      );
+      setSelectedUsers(updatedUsers);
     } else {
-      setSelectedUser(user);
+      // If user is not selected, add it to the array
+      setSelectedUsers([...selectedUsers, user]);
     }
   };
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+  };
+
+  const handleGroupChat = async (e) => {
+    e.preventDefault();
+    if (!groupName) {
+      toast("Please enter a group name.");
+      setOpen(false);
+      return;
+    }
+
+    const receiverIds = selectedUsers.map((item) => item.members[0]._id);
+    const senderId = tutorInfo.id;
+
+    try {
+      const formData = new FormData();
+      formData.append("groupName", groupName);
+      formData.append("senderId", senderId);
+      receiverIds.forEach((id) => formData.append("receiverIds", id));
+      if (image) {
+        formData.append("image", image);
+      }
+
+      const response = await createGroup(formData);
+      console.log(response, "responseresponse");
+      toast(response.alert);
+      setOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast("An error occurred while creating the group.");
+    }
+  };
+
   const handleCancelSelection = () => {
-    setSelectedUser(null);
+    setSelectedUsers(null);
   };
 
   const sendTextMessage = async () => {
     const recipientId = currentChat.members[0]._id;
+    const groupChat=currentChat._id
     const senderId = tutorInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
     try {
-      const res = await sendMessage({ text, chatId, senderId, recipientId });
+      const res = await sendMessage({ text, chatId, senderId,recipientId,groupChat });
+      console.log(res,'textmessaggggggggggggggggggggggggggggggg');
       const response = res.saveMeassage;
       setNewMessage(response);
-      setMessages((prev) => [...prev, response]);
+      setMessages((prev) => [...prev,response]);
       setTextMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
@@ -96,13 +150,33 @@ function TutorChat() {
     const fetchChats = async () => {
       try {
         const res = await getTutorChats(tutorInfo.id);
+        console.log(
+          res,
+          "llllllllllllllllllllllllllllllllllllllllllllllllllllll"
+        );
         setUserChats(res.chats);
+        setGroupChat(res.groupchat);
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
     };
     fetchChats();
   }, [tutorInfo.id]);
+  // useEffect(() => {
+  //   const fetchChats = async () => {
+  //     try {
+  //       const res = await getGroupchat(tutorInfo.id);
+  //       console.log(
+  //         res.chats,
+  //         "llllllllllllllllllllllllllllllllllllllllllllllllllllll"
+  //       );
+  //       setUserChats(res.chats);
+  //     } catch (error) {
+  //       console.error("Error fetching chats:", error);
+  //     }
+  //   };
+  //   fetchChats();
+  // }, [tutorInfo.id]);
 
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
@@ -203,7 +277,7 @@ function TutorChat() {
         return item.members;
       });
       console.log(students, "lllllllllllllllllllllllllllll");
-      setSearchUsers(students);
+      setSearchUsers(chats);
     };
     fetch();
   }, []);
@@ -253,20 +327,42 @@ function TutorChat() {
                       <div className="w-1/2">
                         <Card className="w-full max-w-[23rem] mx-auto h-full">
                           <CardBody className="flex flex-col gap-4 ">
-                            <form>
+                            <form onSubmit={handleGroupChat}>
                               <Typography variant="h6">Group Name</Typography>
-                              <Input label="group Name" size="lg" />
+                              <Input
+                                label="Group Name"
+                                size="lg"
+                                onChange={(e) => setGroupName(e.target.value)}
+                              />
+                              <Typography variant="h6">
+                                Profile Image
+                              </Typography>
+                              <Input
+                                label="upload image"
+                                size="lg"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                              />
                               <Typography variant="h6">Add Users</Typography>
-                              {/* Display selected user's image and cancel button */}
-                              {selectedUser && (
+                              {selectedUsers.length > 0 && (
                                 <div className="flex items-center">
-                                  <Avatar
-                                    src={selectedUser.image}
-                                    alt="Selected User"
-                                  />
-                                  {/* <Button onClick={() => setSelectedUser(null)}>Cancel</Button> */}
+                                  {selectedUsers.map((user, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-center"
+                                    >
+                                      <Avatar
+                                        src={user.members[0].image}
+                                        alt={`Selected User ${index}`}
+                                      />
+                                      {/* Optionally, you can include a cancel button for each selected user */}
+                                      {/* <Button onClick={() => handleDeselectUser(user)}>Cancel</Button> */}
+                                    </div>
+                                  ))}
                                 </div>
                               )}
+
                               <div></div>
 
                               <CardFooter className="pt-0 mt-5">
@@ -291,8 +387,8 @@ function TutorChat() {
                           onChange={handleSearch}
                           className="w-full px-3 py-2 mb-4 mt-3 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
                         />
-                        {searchUsers[0] &&
-                          searchUsers[0].map((item, index) => (
+                        {searchUsers &&
+                          searchUsers.map((item, index) => (
                             <Card key={index}>
                               <List>
                                 <ListItem className="p-0">
@@ -306,13 +402,12 @@ function TutorChat() {
                                         ripple={false}
                                         className="hover:before:opacity-0"
                                         containerProps={{ className: "p-0" }}
-                                        // Add event handler to select user
                                         onClick={() => handleSelectUser(item)}
-                                        checked={selectedUser === item} // Check if this user is selected
+                                        checked={selectedUsers.includes(item)}
                                       />
                                     </ListItemPrefix>
                                     <Avatar
-                                      src={item.image}
+                                      src={item.members[0].image}
                                       alt="avatar"
                                       size="md"
                                     />
@@ -321,13 +416,13 @@ function TutorChat() {
                                         color="blue-gray"
                                         className="font-medium"
                                       >
-                                        {item.userName}
+                                        {item.members[0].userName}
                                       </Typography>
                                       <Typography
                                         color="blue-gray"
                                         className="text-[12px]"
                                       >
-                                        {item.email}
+                                        {item.members[0].email}
                                       </Typography>
                                     </div>
                                   </label>
@@ -394,6 +489,43 @@ function TutorChat() {
                   </div>
                 </div>
               ))}
+
+              {groupChat.map((item, index) => (
+                <div
+                  key={index}
+                  className={`p-3 border-b border-gray-200 hover:bg-violet-700 hover:text-white hover:rounded-md cursor-pointer ${
+                    selectedMember && selectedMember._id === item._id
+                      ? "bg-violet-700 text-white rounded-md"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedMember(item);
+                    setCurrentChat(item);
+                  }}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center">
+                      <Avatar src={item.image} alt="avatar" size="md" />
+                      <div>
+                        <Typography
+                          variant="h6"
+                          className="text-font-prompt font- uppercase mb-2"
+                        >
+                          {item.groupName}
+                        </Typography>
+                      </div>
+                    </div>
+                    <Typography
+                      variant="small"
+                      className="text-sm font-prompt-light"
+                    >
+                      {TimeMange(item.createdAt) === "NaN years ago"
+                        ? "just now"
+                        : TimeMange(item.createdAt)}
+                    </Typography>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="w-full sm:w-[70%] h-[500px] border-t sm:border-t-0 border-gray-200">
@@ -402,13 +534,14 @@ function TutorChat() {
                 <div className="flex justify-between items-center p-3 border-b border-gray-200">
                   <div className="flex items-center">
                     <Avatar
-                      src={currentChat.members[0].image}
+                      src={currentChat.members[0].image || currentChat.image}
                       alt="avatar"
                       size="md"
                     />
                     <div className="ml-3">
                       <Typography variant="h6">
-                        {currentChat.members[0].userName}
+                        {currentChat.members[0].userName ||
+                          currentChat.groupName}
                       </Typography>
                       {!onlineUsers.some(
                         (user) => user.userId === currentChat._id
@@ -493,6 +626,7 @@ function TutorChat() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }
