@@ -51,15 +51,11 @@ function TutorChat() {
   const [image, setImage] = useState(null);
   const [searchUsers, setSearchUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  // const [searchStudents, setSearchStudents] = useState([]);
   const scroll = useRef();
-  console.log(selectedMember, "-----selectedMember");
 
   const handleSearch = async (e) => {
     const searchData = e.target.value.toLowerCase();
-    console.log(searchData, "------------------");
     setSearchQuery(searchData);
-
     const filterData = searchUsers.filter(
       (item) =>
         !searchQuery ||
@@ -68,27 +64,25 @@ function TutorChat() {
     );
     setSearchUsers(filterData);
   };
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
+
   const handleSelectUser = (user) => {
-    console.log(user, "-00000000000000000000000000000000000000000000");
-    // Check if the user is already selected
     const isSelected = selectedUsers.some(
       (selectedUser) => selectedUser === user
     );
-
     if (isSelected) {
-      // If user is already selected, remove it from the array
       const updatedUsers = selectedUsers.filter(
         (selectedUser) => selectedUser !== user
       );
       setSelectedUsers(updatedUsers);
     } else {
-      // If user is not selected, add it to the array
       setSelectedUsers([...selectedUsers, user]);
     }
   };
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     setImage(file);
@@ -101,10 +95,8 @@ function TutorChat() {
       setOpen(false);
       return;
     }
-
     const receiverIds = selectedUsers.map((item) => item.members[0]._id);
     const senderId = tutorInfo.id;
-
     try {
       const formData = new FormData();
       formData.append("groupName", groupName);
@@ -115,7 +107,6 @@ function TutorChat() {
       }
 
       const response = await createGroup(formData);
-      console.log(response, "responseresponse");
       toast(response.alert);
       setOpen(false);
     } catch (error) {
@@ -127,19 +118,25 @@ function TutorChat() {
   const handleCancelSelection = () => {
     setSelectedUsers(null);
   };
-
   const sendTextMessage = async () => {
+    const isGroupChat = selectedMember.groupName;
     const recipientId = currentChat.members[0]._id;
-    const groupChat=currentChat._id
+    const groupChat = currentChat._id;
     const senderId = tutorInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
     try {
-      const res = await sendMessage({ text, chatId, senderId,recipientId,groupChat });
-      console.log(res,'textmessaggggggggggggggggggggggggggggggg');
+      const res = await sendMessage({
+        text,
+        chatId,
+        senderId,
+        recipientId,
+        groupChat,
+        isGroupChat,
+      });
       const response = res.saveMeassage;
       setNewMessage(response);
-      setMessages((prev) => [...prev,response]);
+      setMessages((prev) => [...prev, response]);
       setTextMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
@@ -150,10 +147,6 @@ function TutorChat() {
     const fetchChats = async () => {
       try {
         const res = await getTutorChats(tutorInfo.id);
-        console.log(
-          res,
-          "llllllllllllllllllllllllllllllllllllllllllllllllllllll"
-        );
         setUserChats(res.chats);
         setGroupChat(res.groupchat);
       } catch (error) {
@@ -161,22 +154,7 @@ function TutorChat() {
       }
     };
     fetchChats();
-  }, [tutorInfo.id]);
-  // useEffect(() => {
-  //   const fetchChats = async () => {
-  //     try {
-  //       const res = await getGroupchat(tutorInfo.id);
-  //       console.log(
-  //         res.chats,
-  //         "llllllllllllllllllllllllllllllllllllllllllllllllllllll"
-  //       );
-  //       setUserChats(res.chats);
-  //     } catch (error) {
-  //       console.error("Error fetching chats:", error);
-  //     }
-  //   };
-  //   fetchChats();
-  // }, [tutorInfo.id]);
+  }, [tutorInfo.id, open]);
 
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
@@ -270,18 +248,14 @@ function TutorChat() {
   useEffect(() => {
     const fetch = async () => {
       const response = await teacherStudents(tutorInfo.id);
-      console.log(response, "===========dddddd============");
       const chats = response.chats;
       const students = chats.map((item) => {
-        console.log(item.members, "======================");
         return item.members;
       });
-      console.log(students, "lllllllllllllllllllllllllllll");
       setSearchUsers(chats);
     };
     fetch();
   }, []);
-  console.log(searchUsers, "searchUsers");
   // const filterData = searchUsers.filter(item => {
   //   const lowerCaseSearchQuery = searchQuery.toLowerCase();
   //   const lowerCaseUserName = item.userName ? item.userName.toLowerCase() : '';
@@ -435,7 +409,6 @@ function TutorChat() {
                   </Dialog>
                 </div>
               </div>
-              {/* <button className="pr-2 shadow-lg h-[30px] mt-3 shadow-gray-200 hover:bg-gray-200">New Group Chat</button> */}
             </div>
 
             <div className="p-3">
@@ -475,7 +448,6 @@ function TutorChat() {
                         >
                           {chat.members[0].userName}
                         </Typography>
-                        {/* You can add online status logic here */}
                       </div>
                     </div>
                     <Typography

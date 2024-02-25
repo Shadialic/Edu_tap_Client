@@ -35,12 +35,21 @@ function UserChat() {
     );
 
   const sendTextMessage = async () => {
+    const isGroupChat = selectedMember.groupName;
+    const groupChat = currentChat._id;
     const recipientId = currentChat.members[0]._id;
     const senderId = userInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
     try {
-      const res = await sendMessage({ text, chatId, senderId, recipientId });
+      const res = await sendMessage({
+        text,
+        chatId,
+        senderId,
+        recipientId,
+        groupChat,
+        isGroupChat,
+      });
       const response = res.saveMeassage;
       setNewMessage(response);
 

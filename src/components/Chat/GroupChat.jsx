@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,9 +10,8 @@ import {
 } from "@material-tailwind/react";
 function GroupChat() {
   const [open, setOpen] = React.useState(false);
-  const [groupName,setGroupName]=useState('')
-  const [user, setUsers] = useState('');
-
+  const [groupName, setGroupName] = useState("");
+  const [user, setUsers] = useState("");
 
   const createGroup = () => {
     closeDialog(); // Close the dialog after updating
@@ -20,8 +19,7 @@ function GroupChat() {
 
   return (
     <div>
-   
-   <div className="flex items-end justify-end mr-14">
+      <div className="flex items-end justify-end mr-14">
         {/* <Button     >ADD+</Button> */}
         <Dialog
           size="xs"
@@ -31,7 +29,7 @@ function GroupChat() {
         >
           <Card className="mx-auto w-full max-w-[24rem]">
             <CardBody className="flex flex-col gap-4">
-              <form >
+              <form>
                 <Typography variant="h6">Enter New Category</Typography>
                 <Input
                   label="Category"
@@ -54,7 +52,6 @@ function GroupChat() {
           </Card>
         </Dialog>
       </div>
-      
     </div>
   );
 }
