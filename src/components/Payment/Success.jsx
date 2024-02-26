@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import success from "../../assets/video/Payment Successfull Main.mp4";
+import success from "../../assets/video/PaymentSuccessfullMain.mp4";
 import { useNavigate } from "react-router-dom";
 
 function Success() {
@@ -13,10 +13,13 @@ function Success() {
   }, [navigate]);
 
   return (
-    <div className="w-screen h-screen bg-white shadow-lg p-4">
-      <div className="w-[100%] h-[100%] bg-white shadow-lg flex justify-center items-center">
-        <video className="justify-center items-center" src={success}></video>
-      </div>
+    <div className="w-screen h-screen bg-[#202124] shadow-lg p-4">
+      <video
+  src="/src/assets/video/PaymentSuccessfullMain.mp4"
+  className="max-w-full"
+  autoPlay
+  muted  // Try adding muted attribute
+></video>
     </div>
   );
 }

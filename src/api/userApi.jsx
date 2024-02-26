@@ -253,11 +253,20 @@ export async function LoadComments(id) {
 
 export async function createBlog(data) {
   try {
+    console.log(data,'pppppppppppppppppppppppppppppppppppppppppppppp');
     const response = await UserApi.post("/createBlog", data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function getBlog() {
+  try {
+    const response = await UserApi.get("/getBlogs");
     return response;
   } catch (error) {
     console.log(error);

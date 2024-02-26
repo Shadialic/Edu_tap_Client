@@ -21,8 +21,7 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
-const StarRating = ({ userId, courseId ,currentrating}) => {
-  
+const StarRating = ({ userId, courseId, currentrating }) => {
   const [rating, setRating] = useState(null);
   const [hover, setHover] = useState(-1);
 
@@ -47,23 +46,24 @@ const StarRating = ({ userId, courseId ,currentrating}) => {
   return (
     <Box
       sx={{
-        width: 200,
+        width: "100%",
         display: "flex",
         alignItems: "center",
+        fontSize: "15px", 
       }}
     >
       <div className="flex flex-row font-prompt pl-3  ">
         <span>YourRating</span>
       </div>
       <Rating
-        className="ml-2"
+        className="ml-2 "
         name="hover-feedback"
         value={rating}
         precision={0.5}
         getLabelText={getLabelText}
         onChange={handleChange}
         onChangeActive={handleChangeActive}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+        emptyIcon={<StarIcon style={{ fontSize: "small", opacity: 0.55 }} />}
       />
       {rating !== null && (
         <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : rating]}</Box>

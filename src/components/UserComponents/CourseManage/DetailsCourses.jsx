@@ -92,7 +92,7 @@ function DetailsCourses({ data }) {
               value={rating}
               precision={0.5}
               emptyIcon={
-                <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                <StarIcon style={{ opacity: 0.55 }} fontSize="small" />
               }
             />
           </div>
@@ -144,8 +144,8 @@ function DetailsCourses({ data }) {
                           <h1 className="p-2 text-sm left-2">
                             {" "}
                             {TimeMange(review.date) == "NaN years ago"
-                          ? "just now"
-                          : TimeMange(review.date)}
+                              ? "just now"
+                              : TimeMange(review.date)}
                           </h1>
                         </div>
                       </div>
