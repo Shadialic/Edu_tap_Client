@@ -1,13 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
 import RatingStar from "../../Constans/RatingStar/RatingStar";
-import { checkConnection, createChat, fetchReviews, postReview } from "../../../api/UserApi";
+import {
+  checkConnection,
+  createChat,
+  fetchReviews,
+  postReview,
+} from "../../../api/UserApi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Comment from "../Comments/Comment";
 import StarRating from "../../Constans/StarRating";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLock,
+  faUnlock,
+  faDownload,
+} from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { downloadPDF } from "../../Constans/Certificate/CourseCertificate";
 
 function Collections({ chapter, courseId, tutors, course }) {
+  const detailsRef = useRef(null);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
@@ -16,40 +31,85 @@ function Collections({ chapter, courseId, tutors, course }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
   const [showReview, setShowReiview] = useState([]);
+  const [courseCompleted, setCourseCompleted] = useState(false);
+  const [certificate, setCertificate] = useState(false);
   const userInfo = useSelector((state) => state.user.userInfo);
-
+  const [videoCompletionStatus, setVideoCompletionStatus] = useState(() => {
+    const storedStatus = localStorage.getItem("videoCompletionStatus");
+    return storedStatus ? JSON.parse(storedStatus) : [];
+  });
   useEffect(() => {
     const filteredData = chapter.filter((item) => item.course_id === courseId);
     const tutorDetail = course.find((item) => item._id === courseId);
     const tutor = tutors.find((item) => item.email === tutorDetail.auther);
     setTutorData(tutor);
     setData(filteredData);
+    if (!localStorage.getItem("videoCompletionStatus")) {
+      localStorage.setItem("videoCompletionStatus", JSON.stringify([]));
+    }
     const fetch = async () => {
       const response = await fetchReviews();
       const filterdata = response.data.filter(
         (item) => item.courseId === courseId
       );
       const firstId = userInfo.id;
-    const secondId = tutor._id;
-      const currentchaters=await checkConnection({firstId,secondId})
-      console.log(currentchaters,'33333333333333333333333333');
-      // const chatId = response.chat.find((item) => item.active === "true");
-
-      if (currentchaters.data.status===true) {
+      const secondId = tutor._id;
+      const currentchaters = await checkConnection({ firstId, secondId });
+      if (currentchaters.data.status === true) {
         setShowMessage(true);
       }
       setShowReiview(filterdata);
     };
     fetch();
   }, [chapter, courseId, review]);
+  const provideCertificate = () => {
+    navigate("/certificate", {
+      state: {
+        name: userInfo.userName,
+        tutorName: tutorData.tutorName,
+        courseId: courseId,
+      },
+    });
+  };
+  useEffect(() => {
+    checkCourseCompletion();
+    console.log(courseCompleted, "courseCompleted");
+    console.log(
+      videoCompletionStatus.length,
+      "videoCompletionStatus.length",
+      data.length
+    );
+
+    const allChaptersWatched = courseCompleted.length === data.length;
+    console.log(allChaptersWatched, "allChaptersWatched");
+    if (data.length != 0 && videoCompletionStatus.length === data.length) {
+      setCertificate(true);
+    }
+  }, [videoCompletionStatus]);
+
+  const checkCourseCompletion = () => {
+    const allChaptersWatched = videoCompletionStatus.every((status) => status);
+    setCourseCompleted(allChaptersWatched);
+  };
 
   if (!chapter.length || !data.length) {
     return <div>No data available</div>;
   }
 
   const handleVideoClick = (index) => {
-    setCount(index);
-    setSelectedVideo(index);
+    if (index === 0 || videoCompletionStatus[index - 1]) {
+      setCount(index);
+      setSelectedVideo(index);
+      const updatedStatus = [...videoCompletionStatus];
+      updatedStatus[index] = true;
+      setVideoCompletionStatus(updatedStatus);
+      localStorage.setItem(
+        "videoCompletionStatus",
+        JSON.stringify(updatedStatus)
+      );
+    } else {
+      toast("Please watch the previous video first!");
+    }
   };
 
   const handleReviewChange = (event) => {
@@ -89,6 +149,9 @@ function Collections({ chapter, courseId, tutors, course }) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
+  const handleDownloadPDF = () => {
+    downloadPDF(detailsRef); 
+};
 
   return (
     <div className="flex flex-row w-screen h-fit">
@@ -110,6 +173,23 @@ function Collections({ chapter, courseId, tutors, course }) {
               : data[0].chapterTitle}
           </h1>
           <div>
+            {certificate && (
+              <div className="flex flex-row justify-end items-end pr-6 gap-2">
+                <button
+                  onClick={provideCertificate}
+                  className="w-24 text-violet-600 border border-violet-600 font-prompt text-lg h-10"
+                >
+                  Certificate
+                </button>
+                <FontAwesomeIcon
+                  onClick={handleDownloadPDF}
+                  className="mb-2 cursor-pointer"
+                  icon={faDownload}
+                  style={{ color: "#B197FC", fontSize: "24px" }}
+                />
+              </div>
+            )}
+
             <div className="flex flex-row mr-3  mt-7">
               <img className="w-10 h-10 " src={tutorData.image} alt="" />
               <h1 className="font-prompt-semibold ml-3 mt-1 text-xl">
@@ -136,6 +216,7 @@ function Collections({ chapter, courseId, tutors, course }) {
                 </>
               )}
             </div>
+
             <h1 className="font-prompt text-sm mt-4">
               {" "}
               {selectedVideo !== null
@@ -171,6 +252,11 @@ function Collections({ chapter, courseId, tutors, course }) {
               <div className="text-sm pl-4 font-prompt">
                 <h1>{`${index + 1}. ${chapter.chapterTitle}`}</h1>
               </div>
+              {videoCompletionStatus[index] ? (
+                <FontAwesomeIcon icon={faUnlock} style={{ color: "#B197FC" }} />
+              ) : (
+                <FontAwesomeIcon icon={faLock} style={{ color: "#B197FC" }} />
+              )}
             </div>
           ))}
         </div>
@@ -224,6 +310,7 @@ function Collections({ chapter, courseId, tutors, course }) {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

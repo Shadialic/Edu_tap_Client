@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { LoadTutorList } from "../../../api/AdminApi";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
-import moment from "moment";
 import { TimeMange } from "../../../helpers/TimeMange";
 
 function DetailsCourses({ data }) {
@@ -54,13 +53,19 @@ function DetailsCourses({ data }) {
 
   const activeCourse = async (courseid) => {
     if (data.payment === "price") {
-      await purchaseCourse(courseid, userId);
+      const response=await purchaseCourse(courseid, userId);
       const stripe = await loadStripe(
         import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
       );
+      console.log(stripe,'stripe');
+
+      console.log(response,'response');
 
       const result = await checkout(courseid);
+      console.log(result,'result');
+
       const { sessionId } = result;
+      console.log(sessionId,'sessionId');
       const { error } = await stripe.redirectToCheckout({
         sessionId: sessionId,
       });

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { LoadComments, postCommnets } from "../../../api/UserApi";
 import user from "../../../../public/images/user/user.png";
 import { Avatar } from "@material-tailwind/react";
+import { TimeMange } from "../../../helpers/TimeMange";
 function Comment({ chapterId, userInfo }) {
   const [comment, setComment] = useState("");
   const [showComment, setShowComment] = useState([]);
@@ -71,7 +72,7 @@ function Comment({ chapterId, userInfo }) {
       </div>
       <div>
         {showComment.map((comment, index) => (
-          <div key={index} className="mt-8">
+          <div key={index} className="mt-7">
             <div className="flex flex-row font-prompt">
               {comment.image && comment.image ? (
                 <img src={comment.image} alt="" />
@@ -79,9 +80,12 @@ function Comment({ chapterId, userInfo }) {
                 <Avatar src={user} alt="avatar" size="md" />
               )}
               <p className="pl-2 font-prompt-semibold">{comment.auther}</p>
-              <p className="pl-5">
+              <p className="pl-4 pt-1 text-[13px]">
                 {" "}
-                {new Date(comment.Date).toLocaleString()}
+                
+                {TimeMange(comment.Date) === "NaN years ago"
+                        ? "just now"
+                        : TimeMange(comment.Date)}
               </p>{" "}
             </div>
             <p className="pl-14 pb-4 font-prompt">{comment.comment}</p>{" "}

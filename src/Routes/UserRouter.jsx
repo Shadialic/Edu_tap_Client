@@ -17,6 +17,7 @@ import UserChat from "../components/Chat/UserChat";
 import Error from "../components/Error/Error";
 import UserProtect from "./UserProtect";
 import UserVideoChat from "../pages/UserPages/UserVideoChat";
+import Certificate from "../pages/UserPages/Certificate";
 
 function UserRouter() {
   return (
@@ -43,6 +44,7 @@ function UserRouter() {
       <Route path="/cancel" element={<Faild />} />
       <Route path="/chat" element={  <UserProtect><UserChat/></UserProtect>} />
       <Route path='/videocall' element={<UserVideoChat/>}/>
+      <Route path='/certificate' element={<Certificate/>}/>
 
       {/* <Route path="/videocall/:roomID" element={<UserProtect><UserVideoChat /></UserProtect>} /> */}
 

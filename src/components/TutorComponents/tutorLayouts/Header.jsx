@@ -38,7 +38,7 @@ function Header() {
       display: "Running Classes",
     },
     {
-      path: "/vendor/chat",
+      path: "/vendor/PaymentReport",
       display: "Payment Report",
     },
   ];
@@ -107,6 +107,13 @@ function Header() {
                       role="menuitem"
                     >
                       Profile
+                    </Link>
+                    <Link
+                      to="/vendor/chat  "
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#7d0fc6]"
+                      role="menuitem"
+                    >
+                      chat
                     </Link>
                     <a
                       href="#"
