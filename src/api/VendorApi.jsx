@@ -169,6 +169,16 @@ export async function createGroup(data) {
   }
 }
 
+export async function fetchPaymentReport(id) {
+  try {
+    console.log(id,'1111111111111111111111111');
+    const response = await TutorApi.get(`/fetchPaymentDetailes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 // export async function getGroupchat(id) {
 //   try {
 //     console.log(id,'444444444444444444444444444444444444444444444444444');

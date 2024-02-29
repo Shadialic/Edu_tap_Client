@@ -20,6 +20,7 @@ function DisCourse() {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [data, setData] = useState([]);
   const [offer, setOffer] = useState([]);
+  const [newOffer,setNewOffer]=useState([])
 
   const inputHandler = (e) => {
     const lowerCase = e.target.value.toLowerCase();
@@ -41,6 +42,44 @@ function DisCourse() {
     setSelectedPayment(value);
     setSelectedCategory(null);
   };
+  useEffect(() => {
+    const fetchAndFilter = async () => {
+      try {
+        const offers = await loadOffer();
+        const newOffer = offers.data.categories;
+        setNewOffer(newOffer)
+        console.log(newOffer, "offerssss");
+  
+        function filterCoursesByCategory(data, category) {
+          if (!data) {
+            console.error("Data is undefined");
+            return [];
+          }
+        
+          return data.filter(
+            (course) =>
+              course.category === category &&
+              course.payment === "price"
+          );
+        }
+        
+        const filteredCourses = newOffer.map((category) => {
+          const courses = filterCoursesByCategory(offers.data.courses, category);
+          console.log(courses, "filteredCourses");
+          return courses;
+        });
+        console.log(filteredCourses,'c3333333333333333333333333333');
+  
+        setOffer(filteredCourses.flat()); 
+      } catch (error) {
+        console.error("Error fetching offers:", error);
+      }
+    };
+  
+    fetchAndFilter();
+  }, []);
+  
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,37 +107,7 @@ function DisCourse() {
     setOpn(true);
   };
   //Fetch Offers
-  useEffect(() => {
-    const fetchAndFilter = async () => {
-      try {
-        const offers = await loadOffer();
-        const newOffer = offers.data.categories; // Assuming categories is directly under data
-
-        console.log(newOffer, "offerssss");
-        console.log(data, "-------------------------");
-
-        function filterCoursesByCategory(data, category) {
-          console.log(category, "categorycategory");
-          return data.filter(
-            (course) =>
-              course.category === category.category &&
-              course.payment === "price"
-          );
-        }
-
-        newOffer.forEach((category) => {
-          const filteredCourses = filterCoursesByCategory(data, category);
-          setOffer(filteredCourses);
-
-          console.log(filteredCourses, "filteredCourses");
-        });
-      } catch (error) {
-        console.error("Error fetching offers:", error);
-      }
-    };
-
-    fetchAndFilter();
-  }, []);
+  
 
   const settings = {
     infinite: true,
@@ -235,27 +244,11 @@ function DisCourse() {
                             {item.category}
                           </h1>
                         </div>
-                        {offer &&
-                        offer.length > 0 &&
-                        offer.some(
-                          (offerItem) => offerItem.category === item.category
-                        ) ? (
-                          // Assuming offerItem contains the discounted price and Percentage property
-                          <h1 className="font-prompt text-lg text-center mt-3">
-                            Discount:{" "}
-                            {
-                              offer.find(
-                                (offerItem) =>
-                                  offerItem.category === item.category
-                              ).Percentage
-                            }
-                            %
-                          </h1>
-                        ) : (
+                       
                           <h1 className="font-prompt text-lg text-center mt-3">
                             {item.payment}
                           </h1>
-                        )}
+                        
                       </div>
                     </div>
                   </div>
@@ -271,7 +264,7 @@ function DisCourse() {
           </div>
         </div>
       ) : (
-        <DetailsCourses data={course} />
+        <DetailsCourses data={course} offer={offer} newOffer={newOffer} />
       )}
       <Footer />
     </>

@@ -13,18 +13,19 @@ import {
   fetchReviews,
   getUserCourseRating,
   purchaseCourse,
-  
 } from "../../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 import { LoadTutorList, loadOffer } from "../../../api/AdminApi";
 import { fetchChapter } from "../../../api/VendorApi";
 
-
 const StripePromise = await loadStripe(
   import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
 );
 
-function DetailsCourses({ data }) {
+function DetailsCourses({ data, offer, newOffer }) {
+  console.log(offer, "offerof============================er");
+  console.log(newOffer, "offerofaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaer");
+
   const navigate = useNavigate();
   const [chapter, setChapter] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -49,10 +50,8 @@ function DetailsCourses({ data }) {
         const auther = res.data.tutordata;
         const tutorData = auther.find((item) => item.email === data.auther);
         setAuther(tutorData);
-        
       });
 
-    
       // Fetch reviews
       const response = await fetchReviews();
       const filterdata = response.data.filter(
@@ -130,23 +129,26 @@ function DetailsCourses({ data }) {
                     style={{ fontSize: "20px", opacity: 0.55 }}
                     className="star-icon"
                   />
-                } // You can adjust this if necessary
+                }
               />
             </div>
           </div>
-          <div className="flex flex-row pl-6 mt-4">
+          <div className="flex flex-row pl-5 mt-4">
             <img className="w-7 h-7" src={auther && auther.image} alt="" />
             <h1 className="font-prompt text-lg ml-2">
               {auther && auther.tutorName}
             </h1>
           </div>
+          {newOffer && newOffer[0].category===data.category ? (
+            <h1 className="text-[15px] font-prompt ml-5 mt-3">
+              Discount {newOffer[0].Percentage}%
+            </h1>
+          ) : (
+            ""
+          )}
 
           {data.payment === "price" && clientSecret && clientSecret && (
-            <div
-              //  onClick={handleSubmit}
-              className="mb-12 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black"
-              style={{ cursor: "pointer" }}
-            >
+            <div style={{ cursor: "pointer" }}>
               <FaStripe
                 className=" ml-[40%] text-white"
                 style={{ width: "30px", height: "39px" }}
@@ -154,6 +156,7 @@ function DetailsCourses({ data }) {
               <Elements stripe={StripePromise} options={options}>
                 <LoadStripe
                   bugs={bugs}
+                  newOffer={newOffer}
                   clientSecret={clientSecret}
                   userId={userInfo.email}
                   tutorId={auther.email}

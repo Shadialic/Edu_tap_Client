@@ -20,17 +20,17 @@ export const Sidebar = ({ state }) => {
   // };
 
   return (
-    <aside className="bg-white mt-2  shadow-sm -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100">
-      <div className=" flex mt-8 ">
-        <img src={logo} className=" rounded-lg w-[30%] h-[36%] ml-4" />
-        <a className="py-6 px-8 text-center" href="#/">
-          <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
-            Edu-tap
-          </h6>
-        </a>
-      </div>
-      <div className="m-4 ">
-        <ul className="mb-4 flex flex-col gap-1">
+    <aside className="bg-white mt-2 shadow-sm -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-x-hidden">
+    <div className=" flex mt-8 ">
+      <img src={logo} className=" rounded-lg w-[30%] h-[36%] ml-4" />
+      <a className="py-6 px-8 text-center" href="#/">
+        <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
+          Edu-tap
+        </h6>
+      </a>
+    </div>
+    <div className="m-4 overflow-auto " style={{ maxHeight: "calc(100vh - 220px)" }}>
+      <ul className="mb-4 flex flex-col gap-1">
           <li>
             <a className="">
               <Link
@@ -212,6 +212,29 @@ export const Sidebar = ({ state }) => {
 
                 <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
                   Course Control
+                </p>
+              </Link>
+            </a>
+          </li>
+          <li>
+            <a className="" href="#/dashboard/notifications">
+              <Link
+                to="/admin/payment"
+                className={`align-middle select-none font-sans font-bold text-center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg ${
+                  state == "Payment Report"
+                    ? `bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white`
+                    : `text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30`
+                }  w-full flex items-center gap-4 px-4 capitalize`}
+                type="button"
+              >
+                <img
+                  className="w-5 h-5 text-inherit"
+                  src={control_Course}
+                  alt=""
+                />
+
+                <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
+                  Payment Report
                 </p>
               </Link>
             </a>

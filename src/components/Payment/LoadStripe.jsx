@@ -11,15 +11,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { SuccessRequest } from "../../api/UserApi";
 
-function LoadStripe({ clientSecret, bugs, courseId, tutorId, userId }) {
+function LoadStripe({
+  clientSecret,
+  bugs,
+  courseId,
+  tutorId,
+  userId,
+  newOffer,
+}) {
   console.log(
-    clientSecret,
-    bugs,
-    courseId,
-    tutorId,
-    userId,
-    "clientSecret772772727272"
-  );
+    (bugs * newOffer[0].Percentage) / 100,"clientSecret772772727272");
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
@@ -47,17 +48,17 @@ function LoadStripe({ clientSecret, bugs, courseId, tutorId, userId }) {
         const Buydata = {
           id: paymentIntent.id,
           paymentstatus: "success",
-          amound: paymentIntent.amount,
+          amound: (paymentIntent.amount * newOffer[0].Percentage) / 100,
           date: new Date(),
           userId: userId,
           tutorId: tutorId,
           courseId: courseId,
         };
         console.log(Buydata, "booked data");
-         const response = await SuccessRequest(Buydata)
-         toast(response.data.message)
+        const response = await SuccessRequest(Buydata);
+        toast(response.data.message);
         console.log(response, "response when it is sucecss");
-        if (response.status===200) {
+        if (response.status === 200) {
           toast.success(response.message, {
             position: "top-right",
             autoClose: 2000,
@@ -65,7 +66,7 @@ function LoadStripe({ clientSecret, bugs, courseId, tutorId, userId }) {
               marginTop: "50px",
             },
           });
-            navigate("/success")
+          navigate("/success");
         } else {
         }
       }
@@ -82,7 +83,12 @@ function LoadStripe({ clientSecret, bugs, courseId, tutorId, userId }) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Pay Now</Button>
+      <Button
+        className="flex justify-center items-center w-[40%] bg-violet-600 text-white font-prompt ml-4"
+        onClick={handleOpen}
+      >
+        Pay Now {bugs}
+      </Button>
       {open && (
         <div className="z-10 fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 backdrop-blur-sm">
           <div className="bg-white p-4 rounded-md shadow-md w-full max-w-md">
@@ -119,7 +125,9 @@ function LoadStripe({ clientSecret, bugs, courseId, tutorId, userId }) {
 
             <div className="mt-6 flex flex-row justify-around space-x-72">
               <h1 className="font-prompt">Course Amount</h1>
-              <span className="font-prompt font-prompt-semibold">₹{bugs}.00</span>
+              <span className="font-prompt font-prompt-semibold">
+                ₹{bugs * newOffer[0].Percentage / 100}
+              </span>
             </div>
 
             <div className="border-b-2 border-gray-400"></div>

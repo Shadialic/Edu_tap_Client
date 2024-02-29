@@ -136,4 +136,12 @@ export async function loadOffer(data) {
   }
 }
 
+export async function fetchPaymentReport(data) {
+  try {
+    const response = await AdminApi.get(`/fetchPaymentReport`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
