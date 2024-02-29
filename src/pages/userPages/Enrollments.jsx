@@ -17,7 +17,7 @@ function Enrollments() {
   useEffect(() => {
     const fetchEnrollments = async () => {
       try {
-        const response = await enrollments(userId);
+        const response = await enrollments(userId);     
         const fetchedCourses = response.courses;
         const chapters = response.chapter;
         const tutors = response.tutors;

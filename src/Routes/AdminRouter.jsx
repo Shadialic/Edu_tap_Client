@@ -10,6 +10,7 @@ import CourseList from "../pages/AdminPages/CourseList";
 import DisCourses from "../pages/AdminPages/DisCourses";
 import AdminPublic from "./AdminPublic";
 import Adminprotect from "./AdminProtect";
+import Offers from "../pages/AdminPages/Offers";
 function AdminRouter() {
   return (
     <div>
@@ -82,6 +83,14 @@ function AdminRouter() {
           element={
             <Adminprotect>
               <DisCourses />
+            </Adminprotect>
+          }
+        />
+         <Route
+          path="/offers"
+          element={
+            <Adminprotect>
+              <Offers />
             </Adminprotect>
           }
         />

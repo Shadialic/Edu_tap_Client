@@ -119,3 +119,21 @@ export async function manageBlock(course_id) {
   }
 }
 
+export async function postOffer(data) {
+  try {
+    const response = await AdminApi.post(`/postOffer`, data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function loadOffer(data) {
+  try {
+    const response = await AdminApi.get(`/loadOffer`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+

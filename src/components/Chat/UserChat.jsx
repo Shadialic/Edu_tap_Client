@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { getChats, getMessages, sendMessage } from "../../api/UserApi";
-import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { TimeMange } from "../../helpers/TimeMange";
 import { useNavigate } from "react-router-dom";

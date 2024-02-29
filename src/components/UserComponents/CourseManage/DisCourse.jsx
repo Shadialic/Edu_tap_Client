@@ -7,6 +7,7 @@ import { Select, Option } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import DetailsCourses from "./DetailsCourses";
 import { Footer } from "../Layouts/Footer";
+import { loadOffer } from "../../../api/AdminApi";
 
 function DisCourse() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function DisCourse() {
   const [selectedPayment, setSelectedPayment] = useState("");
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [data, setData] = useState([]);
+  const [offer, setOffer] = useState([]);
 
   const inputHandler = (e) => {
     const lowerCase = e.target.value.toLowerCase();
@@ -50,7 +52,7 @@ function DisCourse() {
         setData(filter);
       });
     };
-    fetchData();  
+    fetchData();
   }, []);
 
   const filteredCourses = data
@@ -65,6 +67,38 @@ function DisCourse() {
     setCourse(filter);
     setOpn(true);
   };
+  //Fetch Offers
+  useEffect(() => {
+    const fetchAndFilter = async () => {
+      try {
+        const offers = await loadOffer();
+        const newOffer = offers.data.categories; // Assuming categories is directly under data
+
+        console.log(newOffer, "offerssss");
+        console.log(data, "-------------------------");
+
+        function filterCoursesByCategory(data, category) {
+          console.log(category, "categorycategory");
+          return data.filter(
+            (course) =>
+              course.category === category.category &&
+              course.payment === "price"
+          );
+        }
+
+        newOffer.forEach((category) => {
+          const filteredCourses = filterCoursesByCategory(data, category);
+          setOffer(filteredCourses);
+
+          console.log(filteredCourses, "filteredCourses");
+        });
+      } catch (error) {
+        console.error("Error fetching offers:", error);
+      }
+    };
+
+    fetchAndFilter();
+  }, []);
 
   const settings = {
     infinite: true,
@@ -201,9 +235,27 @@ function DisCourse() {
                             {item.category}
                           </h1>
                         </div>
-                        <h1 className="font-prompt text-lg text-center mt-3">
-                          {item.payment}
-                        </h1>
+                        {offer &&
+                        offer.length > 0 &&
+                        offer.some(
+                          (offerItem) => offerItem.category === item.category
+                        ) ? (
+                          // Assuming offerItem contains the discounted price and Percentage property
+                          <h1 className="font-prompt text-lg text-center mt-3">
+                            Discount:{" "}
+                            {
+                              offer.find(
+                                (offerItem) =>
+                                  offerItem.category === item.category
+                              ).Percentage
+                            }
+                            %
+                          </h1>
+                        ) : (
+                          <h1 className="font-prompt text-lg text-center mt-3">
+                            {item.payment}
+                          </h1>
+                        )}
                       </div>
                     </div>
                   </div>

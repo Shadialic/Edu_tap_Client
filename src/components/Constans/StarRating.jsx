@@ -37,38 +37,60 @@ const StarRating = ({ userId, courseId, currentrating }) => {
   useEffect(() => {
     const fetchRating = async () => {
       const response = await getUserCourseRating({ courseId, userId });
-      console.log(response, "pppppppppp");
       setRating(response.yourRating.star);
     };
     fetchRating();
   }, [userId, courseId]);
-  console.log(hover, "00000", rating);
+
   return (
     <Box
+    sx={{
+      width: "100%",
+      display: "flex",
+      flexWrap: "wrap", 
+      alignItems: "center",
+      fontSize: "14px",
+    }}
+  >
+    <div className="flex flex-row font-prompt pl-3">
+      <span>Your Rating</span>
+    </div>
+    <Rating
+      className="ml-2 text-lg"
       sx={{
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        fontSize: "15px", 
+        fontSize: "20px",
+        "& .MuiRating-iconFilled": {
+          fontSize: "20px", 
+        },
+        "& .MuiRating-iconEmpty": {
+          fontSize: "20px", 
+        },
+        flex: "0 0 auto",
       }}
-    >
-      <div className="flex flex-row font-prompt pl-3  ">
-        <span>YourRating</span>
-      </div>
-      <Rating
-        className="ml-2 "
-        name="hover-feedback"
-        value={rating}
-        precision={0.5}
-        getLabelText={getLabelText}
-        onChange={handleChange}
-        onChangeActive={handleChangeActive}
-        emptyIcon={<StarIcon style={{ fontSize: "small", opacity: 0.55 }} />}
-      />
-      {rating !== null && (
-        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : rating]}</Box>
-      )}
-    </Box>
+      name="hover-feedback"
+      value={rating}
+      precision={0.5}
+      getLabelText={getLabelText}
+      onChange={handleChange}
+      onChangeActive={handleChangeActive}
+      emptyIcon={<StarIcon style={{ fontSize: "20px", opacity: 0.55 }} />}
+    />
+    {rating !== null && (
+      <Box
+        sx={{
+          ml: 2,
+          width: "auto", 
+          display: "flex",
+          alignItems: "center",
+          fontSize: "14px",
+          flex: "1 0 0", 
+        }}
+      >
+        {labels[hover !== -1 ? hover : rating]}
+      </Box>
+    )}
+  </Box>
+  
   );
 };
 

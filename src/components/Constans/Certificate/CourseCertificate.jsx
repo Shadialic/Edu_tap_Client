@@ -1,97 +1,81 @@
 import React, { useRef } from "react";
-import { useLocation } from "react-router-dom";
-import html2canvas from 'html2canvas'; // Import html2canvas library
-import jsPDF from 'jspdf';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
-
+import { useLocation, useNavigate } from "react-router-dom";
+import html2canvas from "html2canvas"; 
+import jsPDF from "jspdf";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import bg from "../../../../public/images/tutor/bg-home.jpg";
 export function downloadPDF(detailsRef) {
-    html2canvas(detailsRef.current).then(canvas => {
-        const imageData = canvas.toDataURL('image/png');
-
-        const pdf = new jsPDF();
-        pdf.addImage(imageData, 'PNG', 0, 0);
-        pdf.save("document.pdf");
+  const element = detailsRef.current;
+  html2canvas(element).then((canvas) => {
+    const imageData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait", 
+      unit: "px", 
+      format: [canvas.width, canvas.height], 
     });
+    pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height); 
+    pdf.save("document.pdf");
+  });
 }
 
 function CourseCertificate() {
-    const location = useLocation();
-    console.log("Current location:", location);
-    const detailsRef = useRef(null); // Create a ref
+  const location = useLocation();
+  const navigate = useNavigate();
+  const details = location.state;
+  const course = details.course;
+  const detailsRef = useRef(null);
+  const handleDownloadPDF = () => {
+    downloadPDF(detailsRef);
+  };
 
-    const handleDownloadPDF = () => {
-        downloadPDF(detailsRef); 
-    };
-
-    return (
-        <div>
-            <div className="pm-certificate-body px-4 flex justify-center items-center h-screen bg-gray-300">
-                <div className="container pm-certificate-container relative w-800 h-600 bg-blue-500 p-8 text-gray-800 font-sans">
-                    {/* Outer Border */}
-                    <div className="outer-border absolute w-794 h-594 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-white"></div>
-
-                    {/* Inner Border */}
-                    <div className="inner-border absolute w-730 h-530 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-white"></div>
-
-                    {/* Certificate Body */}
-                    <div className="pm-certificate-border relative w-720 h-520 border border-gray-300 bg-white text-gray-800">
-                        {/* Certificate Header */}
-                        <div className="pm-certificate-header mb-10">
-                            <div className="pm-certificate-title text-center">
-                                <h2 className="text-3xl font-cursive">Buffalo Public Schools Certificate of Completion</h2>
-                            </div>
-                        </div>
-
-                        {/* Certificate Body */}
-                        <div ref={detailsRef} className="pm-certificate-body px-4">
-                            {/* Certificate Name */}
-                            <div className="pm-certificate-block">
-                                <div className="text-center">
-                                    <span className="pm-name-text font-bold text-2xl">TrueNorth Administrator</span>
-                                </div>
-                            </div>
-
-                            {/* Earned */}
-                            <div className="pm-earned mt-6 text-center">
-                                <span className="pm-earned-text font-cursive block">has earned</span>
-                                <span className="pm-credits-text font-bold block">PD175: 1.0 Credit Hours</span>
-                            </div>
-
-                            {/* Course Title */}
-                            <div className="pm-course-title mt-4 text-center">
-                                <span className="pm-earned-text font-cursive block">while completing the training course entitled</span>
-                                <span className="pm-credits-text font-bold block">BPS PGS Initial PLO for Principals at Cluster Meetings</span>
-                            </div>
-                        </div>
-
-                        {/* Certificate Footer */}
-                        <div className="pm-certificate-footer flex justify-between items-center px-4 absolute bottom-0 left-0 w-full">
-                            <div className="pm-certified text-center">
-                                <span className="pm-credits-text block">Buffalo City School District</span>
-                                <span className="block border-b border-gray-700 mb-3"></span>
-                                <span className="font-bold block">Crystal Benton Instructional Specialist II, Staff Development</span>
-                            </div>
-                            <div className="col-xs-4"></div>
-                            <div className="pm-certified text-center">
-                                <span className="pm-credits-text block">Date Completed</span>
-                                <span className="block border-b border-gray-700 mb-3"></span>
-                                <span className="font-bold block">DOB: </span>
-                                <span className="font-bold block">Social Security # (last 4 digits)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div>
+      <FontAwesomeIcon
+        icon={faArrowLeft}
+        onClick={() => navigate("/enrollments")}
+      />
+      <div
+        ref={detailsRef}
+        className="pm-certificate-body px-4 flex justify-center items-center h-screen"
+      >
+        <div className="w-[100%] h-[90%] bg-white relative">
+          <div className="absolute inset-0 flex flex-col justify-c">
+            <h1 className="text-[40px] text-center font-prompt-semibold font-prompt">
+              Certificate <br />
+              <span className="text-[30px] font-prompt-xlight">Of Course</span>
+            </h1>
+            <div className=" text-center text-3xl">
+              <h1 className="">Is Hereby Presented To</h1>
             </div>
-            {/* Add FontAwesomeIcon for download */}
-            <FontAwesomeIcon
-                onClick={handleDownloadPDF}
-                className="mb-2 cursor-pointer"
-                icon={faDownload}
-                style={{ color: "#B197FC", fontSize: "24px" }}
-            />
+            <div className=" text-center text-[60px] ">
+              <h1 className="">{details.name}</h1>
+              <p className="text-[16px]">
+                For Successfully Completing the {course[0].category}{" "}
+                {course[0].title} course
+              </p>
+            </div>
+            <div className="flex justify-between items-center w-[70%] mx-auto font-prompt ">
+              <h1 className="text-center">
+                DATE <br />
+                27/2/2024
+              </h1>
+              <h1 className="text-right">
+                SIGNATURE <br /> Edu-tap Team
+              </h1>
+            </div>
+          </div>
+          <img className="z-10 h-full" src={bg} alt="" />
         </div>
-    );
+      </div>
+      <FontAwesomeIcon
+        onClick={handleDownloadPDF}
+        className="m cursor-pointer absolute bottom-2  right-4"
+        icon={faDownload}
+        style={{ color: "#B197FC", fontSize: "30px" }}
+      />
+    </div>
+  );
 }
 
 export default CourseCertificate;

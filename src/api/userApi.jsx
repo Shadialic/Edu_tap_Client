@@ -300,3 +300,11 @@ export async function checkConnection(data) {
     console.log(error);
   }
 }
+export async function SuccessRequest(buyData) {
+  try {
+      const res = await UserApi.post(`/success`,{data: buyData})
+      return res
+  } catch (error) {
+      console.log(error);
+  }
+}

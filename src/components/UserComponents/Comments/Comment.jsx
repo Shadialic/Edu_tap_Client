@@ -3,40 +3,57 @@ import { LoadComments, postCommnets } from "../../../api/UserApi";
 import user from "../../../../public/images/user/user.png";
 import { Avatar } from "@material-tailwind/react";
 import { TimeMange } from "../../../helpers/TimeMange";
+import { io } from "socket.io-client";
+
 function Comment({ chapterId, userInfo }) {
-  const [comment, setComment] = useState("");
-  const [showComment, setShowComment] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [showComments, setShowComments] = useState([]);
+  const [socket, setSocket] = useState(null);
   const chapter = chapterId[0]._id;
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await LoadComments(chapter);
-        setShowComment(response.comments);
-      } catch (error) {
-        console.error("Error loading comments:", error);
-      }
+    const newSocket = io("http://localhost:3000");
+    setSocket(newSocket);
+    return () => {
+      newSocket.disconnect();
     };
+  }, []);
 
-    fetchComments();
-  }, [chapter, comment]);
+  useEffect(() => {
+    if (socket) {
+      socket.on("new-comment", ({ comment }) => {
+        setShowComments((prevComments) => [...prevComments, comment]);
+      });
+      return () => {
+        socket.off("new-comment");
+      };
+    }
+  }, [socket]);
+  useEffect(()=>{
+    const fetch=async()=>{
+      const response=await LoadComments(chapter);
+      setShowComments(response.comments)
+    }
+    fetch();
+  },[])
 
   const handleChange = (e) => {
-    setComment(e.target.value);
+    setCommentText(e.target.value);
   };
-
   const handleSubmit = async () => {
     const data = {
-      comment: comment,
-      auther: userInfo.userName,
+      comment: commentText,
+      author: userInfo.userName,
       Date: new Date(),
       chapterId: chapter,
       Image: userInfo.image,
     };
-    setComment("");
+
+    setCommentText("");
 
     try {
       const response = await postCommnets(data);
+      console.log(response,'responseresponseresponseresponse');
     } catch (error) {
       console.error("Error submitting comment:", error);
     }
@@ -51,14 +68,14 @@ function Comment({ chapterId, userInfo }) {
             type="text"
             className="w-full h-10 border-b outline-none font-prompt"
             placeholder="Add a Comment"
-            value={comment}
+            value={commentText}
             onChange={handleChange}
           />
           <div className="flex flex-row justify-end gap-4 mt-2">
             <div className="font-prompt w-auto rounded-full p-2 h-10 hover:bg-blue-gray-100">
-              <button onClick={() => setComment("")}>Cancel</button>
+              <button onClick={() => setCommentText("")}>Cancel</button>
             </div>
-            {comment.length > 0 ? (
+            {commentText.length > 0 ? (
               <div className="font-prompt w-auto rounded-full p-2 h-10 bg-blue-700 text-white">
                 <button onClick={handleSubmit}>Comment</button>
               </div>
@@ -71,26 +88,22 @@ function Comment({ chapterId, userInfo }) {
         </div>
       </div>
       <div>
-        {showComment.map((comment, index) => (
+        {showComments.map((comment, index) => (
           <div key={index} className="mt-7">
             <div className="flex flex-row font-prompt">
-              {comment.image && comment.image ? (
-                <img src={comment.image} alt="" />
+              {comment.Image ? (
+                <img src={comment.Image} alt="" />
               ) : (
                 <Avatar src={user} alt="avatar" size="md" />
               )}
-              <p className="pl-2 font-prompt-semibold">{comment.auther}</p>
+              <p className="pl-2 font-prompt-semibold">{comment.author}</p>
               <p className="pl-4 pt-1 text-[13px]">
-                {" "}
-                
                 {TimeMange(comment.Date) === "NaN years ago"
-                        ? "just now"
-                        : TimeMange(comment.Date)}
-              </p>{" "}
+                  ? "just now"
+                  : TimeMange(comment.Date)}
+              </p>
             </div>
-            <p className="pl-14 pb-4 font-prompt">{comment.comment}</p>{" "}
-            {/* Render the comment text */}
-            {/* Render the date */}
+            <p className="pl-14 pb-4 font-prompt">{comment.comment}</p>
           </div>
         ))}
       </div>

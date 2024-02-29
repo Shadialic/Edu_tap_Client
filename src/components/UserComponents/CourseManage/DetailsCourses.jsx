@@ -1,28 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { FaStripe } from "react-icons/fa";
+import Rating from "@mui/material/Rating";
+import StarIcon from "@mui/icons-material/Star";
+import { TimeMange } from "../../../helpers/TimeMange";
+import LoadStripe from "../../Payment/LoadStripe";
 import review from "../../../../public/images/user/reviews.png";
-import { fetchChapter } from "../../../api/VendorApi";
 import {
   checkout,
   fetchReviews,
   getUserCourseRating,
   purchaseCourse,
+  
 } from "../../../api/UserApi";
 import { useNavigate } from "react-router-dom";
-import { LoadTutorList } from "../../../api/AdminApi";
-import Rating from "@mui/material/Rating";
-import StarIcon from "@mui/icons-material/Star";
-import { TimeMange } from "../../../helpers/TimeMange";
+import { LoadTutorList, loadOffer } from "../../../api/AdminApi";
+import { fetchChapter } from "../../../api/VendorApi";
+
+
+const StripePromise = await loadStripe(
+  import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
+);
 
 function DetailsCourses({ data }) {
   const navigate = useNavigate();
   const [chapter, setChapter] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [auther, setAuther] = useState();
+  const [clientSecret, setClientSecret] = useState(null);
   const [rating, setRating] = useState(null);
+  const [bugs, setBugs] = useState(null);
+
   useEffect(() => {
     const fetch = async () => {
+      // Fetch chapter data
       await fetchChapter().then((res) => {
         const updateData = res.data.data;
         const filterData = updateData.filter(
@@ -30,53 +43,57 @@ function DetailsCourses({ data }) {
         );
         setChapter(filterData);
       });
+
+      // Fetch tutor data
       await LoadTutorList().then((res) => {
         const auther = res.data.tutordata;
         const tutorData = auther.find((item) => item.email === data.auther);
         setAuther(tutorData);
+        
       });
+
+    
+      // Fetch reviews
       const response = await fetchReviews();
       const filterdata = response.data.filter(
         (item) => item.courseId === data._id
       );
       setReviews(filterdata);
+
+      // Fetch user course rating
       const currentrating = await getUserCourseRating(data._id);
       const courseRating = currentrating.data.rating;
       setRating(parseFloat(courseRating.totelrating));
-      console.log(currentrating.data.rating, "-------2-2-2-");
     };
     fetch();
   }, []);
+
   const tutorInfo = useSelector((state) => state.tutor.tutorInfo);
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = userInfo.id;
 
-  const activeCourse = async (courseid) => {
-    if (data.payment === "price") {
-      const response=await purchaseCourse(courseid, userId);
-      const stripe = await loadStripe(
-        import.meta.env.VITE_REACT_APP_PUBLISHABLE_KEY
-      );
-      console.log(stripe,'stripe');
-
-      console.log(response,'response');
-
-      const result = await checkout(courseid);
-      console.log(result,'result');
-
-      const { sessionId } = result;
-      console.log(sessionId,'sessionId');
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: sessionId,
-      });
-      if (error) {
-        console.error("Payment failed:", error);
+  useEffect(() => {
+    const fetch = async () => {
+      if (data.payment === "price") {
+        const result = await checkout(data._id);
+        setClientSecret(result.clientSecret);
+        setBugs(data.price);
+      } else {
+        await purchaseCourse(data._id, userId).then((res) => {
+          navigate("/enrollments");
+        });
       }
-    } else {
-      await purchaseCourse(courseid, userId).then((res) => {
-        navigate("/enrollments");
-      });
-    }
+    };
+    fetch();
+  }, []);
+
+  const appearance = {
+    theme: "stripe",
+  };
+
+  const options = {
+    clientSecret,
+    appearance,
   };
   return (
     <>
@@ -93,13 +110,29 @@ function DetailsCourses({ data }) {
           </div>
           <div className="flex flex-row mt-2 gap-2">
             <span className="font-prompt pl-6 ">{rating}</span>
-            <Rating
-              value={rating}
-              precision={0.5}
-              emptyIcon={
-                <StarIcon style={{ opacity: 0.55 }} fontSize="small" />
-              }
-            />
+            <div className="text-lg">
+              <Rating
+                sx={{
+                  fontSize: "18px",
+                  "& .MuiRating-iconFilled": {
+                    fontSize: "18px",
+                  },
+                  "& .MuiRating-iconEmpty": {
+                    fontSize: "18px",
+                  },
+                  flex: "0 0 auto",
+                }}
+                className="pt-1 text-lg"
+                value={rating}
+                precision={0.5}
+                emptyIcon={
+                  <StarIcon
+                    style={{ fontSize: "20px", opacity: 0.55 }}
+                    className="star-icon"
+                  />
+                } // You can adjust this if necessary
+              />
+            </div>
           </div>
           <div className="flex flex-row pl-6 mt-4">
             <img className="w-7 h-7" src={auther && auther.image} alt="" />
@@ -108,20 +141,33 @@ function DetailsCourses({ data }) {
             </h1>
           </div>
 
-          {data.payment === "price" ? (
-            <div className="p-6 ">
-              <button
-                onClick={() => activeCourse(data._id)}
-                className="w-[34%]  rounded-md h-9 bg-violet-600 font-prompt text-white"
-              >
-                payment
-              </button>
+          {data.payment === "price" && clientSecret && clientSecret && (
+            <div
+              //  onClick={handleSubmit}
+              className="mb-12 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black"
+              style={{ cursor: "pointer" }}
+            >
+              <FaStripe
+                className=" ml-[40%] text-white"
+                style={{ width: "30px", height: "39px" }}
+              />
+              <Elements stripe={StripePromise} options={options}>
+                <LoadStripe
+                  bugs={bugs}
+                  clientSecret={clientSecret}
+                  userId={userInfo.email}
+                  tutorId={auther.email}
+                  courseId={data._id}
+                />
+              </Elements>
             </div>
-          ) : (
-            <div className="p-6 ">
+          )}
+
+          {data.payment !== "price" && (
+            <div className="p-6">
               <button
                 onClick={() => activeCourse(data._id)}
-                className="w-[35%]  rounded-md h-9 bg-violet-600 font-prompt text-white"
+                className="w-[35%] rounded-md h-9 bg-violet-600 font-prompt text-white"
               >
                 Start
               </button>

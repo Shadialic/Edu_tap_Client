@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
-import RatingStar from "../../Constans/RatingStar/RatingStar";
 import {
   checkConnection,
   createChat,
@@ -15,7 +14,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLock,
   faUnlock,
-  faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,6 +31,7 @@ function Collections({ chapter, courseId, tutors, course }) {
   const [showReview, setShowReiview] = useState([]);
   const [courseCompleted, setCourseCompleted] = useState(false);
   const [certificate, setCertificate] = useState(false);
+
   const userInfo = useSelector((state) => state.user.userInfo);
   const [videoCompletionStatus, setVideoCompletionStatus] = useState(() => {
     const storedStatus = localStorage.getItem("videoCompletionStatus");
@@ -67,21 +66,13 @@ function Collections({ chapter, courseId, tutors, course }) {
       state: {
         name: userInfo.userName,
         tutorName: tutorData.tutorName,
-        courseId: courseId,
+        course: course,
       },
     });
   };
   useEffect(() => {
     checkCourseCompletion();
-    console.log(courseCompleted, "courseCompleted");
-    console.log(
-      videoCompletionStatus.length,
-      "videoCompletionStatus.length",
-      data.length
-    );
-
     const allChaptersWatched = courseCompleted.length === data.length;
-    console.log(allChaptersWatched, "allChaptersWatched");
     if (data.length != 0 && videoCompletionStatus.length === data.length) {
       setCertificate(true);
     }
@@ -119,7 +110,7 @@ function Collections({ chapter, courseId, tutors, course }) {
   const handleFollowing = async () => {
     const firstId = userInfo.id;
     const secondId = tutorData._id;
-    const response = await createChat({ firstId, secondId });
+   await createChat({ firstId, secondId });
     setShowMessage(true);
   };
 
@@ -149,9 +140,7 @@ function Collections({ chapter, courseId, tutors, course }) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
-  const handleDownloadPDF = () => {
-    downloadPDF(detailsRef); 
-};
+  
 
   return (
     <div className="flex flex-row w-screen h-fit">
@@ -181,12 +170,6 @@ function Collections({ chapter, courseId, tutors, course }) {
                 >
                   Certificate
                 </button>
-                <FontAwesomeIcon
-                  onClick={handleDownloadPDF}
-                  className="mb-2 cursor-pointer"
-                  icon={faDownload}
-                  style={{ color: "#B197FC", fontSize: "24px" }}
-                />
               </div>
             )}
 
