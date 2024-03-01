@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
 import {
+  Certificateadded,
+  UpdateUser,
   checkConnection,
   createChat,
   fetchReviews,
@@ -74,6 +76,12 @@ function Collections({ chapter, courseId, tutors, course }) {
     checkCourseCompletion();
     const allChaptersWatched = courseCompleted.length === data.length;
     if (data.length != 0 && videoCompletionStatus.length === data.length) {
+      const update=async()=>{
+
+        const userId=userInfo.id
+        const ata=await Certificateadded({courseId,userId})
+      }
+      update()
       setCertificate(true);
     }
   }, [videoCompletionStatus]);

@@ -63,14 +63,13 @@ function Header({ state }) {
 
   return (
     <div>
-      <div className="flex shadow-md">
+      <div className="flex shadow-md z-10">
         <div className="flex flex-row items-center">
           <img src={logo} alt="" className="w-18 h-16 ml-3" />
           <h2 className="text-2xl font-prompt font-prompt-normal mt-2  text-[#000000]">
             Edu-tap
           </h2>
         </div>
-
         <div className="flex flex-row gap-10 absolute right-20 font-prompt">
           {nav_title.map((item) => (
             <h4
@@ -119,6 +118,13 @@ function Header({ state }) {
                     role="menuitem"
                   >
                     Profile
+                  </Link>
+                  <Link
+                    to="/chat"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#7d0fc6]"
+                    role="menuitem"
+                  >
+                    Chat
                   </Link>
                   <a
                     href="#"

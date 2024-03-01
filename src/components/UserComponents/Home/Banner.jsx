@@ -19,28 +19,27 @@ function Banner() {
 
   const settings = {
     infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
+    slidesToShow: 6,
+    slidesToScroll: 2,
     autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 2000,
+    speed: 3000, // This controls the transition speed between slides
+    autoplaySpeed: 3000, // This controls the speed at which the slides change during autoplay
   };
-
   return (
     <>
       <div className="bg-[#fbfaff] ">
         <h1 className="p-7 font-prompt font-prompt-semibold text-2xl">
           Most Popular Courses
         </h1>
-        <div className="flex-row ml-6 w-auto">
+        <div className=" gap-2">
           <Slider
             {...settings}
-            className="custom-slick-slider p-2 "
+            className="custom-slick-slider   "
              style={{ marginRight: "10px" }}
           >
             {course.map((item) => (
               <div key={item.id}>
-                <img className="w-44 h-44" src={item.image} alt="" />
+                <img className="w-48 h-44" src={item.image} alt="" />
                 <h1 className="font-prompt text-lg">{item.title}</h1>
               </div>
             ))}

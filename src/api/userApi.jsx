@@ -223,7 +223,11 @@ export async function getMessages(id) {
 export async function sendMessage(data) {
   try {
     console.log(data,'-------------------');
-    const response = await UserApi.post(`/createMessage`,{data});
+    const response = await UserApi.post(`/createMessage`,{data}, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -303,6 +307,15 @@ export async function checkConnection(data) {
 export async function SuccessRequest(buyData) {
   try {
       const res = await UserApi.post(`/success`,{data: buyData})
+      return res
+  } catch (error) {
+      console.log(error);
+  }
+}
+export async function Certificateadded(data) {
+  try {
+    console.log(data,'-----------------------');
+      const res = await UserApi.post(`/certificate`,{data: data})
       return res
   } catch (error) {
       console.log(error);

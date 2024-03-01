@@ -40,14 +40,11 @@ function UserRouter() {
        <Route path="/enrollments"element={<UserProtect><Enrollments /> </UserProtect> }/>
       <Route path="/about" element={<About />} />
       <Route path="/blog" element={<Blog />} />
-      <Route path="/success" element={<Success />} />
+      <Route path="/success" element={<UserProtect><Success /></UserProtect>} />
       <Route path="/cancel" element={<Faild />} />
       <Route path="/chat" element={  <UserProtect><UserChat/></UserProtect>} />
       <Route path='/videocall' element={<UserVideoChat/>}/>
       <Route path='/certificate' element={<Certificate/>}/>
-
-      {/* <Route path="/videocall/:roomID" element={<UserProtect><UserVideoChat /></UserProtect>} /> */}
-
       <Route path="*" element={<Error />} />
     </Routes>
   );

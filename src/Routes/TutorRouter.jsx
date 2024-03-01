@@ -16,6 +16,7 @@ import TutorChat from "../components/Chat/TutorChat";
 import Error from "../components/Error/Error";
 import TutorVideoChat from "../pages/TutorPages/TutorVideoChat";
 import PaymentReport from "../pages/TutorPages/PaymentReport";
+import TutorProtect from "./TutorProtect";
 
 const Lyouts = () => {
   return (
@@ -29,28 +30,19 @@ const Lyouts = () => {
 function TutorRouter() {
   return (
     <Routes>
-      <Route path="/signup" exact element={<TutorSignUp />} />
-      <Route
-        path="/login"
-        element={
-          <>
-            {" "}
-            <TutorPublic /> <TutorLogin />
-            <TutorPublic />{" "}
-          </>
-        }
-      />
+      <Route path="/signup" exact element={<><TutorPublic /><TutorSignUp /><TutorPublic /></>} />
+      <Route path="/login" element={<>{" "}<TutorPublic /> <TutorLogin /><TutorPublic />{" "}</>} />
       <Route path="/otp" exact element={<Otp />} />
       <Route path="/" exact element={<Lyouts />}>
-        <Route path="/" exact element={<TutorHome />} />
-        <Route path="/profile" exact element={<TutorProfile />} />
-        <Route path="/:category" element={<AddForm />} />
-        <Route path="/waitinglist" element={<WaitingList />} />
-        <Route path="/runningClasses" element={<RunningClasses />} />
+        <Route path="/" exact element={<TutorProtect><TutorHome /></TutorProtect>} />
+        <Route path="/profile" exact element={<TutorProtect><TutorProfile /></TutorProtect>} />
+        <Route path="/:category" element={<TutorProtect><AddForm /></TutorProtect>} />
+        <Route path="/waitinglist" element={<TutorProtect><WaitingList /></TutorProtect>} />
+        <Route path="/runningClasses" element={<TutorProtect><RunningClasses /></TutorProtect>} />
       </Route>
-        <Route path="/PaymentReport" element={<PaymentReport />} />
-      <Route path="/chat" element={<TutorChat />} />
-      <Route path="/videocall" element={<TutorVideoChat />} />
+      <Route path="/PaymentReport" element={<TutorProtect><PaymentReport /></TutorProtect>} />
+      <Route path="/chat" element={<TutorProtect><TutorChat /></TutorProtect>} />
+      <Route path="/videocall" element={<TutorProtect><TutorVideoChat /></TutorProtect>} />
       <Route path="*" element={<Error />} />
     </Routes>
   );

@@ -40,6 +40,8 @@ function UserChat() {
     const senderId = userInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
+    const userName = userInfo.userName;
+    const userImage = userInfo.image;
     try {
       const res = await sendMessage({
         text,
@@ -47,6 +49,8 @@ function UserChat() {
         senderId,
         recipientId,
         groupChat,
+        userName,
+        userImage,
         isGroupChat,
       });
       const response = res.saveMeassage;
@@ -123,6 +127,7 @@ function UserChat() {
     const fetchMessages = async () => {
       try {
         const res = await getMessages(currentChat?._id);
+        console.log(res.message);
         setMessages(res.message);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -179,6 +184,7 @@ function UserChat() {
       console.error("Recipient details or sender details are missing.");
     }
   };
+  console.log(groupChat, "groupChatgroupChat");
 
   return (
     <>
@@ -222,7 +228,7 @@ function UserChat() {
                       <div>
                         <Typography
                           variant="h6"
-                          className="text-font-prompt font- uppercase mb-2"
+                          className="text- font-prompt font-prompt-semibold  mb-2 ml-2"
                         >
                           {chat.members[0].tutorName}
                         </Typography>
@@ -259,7 +265,7 @@ function UserChat() {
                         <div>
                           <Typography
                             variant="h6"
-                            className="text-font-prompt font- uppercase mb-2"
+                            className="text-font-prompt font-prompt-semibold  mb-2 ml-2"
                           >
                             {item.groupName}
                           </Typography>
@@ -325,18 +331,44 @@ function UserChat() {
                   {messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`message p-2  mb-2 rounded-md w-fit h-auto font-prompt ${
+                      className={`flex flex-row mb-2 rounded-md w-fit h-auto ${
+                        // Apply relevant class based on sender ID:
                         message.senderId === userInfo.id
-                          ? "bg-violet-600 text-white   ml-auto"
-                          : "bg-white mr-auto shadow-xl shadow-gray-200"
+                          ? "ml-auto bg-violet-600 text-white"
+                          : "mr-auto bg-white shadow-xl shadow-gray-200"
                       }`}
                     >
-                      <h1>{message.text}</h1>
-                      <span className="flex justify-end items-end text-[10px]  font-prompt-light   ">
-                        {TimeMange(message.createdAt) == "NaN years ago"
-                          ? "just now"
-                          : TimeMange(message.createdAt)}
-                      </span>
+                      {currentChat.groupName &&
+                      message.senderId !== userInfo.id ? (
+                        <>
+                          <Avatar
+                            src={message.userImage}
+                            alt="avatar"
+                            size="sm"
+                            className="mb-2 mr-2"
+                          />
+                          <div>
+                            <h1 className="font-prompt-semibold">
+                              {message.userName}
+                            </h1>
+                            <h1 className="mr-2 p-1">{message.text}</h1>
+                            <span className="flex justify-end items-end text-[10px] font-prompt-light">
+                              {TimeMange(message.createdAt) == "NaN years ago"
+                                ? "just now"
+                                : TimeMange(message.createdAt)}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="message p-2 rounded-md w-fit h-auto font-prompt mb-2">
+                          <h1 className="mr-2 ">{message.text}</h1>
+                          <span className="flex justify-end items-end text-[10px] font-prompt-light">
+                            {TimeMange(message.createdAt) == "NaN years ago"
+                              ? "just now"
+                              : TimeMange(message.createdAt)}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   ))}
                   <div ref={scroll}></div>

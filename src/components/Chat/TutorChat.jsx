@@ -118,6 +118,8 @@ function TutorChat() {
   const handleCancelSelection = () => {
     setSelectedUsers(null);
   };
+  console.log(userChats, "userChats");
+
   const sendTextMessage = async () => {
     const isGroupChat = selectedMember.groupName;
     const recipientId = currentChat.members[0]._id;
@@ -125,6 +127,8 @@ function TutorChat() {
     const senderId = tutorInfo.id;
     const chatId = currentChat._id;
     const text = textMessage;
+    const userName = tutorInfo.name;
+    const userImage = tutorInfo.image;
     try {
       const res = await sendMessage({
         text,
@@ -133,6 +137,8 @@ function TutorChat() {
         recipientId,
         groupChat,
         isGroupChat,
+        userImage,
+        userName,
       });
       const response = res.saveMeassage;
       setNewMessage(response);
@@ -444,9 +450,15 @@ function TutorChat() {
                       <div>
                         <Typography
                           variant="h6"
-                          className="text-font-prompt font- uppercase mb-2"
+                          className="text-font-prompt font- uppercase mb-2 ml-2"
                         >
                           {chat.members[0].userName}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          className="text-font-prompt font- uppercase mb-2"
+                        >
+                          {chat.members[0].email}
                         </Typography>
                       </div>
                     </div>
@@ -544,18 +556,43 @@ function TutorChat() {
                   {messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`message p-2  mb-2 rounded-md w-fit h-auto font-prompt ${
+                      className={`flex flex-row mb-2 rounded-md w-fit h-auto ${
                         message.senderId === tutorInfo.id
-                          ? "bg-violet-600 text-white   ml-auto"
-                          : "bg-white mr-auto shadow-xl shadow-gray-200"
+                          ? "ml-auto bg-violet-600 text-white"
+                          : "mr-auto bg-white shadow-xl shadow-gray-200"
                       }`}
                     >
-                      <h1>{message.text}</h1>
-                      <span className="flex justify-end items-end text-[10px]  font-prompt-light   ">
-                        {TimeMange(message.createdAt) == "NaN years ago"
-                          ? "just now"
-                          : TimeMange(message.createdAt)}
-                      </span>
+                      {currentChat.groupName &&
+                      message.senderId !== tutorInfo.id ? (
+                        <>
+                          <Avatar
+                            src={message.userImage}
+                            alt="avatar"
+                            size="sm"
+                            className="mb-2 mr-2"
+                          />
+                          <div>
+                            <h1 className="font-prompt-semibold">
+                              {message.userName}
+                            </h1>
+                            <h1 className="mr-2 p-1">{message.text}</h1>
+                            <span className="flex justify-end items-end text-[10px] font-prompt-light">
+                              {TimeMange(message.createdAt) == "NaN years ago"
+                                ? "just now"
+                                : TimeMange(message.createdAt)}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="message p-2 rounded-md w-fit h-auto font-prompt mb-2">
+                          <h1 className="mr-2 ">{message.text}</h1>
+                          <span className="flex justify-end items-end text-[10px] font-prompt-light">
+                            {TimeMange(message.createdAt) == "NaN years ago"
+                              ? "just now"
+                              : TimeMange(message.createdAt)}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   ))}
                   <div ref={scroll}></div>

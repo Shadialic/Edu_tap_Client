@@ -19,7 +19,7 @@ function Blog() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [blogOPn, setBlogOpn] = useState(false);
-  const [blogId,setBlogId]=useState(null)
+  const [blogId, setBlogId] = useState(null);
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -51,8 +51,8 @@ function Blog() {
     }
   };
   const detailBlog = (blogId) => {
-    console.log(blogId,'blogIdblogId');
-    setBlogId(blogId)
+    console.log(blogId, "blogIdblogId");
+    setBlogId(blogId);
     setBlogOpn(true);
   };
 
@@ -68,10 +68,7 @@ function Blog() {
     const fetchBlogs = async () => {
       try {
         const response = await getBlog();
-        console.log(
-          response,
-          "responseresponseresponseresponseresponseresponseresponseresponse"
-        );
+
         setBlogs(response.data.blogs || []);
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -91,7 +88,7 @@ function Blog() {
   return (
     <div>
       {blogOPn ? (
-        <DetailBLog blog={blogs} blogId={blogId}/>
+        <DetailBLog blog={blogs} blogId={blogId} />
       ) : (
         <>
           <div className="flex flex-col w-screen h-screen overflow-x-hidden overflow-y-hidden">
@@ -131,11 +128,11 @@ function Blog() {
           </div>
           <div className="w-full pl-10 h-full">
             {blogs.length > 0 && (
-              <div className="flex flex-wrap justify-center p-6 gap-6">
+              <div className="flex flex-wrap p-6 gap-6">
                 {blogs.map((blog) => (
                   <div
-                  key={blog._id}
-        onClick={() => detailBlog(blog._id)}
+                    key={blog._id}
+                    onClick={() => detailBlog(blog._id)}
                     className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-2 hover:scale-105 hover:shadow-md"
                     style={{ height: "400px" }}
                   >

@@ -45,8 +45,8 @@ function Header() {
 
   return (
     <>
-      <div className="flex justify-between items-center p-3 mb-3 border-b-2 border-white-500">
-        <div className="flex items-center">
+      <div className="flex justify-between items-center p-3 mb-3 border-b-2 border-white-500 z-10">
+        <div className="flex items-center ">
           <img src={logo} alt="" className="w-18 h-16 ml-3" />
           <h2 className="text-2xl font-prompt font-prompt-normal mt-2 text-[#000000]">
             Edu-tap

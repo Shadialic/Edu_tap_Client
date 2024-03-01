@@ -1,9 +1,10 @@
-import axios from "axios";
+import adminInterseption from "../utils/intreceptors/admininterceptors";
+// import axios from "axios";
 
-const AdminApi = axios.create({
-  baseURL: `http://localhost:3000/admin`,
-});
-
+// const AdminApi = axios.create({
+//   baseURL: `http://localhost:3000/admin`,
+// });
+const AdminApi = adminInterseption;
 //============================== ADDMIN SIGNIN =================================//
 export async function AdminSignIn(userData) {
   try {

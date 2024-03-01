@@ -77,14 +77,17 @@ function DetailsCourses({ data, offer, newOffer }) {
         const result = await checkout(data._id);
         setClientSecret(result.clientSecret);
         setBugs(data.price);
-      } else {
-        await purchaseCourse(data._id, userId).then((res) => {
-          navigate("/enrollments");
-        });
-      }
+      } 
+        
+      
     };
     fetch();
   }, []);
+  const activeCourse=async()=>{
+    await purchaseCourse(data._id, userId).then((res) => {
+      navigate("/enrollments");
+    });
+  }
 
   const appearance = {
     theme: "stripe",
