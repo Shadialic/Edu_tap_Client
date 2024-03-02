@@ -28,7 +28,7 @@ function Banner() {
   return (
     <>
       <div className="bg-[#fbfaff] ">
-        <h1 className="p-7 font-prompt font-prompt-semibold text-2xl">
+        <h1 className="w-full sm:p-7 font-prompt font-prompt-semibold text-2xl">
           Most Popular Courses
         </h1>
         <div className=" gap-2">

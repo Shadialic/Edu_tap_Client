@@ -153,13 +153,10 @@ function DetaileClass({ courseId }) {
                       </button>
                     </div>
                   </div>
-                  
-                  
                   <div className="p-4 flex justify-between items-center">
                     <h1 className="text-xl font-prompt-semibold">
                       #{index + 1} {item.chapterTitle}
                     </h1>
-                  
                     <button
                       className="text-purple-600"
                       onClick={() => handleDeleteClick(item._id)}

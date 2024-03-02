@@ -19,10 +19,11 @@ function LoadStripe({
   userId,
   newOffer,
 }) {
+  console.log(newOffer[0].Percentage, "clientSecret772772727272", bugs);
   console.log(
-    newOffer[0].Percentage,"clientSecret772772727272",bugs);
-  console.log(
-    bugs - (bugs *   newOffer[0].Percentage / 100),"clientSecret772772727272");
+    bugs - (bugs * newOffer[0].Percentage) / 100,
+    "clientSecret772772727272"
+  );
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
@@ -50,7 +51,7 @@ function LoadStripe({
         const Buydata = {
           id: paymentIntent.id,
           paymentstatus: "success",
-          amound:paymentIntent.amount - (paymentIntent.amount * newOffer[0].Percentage) / 100,
+          amound: bugs ,
           date: new Date(),
           userId: userId,
           tutorId: tutorId,
@@ -128,7 +129,9 @@ function LoadStripe({
             <div className="mt-6 flex flex-row justify-around space-x-72">
               <h1 className="font-prompt">Course Amount</h1>
               <span className="font-prompt font-prompt-semibold">
-                ₹{ bugs - (bugs *   newOffer[0].Percentage / 100)}
+                {newOffer[0].Percentage
+                  ? `₹${bugs - (bugs * newOffer[0].Percentage) / 100}`
+                  : `₹${bugs}`}
               </span>
             </div>
 

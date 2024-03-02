@@ -21,25 +21,26 @@ function PaymentReport() {
   useEffect(() => {
     const fetch = async () => {
       const response = await fetchPaymentReport();
-      console.log(response, "response");
+      console.log(response, "ressssssssssssssssssssssssssssssponse");
       setReport(response.data.data);
     };
     fetch();
   }, []);
   console.log(report, "reportreport");
-  const Preport = report.filter((report) => {
+  const Preport =report&& report.filter((report) => {
     const searchLowerCase = searchInput.toLowerCase();
     const studentId = report.studentId.toLowerCase().includes(searchLowerCase);
     const courseName = report.courseName
       .toLowerCase().includes(searchLowerCase);
     const tutorId = report.tutorId.toString().includes(searchLowerCase);
-    const Amount = report.Amount?.toString().includes(searchLowerCase); // Optional chaining here
+    const Amount = report.Amount?.toString().includes(searchLowerCase); 
     return studentId || courseName || tutorId || Amount;
   });
 
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedUserDatas = Preport.slice(startIndex, endIndex);
+  const paginatedUserDatas = Preport ? Preport.slice(startIndex, endIndex) : [];
+
   function formatDate(dateString) {
     const options = { day: "numeric", month: "long", year: "numeric" };
     const date = new Date(dateString);
@@ -142,7 +143,8 @@ function PaymentReport() {
                   <FontAwesomeIcon icon={faChevronRight} className="text-xl" />
                 }
                 breakLabel={"..."}
-                pageCount={Math.ceil(Preport.length / itemsPerPage)}
+                pageCount={Preport ? Math.ceil(Preport.length / itemsPerPage) : 0}
+
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={(data) => setCurrentPage(data.selected)}

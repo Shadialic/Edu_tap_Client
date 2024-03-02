@@ -1,9 +1,4 @@
 import adminInterseption from "../utils/intreceptors/admininterceptors";
-// import axios from "axios";
-
-// const AdminApi = axios.create({
-//   baseURL: `http://localhost:3000/admin`,
-// });
 const AdminApi = adminInterseption;
 //============================== ADDMIN SIGNIN =================================//
 export async function AdminSignIn(userData) {
@@ -137,7 +132,7 @@ export async function loadOffer(data) {
   }
 }
 
-export async function fetchPaymentReport(data) {
+export async function fetchPaymentReport() {
   try {
     const response = await AdminApi.get(`/fetchPaymentReport`);
     return response;
@@ -146,3 +141,11 @@ export async function fetchPaymentReport(data) {
   }
 }
 
+export async function getDashboardData() {
+  try {
+    const response = await AdminApi.get(`/getDashboardData`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}

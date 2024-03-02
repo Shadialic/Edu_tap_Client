@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogHeader,
   DialogFooter,
+  Avatar,
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import add from "../../../../public/images/user/add.png";
@@ -31,7 +32,7 @@ function DisplayProfile() {
   const [country, setCountry] = useState(userInfo.country);
 
   //Add Education
-  const [Qualification, setQualification] = useState('');
+  const [Qualification, setQualification] = useState("");
   const [Year, setYear] = useState("");
   const [Institute, setInstitute] = useState("");
 
@@ -40,7 +41,7 @@ function DisplayProfile() {
       await getUserData().then((res) => {
         const userData = res.data.userData;
         const data = userData.find((item) => item.email == userInfo.email);
-        console.log(data,'dddddddddddddddddddddddddddddd');
+        console.log(data, "dddddddddddddddddddddddddddddd");
         setData(data);
       });
     };
@@ -83,7 +84,7 @@ function DisplayProfile() {
             email: response.data.userData.email,
             is_Admin: response.data.userData.is_Admin,
             id: response.data.userData._id,
-            image:response.data.userData.image,
+            image: response.data.userData.image,
           })
         );
         setImage(updatedImage);
@@ -124,6 +125,7 @@ function DisplayProfile() {
       console.error(err);
     }
   };
+  console.log(data, "aaaaaaaaaaaaaaaaaa");
 
   return (
     <div>
@@ -232,7 +234,18 @@ function DisplayProfile() {
                 <h1 className="gap-2">{data.Institute}</h1>
               </div>
               <div>
-                <h1 className="font-prompt text-xl p-6">Your Achivements</h1>
+                {data && data.Achivements && data.Achivements.length > 0 && (
+                  <div>
+                    <h1 className="font-prompt text-xl p-6">
+                      Your Achievements
+                    </h1>
+                    {data.Achivements.map((item) => (
+                      <div className="flex flex-row pl-6" key={item.courseName}>
+                        <Avatar src={item.courseImage} />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

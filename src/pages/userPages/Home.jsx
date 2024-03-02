@@ -16,10 +16,10 @@ function Home() {
     <div>
       <Header state="Home" />
       <section>
-        <div className="container mx-auto">
-          <div className="home-container flex-auto">
-            <a href="">START TO SUCCESS</a>
-            <div className="flex flex-col lg:flex-row items-center">
+        <div className="container mx-auto ">
+          <div className="home-container sm:flex-auto">
+            <a href="" className="">START TO SUCCESS</a>
+            <div className="sm:flex flex-col lg:flex-row items-center">
               <div className="content lg:w-1/2 mr-4">
                 <h1 className="text-4xl lg:text-7xl">
                   Access To <span className="text-[#7d0fc6]">5000+</span>
@@ -33,7 +33,7 @@ function Home() {
                   accident
                 </a>
 
-                <div className="flex items-center gap-8 mt-8 mr-7">
+                <div className="flex justify-center sm:flex sm:justify-start gap-8 mt-8 ">
                   <button
                     onClick={() => navigate("/course")}
                     className="bg-[#7d0fc6] text-white rounded-md text-xl px-4 py-2"
@@ -49,10 +49,10 @@ function Home() {
                 </div>
               </div>
 
-              <div className="home-img-wrapper lg:w-1/2">
-                <div className="relative w-full h-full lg:w-400 lg:h-400 border-4 border-[rgba(141,141,235,2)] rounded-full overflow-hidden">
+              <div className=" home-img-wrapper lg:w-1/2">
+                <div className="flex justify-center mt-3 sm:relative w-full h-full lg:w-400 lg:h-400 sm:border-4 border-[rgb(219,219,248)] rounded-full overflow-hidden">
                   <img
-                    className="w-full h-full rounded-full"
+                    className="w-[70%] h-[70%] sm:w-full sm:h-full rounded-full"
                     src={meta}
                     alt=""
                   />

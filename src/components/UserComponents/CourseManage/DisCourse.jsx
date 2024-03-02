@@ -55,14 +55,12 @@ function DisCourse() {
             console.error("Data is undefined");
             return [];
           }
-        
           return data.filter(
             (course) =>
               course.category === category &&
               course.payment === "price"
           );
         }
-        
         const filteredCourses = newOffer.map((category) => {
           const courses = filterCoursesByCategory(offers.data.courses, category);
           console.log(courses, "filteredCourses");

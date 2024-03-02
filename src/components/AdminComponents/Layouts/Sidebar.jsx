@@ -9,15 +9,7 @@ import categoryIcon from "../../../../public/images/admin/icons/categoryIcon.png
 import control_Course from "../../../../public/images/admin/icons/control_course.png";
 
 export const Sidebar = ({ state }) => {
-  // const [activeButton, setActiveButton] = useState(null);
-
-  // const handleButtonClick = (buttonName) => {
-  //   setActiveButton(buttonName);
-  // };
-
-  // const isButtonActive = (buttonName) => {
-  //   return buttonName === activeButton;
-  // };
+ 
 
   return (
     <aside className="bg-white mt-2 shadow-sm -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-x-hidden">
