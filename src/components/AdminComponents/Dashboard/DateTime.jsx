@@ -10,7 +10,7 @@ function DateTime() {
   });
   return (
     <div>
-      <p>  {date.toLocaleTimeString()}</p>
+      <p> {date.toLocaleTimeString()}</p>
       <p className="text-center"> {date.toLocaleDateString()}</p>
     </div>
   );

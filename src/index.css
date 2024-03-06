@@ -27,3 +27,6 @@
     justify-content: center;
   }
   
+  .active-link {
+    color: #7d0fc6; /* Change this to the color you want for active NavLink */
+  }

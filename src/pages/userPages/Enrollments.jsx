@@ -4,6 +4,7 @@ import Header from "../../components/UserComponents/Layouts/Header";
 import { enrollments } from "../../api/UserApi";
 import { useSelector } from "react-redux";
 import Collections from "../../components/UserComponents/Classes/Collections";
+import { Loader } from "../../components/Constans/Loader/Loader";
 
 function Enrollments() {
   const [course, setCourses] = useState([]);
@@ -11,25 +12,29 @@ function Enrollments() {
   const [chapter, setChapter] = useState([]);
   const [tutors, setTutors] = useState();
   const [isOpn, setOpn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = userInfo.id;
 
   useEffect(() => {
     const fetchEnrollments = async () => {
       try {
-        const response = await enrollments(userId);     
+        const response = await enrollments(userId);
         const fetchedCourses = response.courses;
         const chapters = response.chapter;
         const tutors = response.tutors;
         setCourses(fetchedCourses);
         setChapter(chapters);
         setTutors(tutors);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching enrollments:", error);
+        setLoading(false);
       }
     };
     fetchEnrollments();
-  }, []);
+  }, [userId]);
+
   const handleClass = (id) => {
     setId(id);
     setOpn(true);
@@ -38,6 +43,8 @@ function Enrollments() {
   return (
     <div>
       <Header state="Home" />
+      {loading && <Loader />}
+
       {!isOpn ? (
         <div className="p-6">
           <h1 className="font-prompt font-prompt-semibold text-4xl">

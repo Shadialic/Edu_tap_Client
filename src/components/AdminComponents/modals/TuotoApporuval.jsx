@@ -29,7 +29,7 @@ export function TuotoApporuval({ setOpn, filter }) {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setOpn(false); 
+      setOpn(false);
     }, 5000);
     return () => {
       clearTimeout(timeoutId);

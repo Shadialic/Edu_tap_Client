@@ -44,53 +44,52 @@ const StarRating = ({ userId, courseId, currentrating }) => {
 
   return (
     <Box
-    sx={{
-      width: "100%",
-      display: "flex",
-      flexWrap: "wrap", 
-      alignItems: "center",
-      fontSize: "14px",
-    }}
-  >
-    <div className="flex flex-row font-prompt pl-3">
-      <span>Your Rating</span>
-    </div>
-    <Rating
-      className="ml-2 text-lg"
       sx={{
-        fontSize: "20px",
-        "& .MuiRating-iconFilled": {
-          fontSize: "20px", 
-        },
-        "& .MuiRating-iconEmpty": {
-          fontSize: "20px", 
-        },
-        flex: "0 0 auto",
+        width: "100%",
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        fontSize: "14px",
       }}
-      name="hover-feedback"
-      value={rating}
-      precision={0.5}
-      getLabelText={getLabelText}
-      onChange={handleChange}
-      onChangeActive={handleChangeActive}
-      emptyIcon={<StarIcon style={{ fontSize: "20px", opacity: 0.55 }} />}
-    />
-    {rating !== null && (
-      <Box
+    >
+      <div className="flex flex-row font-prompt pl-3">
+        <span>Your Rating</span>
+      </div>
+      <Rating
+        className="ml-2 text-lg"
         sx={{
-          ml: 2,
-          width: "auto", 
-          display: "flex",
-          alignItems: "center",
-          fontSize: "14px",
-          flex: "1 0 0", 
+          fontSize: "20px",
+          "& .MuiRating-iconFilled": {
+            fontSize: "20px",
+          },
+          "& .MuiRating-iconEmpty": {
+            fontSize: "20px",
+          },
+          flex: "0 0 auto",
         }}
-      >
-        {labels[hover !== -1 ? hover : rating]}
-      </Box>
-    )}
-  </Box>
-  
+        name="hover-feedback"
+        value={rating}
+        precision={0.5}
+        getLabelText={getLabelText}
+        onChange={handleChange}
+        onChangeActive={handleChangeActive}
+        emptyIcon={<StarIcon style={{ fontSize: "20px", opacity: 0.55 }} />}
+      />
+      {rating !== null && (
+        <Box
+          sx={{
+            ml: 2,
+            width: "auto",
+            display: "flex",
+            alignItems: "center",
+            fontSize: "14px",
+            flex: "1 0 0",
+          }}
+        >
+          {labels[hover !== -1 ? hover : rating]}
+        </Box>
+      )}
+    </Box>
   );
 };
 

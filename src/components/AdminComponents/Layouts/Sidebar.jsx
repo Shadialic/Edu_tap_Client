@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-
 import logo from "../../../assets/images/logo.png";
 import tutor from "../../../../public/images/admin/icons/tutor.png";
 import tutorReq from "../../../../public/images/admin/icons/tutorReq.png";
@@ -9,20 +8,21 @@ import categoryIcon from "../../../../public/images/admin/icons/categoryIcon.png
 import control_Course from "../../../../public/images/admin/icons/control_course.png";
 
 export const Sidebar = ({ state }) => {
- 
-
   return (
     <aside className="bg-white mt-2 shadow-sm -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-x-hidden">
-    <div className=" flex mt-8 ">
-      <img src={logo} className=" rounded-lg w-[30%] h-[36%] ml-4" />
-      <a className="py-6 px-8 text-center" href="#/">
-        <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
-          Edu-tap
-        </h6>
-      </a>
-    </div>
-    <div className="m-4 overflow-auto " style={{ maxHeight: "calc(100vh - 220px)" }}>
-      <ul className="mb-4 flex flex-col gap-1">
+      <div className=" flex mt-8 ">
+        <img src={logo} className=" rounded-lg w-[30%] h-[36%] ml-4" />
+        <a className="py-6 px-8 text-center" href="#/">
+          <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
+            Edu-tap
+          </h6>
+        </a>
+      </div>
+      <div
+        className="m-4 overflow-auto "
+        style={{ maxHeight: "calc(100vh - 220px)" }}
+      >
+        <ul className="mb-4 flex flex-col gap-1">
           <li>
             <a className="">
               <Link
@@ -127,11 +127,7 @@ export const Sidebar = ({ state }) => {
                 }  w-full flex items-center gap-4 px-4 capitalize`}
                 type="button"
               >
-                <img
-                  className="w-5 h-5 text-inherit"
-                  src={courseicon}
-                  alt=""
-                />
+                <img className="w-5 h-5 text-inherit" src={courseicon} alt="" />
 
                 <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
                   Courses

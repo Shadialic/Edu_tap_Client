@@ -65,7 +65,6 @@ function Form() {
           body: formData,
         }
       );
-      console.log(cloudinaryResponse, "cloudinaryResponse");
 
       if (!cloudinaryResponse.ok) {
         throw new Error(
@@ -113,7 +112,6 @@ function Form() {
         image: profilePic,
         auther,
       };
-      console.log(courseData, "courseData");
       try {
         const res = await CoursrManage(courseData);
         toast(res.data.alert);
@@ -135,11 +133,11 @@ function Form() {
   };
 
   return (
-    <div className="flex">
-      <div className="w-2/5 justify-end ">
+    <div className="sm:flex">
+      <div className="w-full sm:w-2/5 md:2/4 justify-end ">
         <img src={form_img} alt="" />
       </div>
-      <div className="p-6 w-3/5">
+      <div className="w-full sm:p-6 lg:w-3/5">
         <form
           className="p-5"
           onSubmit={handleSubmit}
@@ -155,8 +153,7 @@ function Form() {
                 you share.
               </p>
 
-              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                {/* ... (previous code) */}
+              <div className="w-full sm:mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-4">
                   <label className="block text-sm font-medium leading-6 text-black">
                     Title

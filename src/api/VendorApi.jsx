@@ -103,8 +103,9 @@ export async function manageCourse(id) {
   }
 }
 export async function addChapter(formData, id) {
+  console.log(formData, id, "");
   try {
-    const response = await TutorApi.post(`/vendor/addChapter/${id}`,formData);
+    const response = await TutorApi.post(`/vendor/addChapter/${id}`, formData);
     return response;
   } catch (error) {
     console.log(error);
@@ -112,7 +113,7 @@ export async function addChapter(formData, id) {
 }
 export async function fetchChapter() {
   try {
-    const response = await TutorApi.get('/vendor/getChapter');
+    const response = await TutorApi.get("/vendor/getChapter");
     return response;
   } catch (error) {
     console.log(error);
@@ -146,7 +147,6 @@ export async function getTutorChats(id) {
 
 export async function teacherStudents(id) {
   try {
-    console.log(id,'1111111111111111111111111');
     const response = await TutorApi.get(`/teacherUsers/${id}`);
     return response.data;
   } catch (error) {
@@ -156,11 +156,10 @@ export async function teacherStudents(id) {
 }
 export async function createGroup(data) {
   try {
-    console.log(data,'/////////////////////////////');
     const response = await TutorApi.post(`/createGroupChat`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
-      }
+      },
     });
     return response.data;
   } catch (error) {
@@ -171,7 +170,6 @@ export async function createGroup(data) {
 
 export async function fetchPaymentReport(id) {
   try {
-    console.log(id,'1111111111111111111111111');
     const response = await TutorApi.get(`/fetchPaymentDetailes/${id}`);
     return response.data;
   } catch (error) {
@@ -179,13 +177,12 @@ export async function fetchPaymentReport(id) {
     throw error;
   }
 }
-// export async function getGroupchat(id) {
-//   try {
-//     console.log(id,'444444444444444444444444444444444444444444444444444');
-//     const response = await TutorApi.get(`/createGroupChat${id}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
+export async function chekingTutor(id) {
+  try {
+    const response = await TutorApi.get(`/chekingTutor/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

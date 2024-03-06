@@ -30,9 +30,7 @@ function Users() {
         console.log(err);
       }
     };
-
     const storedUsers = JSON.parse(localStorage.getItem("users"));
-
     if (storedUsers) {
       setUsers(storedUsers);
     } else {
@@ -43,7 +41,6 @@ function Users() {
   const handleBlockUnblockUser = async (userId, is_Active) => {
     try {
       localStorage.removeItem("token");
-
       dispatch(
         resetState({
           id: "",
@@ -52,10 +49,10 @@ function Users() {
           phone: "",
         })
       );
+
       const res = await BlockUnblockuser(userId);
       if (res.status === 200) {
         toast(res.data.alert);
-
         const updatedUsers = users.map((user) =>
           user._id === userId ? { ...user, is_Active: !is_Active } : user
         );
@@ -127,8 +124,6 @@ function Users() {
                       Status
                     </p>
                   </th>
-
-                  {/* ... other table header cells ... */}
                 </tr>
               </thead>
               <tbody>
@@ -137,25 +132,21 @@ function Users() {
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
                         {index + 1}
-                        {/* ... content for the second row ... */}
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
                         {values.userName}
-                        {/* ... content for the second row ... */}
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
                         {values.email}
-                        {/* ... content for the third row ... */}
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
                         {values.phone}
-                        {/* ... content for the fourth row ... */}
                       </div>
                     </td>
                     <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -191,7 +182,6 @@ function Users() {
                         )}
                       </div>
                     </td>
-                    {/* ... other table cells ... */}
                   </tr>
                 ))}
               </tbody>

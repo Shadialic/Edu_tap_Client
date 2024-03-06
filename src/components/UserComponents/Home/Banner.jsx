@@ -2,8 +2,19 @@ import React, { useEffect, useState } from "react";
 import { LoadCourse } from "../../../api/AdminApi";
 import Slider from "react-slick";
 import banner from "../../../../public/images/user/banner.jpg";
+
 function Banner() {
   const [course, setCourse] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -15,31 +26,36 @@ function Banner() {
       }
     };
     fetchCourses();
-  },[]);
+  }, []);
 
   const settings = {
     infinite: true,
-    slidesToShow: 6,
-    slidesToScroll: 2,
+    slidesToShow: isMobile ? 3 : 6,
+    slidesToScroll: 3,
     autoplay: true,
-    speed: 3000, // This controls the transition speed between slides
-    autoplaySpeed: 3000, // This controls the speed at which the slides change during autoplay
+    speed: 2000,
+    autoplaySpeed: 1000,
   };
+
   return (
     <>
       <div className="bg-[#fbfaff] ">
         <h1 className="w-full sm:p-7 font-prompt font-prompt-semibold text-2xl">
           Most Popular Courses
         </h1>
-        <div className=" gap-2">
+        <div className=" gap-3 ml-2 sm:gap-2">
           <Slider
             {...settings}
-            className="custom-slick-slider   "
-             style={{ marginRight: "10px" }}
+            className="custom-slick-slider"
+            style={{ marginRight: "10px" }}
           >
             {course.map((item) => (
               <div key={item.id}>
-                <img className="w-48 h-44" src={item.image} alt="" />
+                <img
+                  className="w-32 h-28 sm:w-48 lg:h-44 "
+                  src={item.image}
+                  alt=""
+                />
                 <h1 className="font-prompt text-lg">{item.title}</h1>
               </div>
             ))}
@@ -47,8 +63,8 @@ function Banner() {
         </div>
       </div>
 
-      <div className="flex flex-row w-full h-94 bg-[rgb(255,255,255)]  justify-center items-center pl-8 ">
-        <div className="flex w-[55%] h-full font-prompt p-4 align-middle ">
+      <div className="sm:flex flex-row w-full h-94 bg-[rgb(255,255,255)] justify-center items-center pl-8 ">
+        <div className="w-full sm:flex lg:w-[55%] h-full font-prompt p-4 align-middle ">
           Choosing the best e-learning platform depends on various factors such
           as the specific requirements of your organization or target audience,
           your budget constraints, and the features you prioritize. Moodle
@@ -60,7 +76,7 @@ function Banner() {
           with your objectives, technical capabilities, and the learning
           experience you aim to deliver.
         </div>
-        <div className="flex w-[45%] h-full justify-center  pr-6">
+        <div className="w-full sm:flex lg:w-[45%] h-full justify-center  sm:justify-center items-center  pr-6">
           <img className="h-80 " src={banner} alt="" />
         </div>
       </div>

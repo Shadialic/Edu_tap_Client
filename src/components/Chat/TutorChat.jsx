@@ -105,7 +105,6 @@ function TutorChat() {
       if (image) {
         formData.append("image", image);
       }
-
       const response = await createGroup(formData);
       toast(response.alert);
       setOpen(false);
@@ -114,11 +113,9 @@ function TutorChat() {
       toast("An error occurred while creating the group.");
     }
   };
-
   const handleCancelSelection = () => {
     setSelectedUsers(null);
   };
-  console.log(userChats, "userChats");
 
   const sendTextMessage = async () => {
     const isGroupChat = selectedMember.groupName;

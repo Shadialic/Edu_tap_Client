@@ -75,11 +75,7 @@ function PaymentReport() {
                     </p>
                   </th>
 
-                  <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
-                    <p className="block antialiased font-sans text-[11px] font-bold uppercase text-blue-gray-400">
-                      Payment Id
-                    </p>
-                  </th>
+                
 
                   <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
                     <p className="block antialiased font-sans text-[11px] font-bold uppercase text-blue-gray-400">
@@ -110,11 +106,7 @@ function PaymentReport() {
                         {formatDate(values.date)}
                       </div>
                     </td>
-                    <td className="py-3 px-5 border-b border-blue-gray-50">
-                      <div className="flex items-center gap-4">
-                        {values.PaymentId}
-                      </div>
-                    </td>
+                
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
                         {values.studentId}

@@ -3,8 +3,7 @@ import DateTime from "./DateTime";
 import { getDashboardData } from "../../../api/AdminApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import courseicon from "../../../../public/images/admin/icons/courseicon.png";
-
-import { faUsers,faMoneyBill } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 
 function AdminDashboard() {
   const [dashboard, setDashboard] = useState({});
@@ -14,7 +13,6 @@ function AdminDashboard() {
       try {
         const alldata = await getDashboardData();
         setDashboard(alldata.data);
-        console.log(alldata, "----------------");
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -60,7 +58,7 @@ function AdminDashboard() {
             </div>
           </div>
           <div className="w-[23%] h-36 bg-white shadow-lg shadow-gray-200 flex flex-col justify-center items-center">
-          <FontAwesomeIcon icon={faMoneyBill}   className="w-44 h-10"/>
+            <FontAwesomeIcon icon={faMoneyBill} className="w-44 h-10" />
             <div className="flex flex-row mt-4">
               <h1 className="pb-10 font-prompt uppercase">Total Revenue</h1>
               <p className="pl-2 font-prompt-semibold">{dashboard.course}</p>

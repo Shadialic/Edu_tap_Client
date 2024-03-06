@@ -81,10 +81,7 @@ function Otp() {
     if (otp.length === 6) {
       if (current.type == "forgot") {
         await passverifyOTP(data).then((res) => {
-          console.log(res,'aaaaaaaaaaaaaaaaaa');
           if (res.status == 200) {
-          console.log('-------------============');
-
             setPage("password");
           }
         });

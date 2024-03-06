@@ -1,14 +1,26 @@
-import React from "react";
-import Card_Dashboard from "../../components/TutorComponents/Cards/Card_Dashboard";
+import React, { useState, useEffect } from "react";
 import Home from "../../components/TutorComponents/Dashboard/Home";
-import { useLocation } from "react-router-dom";
+import { Loader } from "../../components/Constans/Loader/Loader";
 
 function TutorHome() {
-  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); 
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
-    <div>
-      <Home />
-    </div>
+    <>
+      {isLoading ? (
+        <div><Loader/></div>
+      ) : (
+        <Home />
+      )}
+    </>
   );
 }
 

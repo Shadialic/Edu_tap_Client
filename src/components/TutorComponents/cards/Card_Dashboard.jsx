@@ -1,55 +1,55 @@
-import React from 'react';
+import React from "react";
 import {
   BanknotesIcon,
   UserPlusIcon,
   UsersIcon,
   ChartBarIcon,
-  AcademicCapIcon
+  AcademicCapIcon,
 } from "@heroicons/react/24/solid";
 const Card_Dashboard = () => {
   const statisticsCardsData = [
     {
-      color: 'gray',
+      color: "gray",
       icon: UsersIcon,
       title: "Total Students",
-      value: '0',
+      value: "0",
       footer: {
-        color: 'text-green-500',
-        value: '+55%',
-        label: 'than last week',
+        color: "text-green-500",
+        value: "+55%",
+        label: "than last week",
       },
     },
     {
-      color: 'gray',
+      color: "gray",
       icon: AcademicCapIcon,
       title: "Total's Courses",
-      value: '0',
+      value: "0",
       footer: {
-        color: 'text-green-500',
-        value: '+3%',
-        label: 'than last month',
+        color: "text-green-500",
+        value: "+3%",
+        label: "than last month",
       },
     },
     {
-      color: 'gray',
+      color: "gray",
       icon: BanknotesIcon,
-      title: 'Pending Courses',
-      value: '0~',
+      title: "Pending Courses",
+      value: "0~",
       footer: {
-        color: 'text-red-500',
-        value: '-2%',
-        label: 'than yesterday',
+        color: "text-red-500",
+        value: "-2%",
+        label: "than yesterday",
       },
     },
     {
-      color: 'gray',
-      icon:ChartBarIcon,
-      title: 'Payments',
-      value: '$0',
+      color: "gray",
+      icon: ChartBarIcon,
+      title: "Payments",
+      value: "$0",
       footer: {
-        color: 'text-green-500',
-        value: '+5%',
-        label: 'than yesterday',
+        color: "text-green-500",
+        value: "+5%",
+        label: "than yesterday",
       },
     },
   ];
@@ -62,7 +62,8 @@ const Card_Dashboard = () => {
           className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 border border-blue-gray-100 shadow-sm"
         >
           <div className="bg-clip-border mt-4 mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-violet-900 to-violet-800 text-white shadow-violet-900/20 absolute grid h-12 w-12 place-items-center">
-          {item.icon && React.createElement(item.icon, { className: 'h-6 w-6' })}
+            {item.icon &&
+              React.createElement(item.icon, { className: "h-6 w-6" })}
           </div>
           <div className="p-4 text-right">
             <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">

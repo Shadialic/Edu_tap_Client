@@ -14,13 +14,12 @@ function GroupChat() {
   const [user, setUsers] = useState("");
 
   const createGroup = () => {
-    closeDialog(); // Close the dialog after updating
+    closeDialog();
   };
 
   return (
     <div>
       <div className="flex items-end justify-end mr-14">
-        {/* <Button     >ADD+</Button> */}
         <Dialog
           size="xs"
           open={open}

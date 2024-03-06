@@ -4,10 +4,13 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchCoures, manageCourse } from "../../api/VendorApi";
+import { Loader } from "../../components/Constans/Loader/Loader";
+
 function WaitingList() {
   const tutor = useSelector((state) => state.tutor.tutorInfo);
   const tutorMail = tutor.email;
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,12 +21,14 @@ function WaitingList() {
           (item) => item.is_varified === "false"
         );
         setData(filterData);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
   }, []);
+
   const canceldata = async (id) => {
     await manageCourse(id).then((res) => {
       toast(res.data.alert);
@@ -39,7 +44,9 @@ function WaitingList() {
       <div className="flex ml-10">
         <h1 className="font-prompt text-3xl">Waiting List</h1>
       </div>
-      {data && data.length > 0 ? (
+      {isLoading ? (
+        <div><Loader/></div>
+      ) : data && data.length > 0 ? (
         <div className="flex flex-wrap gap-16 p-9">
           {data.map((course) => (
             <div

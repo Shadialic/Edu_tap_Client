@@ -131,8 +131,8 @@ function DisplayProfile() {
     <div>
       {isOpn === "profile" ? (
         <div className="flex w-screen h-screen  justify-center items-center shadow-sm ">
-          <div className="flex flex-row w-[75%] h-[90%] bg-white shadow-sm rounded-lg  shadow-violet-600">
-            <div className="w-[30%] h-[90%] bg-white shadow-sm shadow-violet-600 mt-4 ml-5 ">
+          <div className="w-[80%] sm:flex flex-row lg:w-[75%] h-[90%] bg-white shadow-sm rounded-lg  shadow-violet-600">
+            <div className="w-[90%] sm:w-[30%] h-[90%] bg-white shadow-sm shadow-violet-600 mt-4 ml-5 ">
               <div>
                 <div className="flex justify-center items-center ">
                   {data && data.image ? (
@@ -176,7 +176,7 @@ function DisplayProfile() {
               </div>
             </div>
 
-            <div className="w-[62%] h-[90%] bg-white shadow-sm shadow-violet-600  justify-end items-end ml-8 mt-4">
+            <div className="w-full  mt-16 mr-10  sm:w-[62%] h-[90%] bg-white shadow-sm shadow-violet-600  justify-end items-end lg:ml-8 lg:mt-4">
               <div className="flex flex-row justify-between">
                 <h1 className="font-prompt text-xl p-6">Your Details</h1>
                 <div onClick={editProfile} className=" ">

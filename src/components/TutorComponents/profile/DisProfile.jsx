@@ -33,9 +33,7 @@ function DisProfile({}) {
       reader.readAsDataURL(selectedFile);
     }
   };
-
   const editProfile = async () => {};
-  console.log(formData);
   return (
     <>
       <div className="bg-authentication-background bg-cover bg-gray-100 flex justify-center items-center w-[100%] h-screen py-7 px-5">

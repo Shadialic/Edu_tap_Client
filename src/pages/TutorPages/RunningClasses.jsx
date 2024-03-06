@@ -9,11 +9,13 @@ import {
   manageCourse,
 } from "../../api/VendorApi";
 import DetaileClass from "../../components/TutorComponents/Classes/DetaileClass";
+import { Loader } from "../../components/Constans/Loader/Loader";
 
 function RunningClasses() {
   const tutor = useSelector((state) => state.tutor.tutorInfo);
   const tutorMail = tutor.email;
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isOpn, setOpn] = useState(true);
   const [courseId, setCourseId] = useState(null);
 
@@ -26,6 +28,7 @@ function RunningClasses() {
           (item) => item.is_varified === "true"
         );
         setData(filteredData);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -58,11 +61,17 @@ function RunningClasses() {
     <>
       {isOpn && (
         <div className="flex ml-10">
-          <h1 className="font-prompt text-3xl">Running Classes</h1>
+          <h1 className=" p-2 font-prompt sm:font-prompt text-3xl">
+            Running Classes
+          </h1>
         </div>
       )}
-      {isOpn && data && data.length > 0 ? (
-        <div className="flex flex-wrap gap-16 p-9">
+      {isLoading ? (
+        <div>
+          <Loader />
+        </div>
+      ) : isOpn && data && data.length > 0 ? (
+        <div className="flex justify-center sm:flex flex-wrap gap-16 p-9">
           {data.map((course) => (
             <div
               key={course._id}

@@ -7,7 +7,6 @@ import photoshop from "../../../../public/images/user/photoshop.png";
 import Instructors from "../../../../public/images/user/Instructors.png";
 import view from "../../../../public/images/user/view.jpg";
 
-
 function AboutPage() {
   const [category, setCategory] = useState([]);
   useEffect(() => {
@@ -24,11 +23,11 @@ function AboutPage() {
     <>
       <div className="w-screen h-screen overflow-x-hidden ">
         <div className="flex flex-row w-full h-80">
-          <div className="content lg:w-1/2 mr-4 p-7 pl-7 mt-16 ml-12 h-[100%] rounded-2xl bg-violet-400 shadow shadow-violet-900">
+          <div className="w-1/2 sm:content lg:w-1/2 mr-4 p-7 pl-7 mt-16 ml-12 h-[100%] rounded-2xl bg-violet-400 shadow shadow-violet-900">
             <h3 className="text-[#ffffff] ml-2 font-prompt-semibold">
               How is it started
             </h3>
-            <h1 className="text-4xl lg:text-6xl font-prompt-lrlight">
+            <h1 className="text-2xl sm:text-4xl lg:text-6xl font-prompt-lrlight">
               <span className="text-[#ffffff]">
                 <span className="text-black"> Our</span> Dream Is
               </span>
@@ -49,7 +48,7 @@ function AboutPage() {
           <h1 className="text-center mb-10 mt-2 font-prompt text-3xl">
             Explore Categories
           </h1>
-          <div className="flex flex-row gap-8">
+          <div className="flex flex-col sm:flex lg:flex-row gap-8">
             <div className="flex flex-wrap justify-center gap-10 ">
               <div className="w-64 h-80 bg-white shadow shadow-violet-700 rounded-2xl">
                 <img className="" src={editing} alt="" />
@@ -124,7 +123,7 @@ function AboutPage() {
             </div>
           </div>
         </div>
-      {/* <div className="flex ml-14">
+        {/* <div className="flex ml-14">
         <div className="w-[40%]  h-80 bg-gray-200 ">
           <img className="w-full h-full " src={view} alt="" />
         </div>

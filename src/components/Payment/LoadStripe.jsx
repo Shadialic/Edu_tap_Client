@@ -18,46 +18,35 @@ function LoadStripe({
   tutorId,
   userId,
   newOffer,
+  courseName,
 }) {
-  console.log(newOffer[0].Percentage, "clientSecret772772727272", bugs);
-  console.log(
-    bugs - (bugs * newOffer[0].Percentage) / 100,
-    "clientSecret772772727272"
-  );
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
   const [open, setOpen] = useState(false);
-
   const handleOpen = () => setOpen((cur) => !cur);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!stripe || !elements) {
       console.error("Stripe or Elements not initialized.");
       return;
     }
-
     try {
-      console.log(clientSecret, "secrettt");
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {},
         redirect: "if_required",
       });
-      console.log(paymentIntent, "paymentIntentpaymentIntent");
       if (paymentIntent) {
         const Buydata = {
-          id: paymentIntent.id,
           paymentstatus: "success",
-          amound: bugs ,
+          amound: paymentIntent.amount,
           date: new Date(),
           userId: userId,
           tutorId: tutorId,
+          courseName: courseName,
           courseId: courseId,
         };
-        console.log(Buydata, "booked data");
         const response = await SuccessRequest(Buydata);
         toast(response.data.message);
         console.log(response, "response when it is sucecss");
@@ -129,9 +118,9 @@ function LoadStripe({
             <div className="mt-6 flex flex-row justify-around space-x-72">
               <h1 className="font-prompt">Course Amount</h1>
               <span className="font-prompt font-prompt-semibold">
-                {newOffer[0].Percentage
-                  ? `₹${bugs - (bugs * newOffer[0].Percentage) / 100}`
-                  : `₹${bugs}`}
+                {newOffer
+                  ? `₹${bugs - (bugs * newOffer) / 100}`
+                  : `₹${bugs}.00`}
               </span>
             </div>
 

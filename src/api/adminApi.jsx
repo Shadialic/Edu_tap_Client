@@ -1,5 +1,6 @@
 import adminInterseption from "../utils/intreceptors/admininterceptors";
 const AdminApi = adminInterseption;
+
 //============================== ADDMIN SIGNIN =================================//
 export async function AdminSignIn(userData) {
   try {

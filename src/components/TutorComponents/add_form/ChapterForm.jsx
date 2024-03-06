@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addChapter } from "../../../api/VendorApi";
 import { Button } from "@material-tailwind/react";
+
 function ChapterForm({ setOpn, courseId }) {
   console.log(courseId, "kaka");
   const [video, setVideo] = useState();
@@ -16,6 +17,7 @@ function ChapterForm({ setOpn, courseId }) {
     demoVideo: null,
     chapterVideo: null,
   });
+
   const uploadVideo = async (file) => {
     try {
       const formData = new FormData();
@@ -65,6 +67,7 @@ function ChapterForm({ setOpn, courseId }) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
@@ -79,16 +82,21 @@ function ChapterForm({ setOpn, courseId }) {
       try {
         const response = await addChapter(formData, courseId);
         console.log(response, "lllllllllllllll");
+        setFormData({
+          chapterTitle: "",
+          chapterDescription: "",
+          demoVideo: null,
+          chapterVideo: null,
+        });
+        setDemoFileName("");
+        setChapterFileName("");
+        toast("Chapter added successfully");
       } catch (error) {
         console.error("Error adding chapter:", error);
         toast("Error adding chapter. Please try again later.");
       }
     }
   };
-  // useEffect(()=>{
-
-  // },[video])
-
   return (
     <>
       <div className="bg-authentication-background bg-cover flex justify-center items-center w-screen h-fit py-7 px-5">
@@ -232,6 +240,8 @@ function ChapterForm({ setOpn, courseId }) {
       </div>
       <ToastContainer />
     </>
+
+
   );
 }
 

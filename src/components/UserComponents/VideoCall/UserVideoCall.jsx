@@ -7,12 +7,9 @@ import { useSelector } from "react-redux";
 
 function UserVideoCall() {
 
-   
-  const currentUserDetails = useSelector((state) =>state.user.userInfo );
-
+      const currentUserDetails = useSelector((state) =>state.user.userInfo );
       const location = useLocation();
       const data = location.state?.data || "";
-
       const senderdetails = data[0];
       const recipientdetails = data[1];
       let roomId, receiverId;

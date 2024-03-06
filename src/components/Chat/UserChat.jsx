@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../UserComponents/Layouts/Header";
 import { io } from "socket.io-client";
 import { Typography, Avatar, IconButton } from "@material-tailwind/react";
@@ -168,14 +168,6 @@ function UserChat() {
     if (currentChat._id && userInfo.id) {
       const videoData = [currentChat._id, userInfo.id];
       if (videoData[1]) {
-        // const messagedata = {
-        //   message: `${window.location.origin}/videocall?roomId=${userInfo.id}&receiverId=${currentChat._id}`,
-        //   senderUsername: userInfo.email,
-        //   recieverUsername: currentChat.email,
-        // };
-
-        //  clientstate.send(JSON.stringify(messagedata));
-
         navigate("/videocall", { state: { data: videoData } });
       } else {
         console.error("Data is empty. Unable to initiate video call.");
@@ -184,7 +176,6 @@ function UserChat() {
       console.error("Recipient details or sender details are missing.");
     }
   };
-  console.log(groupChat, "groupChatgroupChat");
 
   return (
     <>
@@ -312,9 +303,7 @@ function UserChat() {
                       )}
                     </div>
                   </div>
-                  {/* <Link to={`/videocall/${ownerId}`} className="h-full">
-              <MdVideoCall size={30} />
-            </Link> */}
+
                   <div className="flex items-center">
                     <FontAwesomeIcon
                       onClick={handleVideoCall}
@@ -332,7 +321,6 @@ function UserChat() {
                     <div
                       key={index}
                       className={`flex flex-row mb-2 rounded-md w-fit h-auto ${
-                        // Apply relevant class based on sender ID:
                         message.senderId === userInfo.id
                           ? "ml-auto bg-violet-600 text-white"
                           : "mr-auto bg-white shadow-xl shadow-gray-200"

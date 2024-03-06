@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 function Home() {
   const [isOpn, SetOpn] = useState(false);
   const tutor = useSelector((state) => state.tutor.tutorInfo);
-  console.log(tutor,'...........');
   const tutorName = tutor.name;
   const handleCourse = () => {
     SetOpn(true);

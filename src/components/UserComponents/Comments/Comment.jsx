@@ -29,13 +29,13 @@ function Comment({ chapterId, userInfo }) {
       };
     }
   }, [socket]);
-  useEffect(()=>{
-    const fetch=async()=>{
-      const response=await LoadComments(chapter);
-      setShowComments(response.comments)
-    }
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await LoadComments(chapter);
+      setShowComments(response.comments);
+    };
     fetch();
-  },[])
+  }, []);
 
   const handleChange = (e) => {
     setCommentText(e.target.value);
@@ -53,7 +53,7 @@ function Comment({ chapterId, userInfo }) {
 
     try {
       const response = await postCommnets(data);
-      console.log(response,'responseresponseresponseresponse');
+      console.log(response, "responseresponseresponseresponse");
     } catch (error) {
       console.error("Error submitting comment:", error);
     }

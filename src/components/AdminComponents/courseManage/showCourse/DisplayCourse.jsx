@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getCourse } from "../../../../api/AdminApi";
 import DetailesCourse from "./DetailesCourse";
 
 function DisplayCourse({ userDatas }) {

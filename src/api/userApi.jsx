@@ -1,5 +1,6 @@
 import userInterseption from "../utils/intreceptors/userinterceptors";
 const UserApi = userInterseption;
+
 export async function userSignUp(signUpData) {
   try {
     const data = await UserApi.post("/signup", signUpData, {
@@ -138,6 +139,7 @@ export async function LoadCategory() {
 }
 export async function purchaseCourse(id, userId) {
   try {
+    console.log(id, userId,'id, userId');
     const response = await UserApi.put(`/purchaseCourse/${id}`, {
       userid: userId,
     });
@@ -159,7 +161,9 @@ export async function enrollments(userId) {
 
 export async function checkout(courseid) {
   try {
-    const response = await UserApi.post("/checkout",{ courseid },
+    const response = await UserApi.post(
+      "/checkout",
+      { courseid },
       {
         headers: {
           "Content-Type": "application/json",
@@ -175,7 +179,7 @@ export async function checkout(courseid) {
 
 export async function postReview(data) {
   try {
-    const response = await UserApi.post("/addReview",{data});
+    const response = await UserApi.post("/addReview", { data });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -194,7 +198,7 @@ export async function fetchReviews() {
 }
 export async function createChat(data) {
   try {
-    const response = await UserApi.post(`/createChat`,data);
+    const response = await UserApi.post(`/createChat`, data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -222,12 +226,15 @@ export async function getMessages(id) {
 }
 export async function sendMessage(data) {
   try {
-    console.log(data,'-------------------');
-    const response = await UserApi.post(`/createMessage`,{data}, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await UserApi.post(
+      `/createMessage`,
+      { data },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(error);
@@ -237,7 +244,7 @@ export async function sendMessage(data) {
 
 export async function postCommnets(data) {
   try {
-    const response = await UserApi.post(`/postCommnets`,{data});
+    const response = await UserApi.post(`/postCommnets`, { data });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -257,7 +264,6 @@ export async function LoadComments(id) {
 
 export async function createBlog(data) {
   try {
-    console.log(data,'pppppppppppppppppppppppppppppppppppppppppppppp');
     const response = await UserApi.post("/createBlog", data, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -278,8 +284,7 @@ export async function getBlog() {
 }
 export async function updateRating(data) {
   try {
-    console.log(data,'-------------------');
-    const response = await UserApi.put('/courseRating', {data});
+    const response = await UserApi.put("/courseRating", { data });
     return response;
   } catch (error) {
     console.log(error);
@@ -287,7 +292,6 @@ export async function updateRating(data) {
 }
 export async function getUserCourseRating(id) {
   try {
-    console.log(id, '888888888888888');
     const response = await UserApi.get(`/getRating/${id}`);
     return response;
   } catch (error) {
@@ -297,8 +301,7 @@ export async function getUserCourseRating(id) {
 
 export async function checkConnection(data) {
   try {
-    console.log(data, '666666666666666');
-    const response = await UserApi.post(`/checkConnection`,data);
+    const response = await UserApi.post(`/checkConnection`, data);
     return response;
   } catch (error) {
     console.log(error);
@@ -306,18 +309,25 @@ export async function checkConnection(data) {
 }
 export async function SuccessRequest(buyData) {
   try {
-      const res = await UserApi.post(`/success`,{data: buyData})
-      return res
+    const res = await UserApi.post(`/success`, { data: buyData });
+    return res;
   } catch (error) {
-      console.log(error);
+    console.log(error);
   }
 }
 export async function Certificateadded(data) {
   try {
-    console.log(data,'-----------------------');
-      const res = await UserApi.post(`/certificate`,{data: data})
-      return res
+    const res = await UserApi.post(`/certificate`, { data: data });
+    return res;
   } catch (error) {
-      console.log(error);
+    console.log(error);
+  }
+}
+export async function checkingUser(id) {
+  try {
+    const res = await UserApi.get(`/checkUser/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
   }
 }

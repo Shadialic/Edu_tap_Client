@@ -35,16 +35,16 @@ function UserRouter() {
       />
       <Route path="/otp" exact element={<Otp />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile" element={<UserProtect><Profile/></UserProtect>} />
       <Route path="/course" element={<Course />} />
        <Route path="/enrollments"element={<UserProtect><Enrollments /> </UserProtect> }/>
       <Route path="/about" element={<About />} />
       <Route path="/blog" element={<Blog />} />
-      <Route path="/success" element={<UserProtect><Success /></UserProtect>} />
+      <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Faild />} />
-      <Route path="/chat" element={  <UserProtect><UserChat/></UserProtect>} />
-      <Route path='/videocall' element={<UserVideoChat/>}/>
-      <Route path='/certificate' element={<Certificate/>}/>
+      <Route path="/chat" element={<UserProtect><UserChat/></UserProtect>} />
+      <Route path='/videocall' element={<UserProtect><UserVideoChat/></UserProtect>}/>
+      <Route path='/certificate' element={<UserProtect><Certificate/></UserProtect>}/>
       <Route path="*" element={<Error />} />
     </Routes>
   );

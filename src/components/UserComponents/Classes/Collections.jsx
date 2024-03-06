@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
 import {
   Certificateadded,
-  UpdateUser,
   checkConnection,
   createChat,
   fetchReviews,
@@ -16,10 +15,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLock,
   faUnlock,
+  faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { downloadPDF } from "../../Constans/Certificate/CourseCertificate";
+import { Loader } from "../../Constans/Loader/Loader";
 
 function Collections({ chapter, courseId, tutors, course }) {
   const detailsRef = useRef(null);
@@ -33,12 +33,16 @@ function Collections({ chapter, courseId, tutors, course }) {
   const [showReview, setShowReiview] = useState([]);
   const [courseCompleted, setCourseCompleted] = useState(false);
   const [certificate, setCertificate] = useState(false);
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userInfo = useSelector((state) => state.user.userInfo);
   const [videoCompletionStatus, setVideoCompletionStatus] = useState(() => {
     const storedStatus = localStorage.getItem("videoCompletionStatus");
     return storedStatus ? JSON.parse(storedStatus) : [];
   });
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
   useEffect(() => {
     const filteredData = chapter.filter((item) => item.course_id === courseId);
     const tutorDetail = course.find((item) => item._id === courseId);
@@ -76,12 +80,11 @@ function Collections({ chapter, courseId, tutors, course }) {
     checkCourseCompletion();
     const allChaptersWatched = courseCompleted.length === data.length;
     if (data.length != 0 && videoCompletionStatus.length === data.length) {
-      const update=async()=>{
-
-        const userId=userInfo.id
-        const ata=await Certificateadded({courseId,userId})
-      }
-      update()
+      const update = async () => {
+        const userId = userInfo.id;
+        const ata = await Certificateadded({ courseId, userId });
+      };
+      update();
       setCertificate(true);
     }
   }, [videoCompletionStatus]);
@@ -92,7 +95,11 @@ function Collections({ chapter, courseId, tutors, course }) {
   };
 
   if (!chapter.length || !data.length) {
-    return <div>No data available</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   const handleVideoClick = (index) => {
@@ -118,7 +125,7 @@ function Collections({ chapter, courseId, tutors, course }) {
   const handleFollowing = async () => {
     const firstId = userInfo.id;
     const secondId = tutorData._id;
-   await createChat({ firstId, secondId });
+    await createChat({ firstId, secondId });
     setShowMessage(true);
   };
 
@@ -148,11 +155,10 @@ function Collections({ chapter, courseId, tutors, course }) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
-  
 
   return (
-    <div className="flex flex-row w-screen h-fit">
-      <div className="w-[65%] h-fit p-4">
+    <div className="flex flex-col sm:flex lg:flex-row w-screen h-fit">
+      <div className="w-full sm:w-[65%] h-fit p-4">
         <video
           className="w-full h-auto"
           src={
@@ -219,7 +225,7 @@ function Collections({ chapter, courseId, tutors, course }) {
         <Comment chapterId={data} userInfo={userInfo} />
       </div>
 
-      <div className="flex flex-col w-[35%] p-4 pr-4">
+      <div className="w-full sm:flex flex-col lg:w-[35%] p-4 pr-4">
         <div className="w-[95%] h-10 border-2 border-gray-100 font-prompt p-1">
           <span className="mb-2 text-sm">
             {count + 1}
@@ -240,7 +246,7 @@ function Collections({ chapter, courseId, tutors, course }) {
                 src={chapter.chapterVideo}
                 controls
               />
-              <div className="text-sm pl-4 font-prompt">
+              <div className="sm:text-sm pl-4 font-prompt">
                 <h1>{`${index + 1}. ${chapter.chapterTitle}`}</h1>
               </div>
               {videoCompletionStatus[index] ? (
@@ -262,8 +268,20 @@ function Collections({ chapter, courseId, tutors, course }) {
           <div className="flex-1">
             {showReview && showReview.length > 0 ? (
               showReview.map((review, index) => (
-                <div key={index} className="w-full mb-4">
-                  <div className="border-2 border-gray-100 p-4">
+                <div key={index} className="w-full mb-2">
+                  <div className="border-2 shadow-md border-gray-100 p-4 relative">
+                    <FontAwesomeIcon
+                      icon={faEllipsisVertical}
+                      className="text-violet-600 cursor-pointer absolute right-2 top-1"
+                      onClick={toggleDropdown}
+                    />
+                    {isDropdownOpen && (
+                      <div className="absolute top-full right-2 mt-1 w-auto font-prompt p-1 bg-white border border-gray-200 rounded shadow-lg">
+                        <ul>
+                          <li onClick={() => setOpen((cur) => !cur)}>Edit</li>
+                        </ul>
+                      </div>
+                    )}
                     <h1 className="mb-2 font-bold">{review.description}</h1>
                     <div className="flex flex-row items-center text-sm">
                       <span className="mr-2">{review.author}</span>

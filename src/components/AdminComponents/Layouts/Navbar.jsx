@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ state, searchInput, setSearchInput }) => {
   const [currentState, setCurrentState] = useState(state);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
   };
@@ -12,11 +12,10 @@ const Navbar = ({ state, searchInput, setSearchInput }) => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const logoutAdmin=()=>{
+  const logoutAdmin = () => {
     localStorage.removeItem("admintoken");
-    navigate('/admin')
-
-  }
+    navigate("/admin");
+  };
 
   return (
     <div>
@@ -90,8 +89,7 @@ const Navbar = ({ state, searchInput, setSearchInput }) => {
                 {isDropdownOpen && (
                   <div className="absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-md">
                     <button
-                    onClick={logoutAdmin}
-                     
+                      onClick={logoutAdmin}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Logout

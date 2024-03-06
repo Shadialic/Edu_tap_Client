@@ -92,7 +92,7 @@ function Blog() {
       ) : (
         <>
           <div className="flex flex-col w-screen h-screen overflow-x-hidden overflow-y-hidden">
-            <Header />
+            <Header />  
             <div className="w-full h-full flex flex-col">
               <h1 className="text-3xl font-prompt font-prompt-semibold p-6">
                 Latest Updates
@@ -107,13 +107,13 @@ function Blog() {
                     />
                   </div>
                   <div className="w-[60%] h-[50%]  ">
-                    <h1 className="p-6 text-4xl font-Kantumruy">
+                    <h1 className="p-6 sm:text-4xl font-Kantumruy">
                       {blogs[0].title}
                     </h1>
                     <p className="p-6">
                       {truncateDescription(blogs[0].description)}
                     </p>
-                    <div className="flex flex-row p-6">
+                    <div className="flex flex-row lg:p-6">
                       <Avatar
                         src={blogs[0].authorProfile}
                         alt="avatar"

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import html2canvas from "html2canvas"; 
+import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -10,11 +10,11 @@ export function downloadPDF(detailsRef) {
   html2canvas(element).then((canvas) => {
     const imageData = canvas.toDataURL("image/png");
     const pdf = new jsPDF({
-      orientation: "portrait", 
-      unit: "px", 
-      format: [canvas.width, canvas.height], 
+      orientation: "portrait",
+      unit: "px",
+      format: [canvas.width, canvas.height],
     });
-    pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height); 
+    pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height);
     pdf.save("document.pdf");
   });
 }
