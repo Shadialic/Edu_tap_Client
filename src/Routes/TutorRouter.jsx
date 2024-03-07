@@ -28,7 +28,6 @@ const Lyouts = () => {
 };
 
 function TutorRouter() {
-
   return (
     <Routes>
       <Route path="/signup" exact element={<><TutorPublic /><TutorSignUp /><TutorPublic /></>} />
@@ -46,7 +45,7 @@ function TutorRouter() {
       <Route path="/videocall" element={<TutorProtect><TutorVideoChat /></TutorProtect>} />
       <Route path="*" element={<Error />} />
     </Routes>
-  );
+  )
 }
 
-export default TutorRouter;
+export default TutorRouter

@@ -27,7 +27,7 @@ function AdminRouter() {
       <Route path="/offers" element={<Adminprotect><Offers /></Adminprotect>} />
       <Route path="/payment" element={<Adminprotect><PaymentReport /></Adminprotect>} />
     </Routes>
-  );
+  )
 }
 
-export default AdminRouter;
+export default AdminRouter
