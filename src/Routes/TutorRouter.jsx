@@ -26,7 +26,9 @@ const Lyouts = () => {
     </>
   );
 };
+
 function TutorRouter() {
+
   return (
     <Routes>
       <Route path="/signup" exact element={<><TutorPublic /><TutorSignUp /><TutorPublic /></>} />
