@@ -9,6 +9,7 @@ import { getChats, getMessages, sendMessage } from "../../api/UserApi";
 import InputEmoji from "react-input-emoji";
 import { TimeMange } from "../../helpers/TimeMange";
 import { useNavigate } from "react-router-dom";
+import profile from "../../../public/images/user/profile.png";
 
 function UserChat() {
   const navigate = useNavigate();
@@ -211,11 +212,16 @@ function UserChat() {
                 >
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                      <Avatar
-                        src={chat.members[0].image}
-                        alt="avatar"
-                        size="md"
-                      />
+                      {chat.members[0].image ? (
+                        <Avatar
+                          src={chat.members[0].image}
+                          alt="avatar"
+                          size="md"
+                        />
+                      ) : (
+                        <Avatar src={profile} alt="avatar" size="md" />
+                      )}
+
                       <div>
                         <Typography
                           variant="h6"
@@ -252,7 +258,12 @@ function UserChat() {
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">
-                        <Avatar src={item.image} alt="avatar" size="md" />
+                        {item.image ? (
+                          <Avatar src={item.image} alt="avatar" size="md" />
+                        ) : (
+                          <Avatar src={profile} alt="avatar" size="md" />
+                        )}
+
                         <div>
                           <Typography
                             variant="h6"
@@ -329,12 +340,16 @@ function UserChat() {
                       {currentChat.groupName &&
                       message.senderId !== userInfo.id ? (
                         <>
-                          <Avatar
-                            src={message.userImage}
-                            alt="avatar"
-                            size="sm"
-                            className="mb-2 mr-2"
-                          />
+                          {message.userImage ? (
+                            <Avatar
+                              src={message.userImage}
+                              alt="avatar"
+                              size="md"
+                            />
+                          ) : (
+                            <Avatar src={profile} alt="avatar" size="md" />
+                          )}
+
                           <div>
                             <h1 className="font-prompt-semibold">
                               {message.userName}

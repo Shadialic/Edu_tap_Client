@@ -7,7 +7,6 @@ import { addChapter } from "../../../api/VendorApi";
 import { Button } from "@material-tailwind/react";
 
 function ChapterForm({ setOpn, courseId }) {
-  console.log(courseId, "kaka");
   const [video, setVideo] = useState();
   const [demoFileName, setDemoFileName] = useState("");
   const [chapterFileName, setChapterFileName] = useState("");

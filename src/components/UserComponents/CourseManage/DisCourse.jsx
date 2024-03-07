@@ -67,7 +67,6 @@ function DisCourse() {
             offers.data.courses,
             category
           );
-          console.log(courses, "filteredCourses");
           return courses;
         });
         setOffer(filteredCourses.flat());

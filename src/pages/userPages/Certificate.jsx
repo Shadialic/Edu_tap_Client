@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import CourseCertificate from '../../components/Constans/Certificate/CourseCertificate';
-import { Loader } from '../../components/Constans/Loader/Loader';
+import React, { useState, useEffect } from "react";
+import CourseCertificate from "../../components/Constans/Certificate/CourseCertificate";
+import { Loader } from "../../components/Constans/Loader/Loader";
 
 function Certificate() {
   const [loading, setLoading] = useState(true);
@@ -12,15 +12,7 @@ function Certificate() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
-    <div>
-      {loading ? (
-        <Loader />
-      ) : (
-        <CourseCertificate />
-      )}
-    </div>
-  );
+  return <div>{loading ? <Loader /> : <CourseCertificate />}</div>;
 }
 
 export default Certificate;

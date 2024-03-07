@@ -45,7 +45,9 @@ function WaitingList() {
         <h1 className="font-prompt text-3xl">Waiting List</h1>
       </div>
       {isLoading ? (
-        <div><Loader/></div>
+        <div>
+          <Loader />
+        </div>
       ) : data && data.length > 0 ? (
         <div className="flex flex-wrap gap-16 p-9">
           {data.map((course) => (

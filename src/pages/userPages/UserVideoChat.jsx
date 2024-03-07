@@ -1,11 +1,11 @@
-import React from 'react'
-import UserVideoCall from '../../components/UserComponents/VideoCall/UserVideoCall'
+import React from "react";
+import UserVideoCall from "../../components/UserComponents/VideoCall/UserVideoCall";
 function UserVideoChat() {
   return (
     <div>
-        <UserVideoCall/>
+      <UserVideoCall />
     </div>
-  )
+  );
 }
 
-export default UserVideoChat
+export default UserVideoChat;

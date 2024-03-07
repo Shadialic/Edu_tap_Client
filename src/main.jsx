@@ -9,7 +9,6 @@ import { Provider } from "react-redux";
 import { Store, persistor } from "./Redux/store.jsx";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
-
 const theme = createTheme();
 
 ReactDOM.createRoot(document.getElementById("root")).render(

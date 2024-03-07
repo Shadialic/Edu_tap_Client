@@ -1,12 +1,12 @@
-import React from 'react'
-import TutorVideoCall from '../../components/TutorComponents/TutorVideoCall/TutorVideoCall'
+import React from "react";
+import TutorVideoCall from "../../components/TutorComponents/TutorVideoCall/TutorVideoCall";
 
 function TutorVideoChat() {
   return (
     <div>
-        <TutorVideoCall/>
+      <TutorVideoCall />
     </div>
-  )
+  );
 }
 
-export default TutorVideoChat
+export default TutorVideoChat;

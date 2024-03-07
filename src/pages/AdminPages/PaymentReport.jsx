@@ -21,21 +21,24 @@ function PaymentReport() {
   useEffect(() => {
     const fetch = async () => {
       const response = await fetchPaymentReport();
-      console.log(response, "ressssssssssssssssssssssssssssssponse");
       setReport(response.data.data);
     };
     fetch();
   }, []);
-  console.log(report, "reportreport");
-  const Preport =report&& report.filter((report) => {
-    const searchLowerCase = searchInput.toLowerCase();
-    const studentId = report.studentId.toLowerCase().includes(searchLowerCase);
-    const courseName = report.courseName
-      .toLowerCase().includes(searchLowerCase);
-    const tutorId = report.tutorId.toString().includes(searchLowerCase);
-    const Amount = report.Amount?.toString().includes(searchLowerCase); 
-    return studentId || courseName || tutorId || Amount;
-  });
+  const Preport =
+    report &&
+    report.filter((report) => {
+      const searchLowerCase = searchInput.toLowerCase();
+      const studentId = report.studentId
+        .toLowerCase()
+        .includes(searchLowerCase);
+      const courseName = report.courseName
+        .toLowerCase()
+        .includes(searchLowerCase);
+      const tutorId = report.tutorId.toString().includes(searchLowerCase);
+      const Amount = report.Amount?.toString().includes(searchLowerCase);
+      return studentId || courseName || tutorId || Amount;
+    });
 
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -49,9 +52,11 @@ function PaymentReport() {
   return (
     <div>
       <Sidebar state={"Payment Report"} />
-      <Navbar state={"Payment Report"}
-       searchInput={searchInput}
-       setSearchInput={setSearchInput} />
+      <Navbar
+        state={"Payment Report"}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+      />
       <div className="mt-12 mb-8 flex flex-col gap-12 p-4 xl:ml-80">
         <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
           <div className="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-lightBlue-950 to-lightBlue-800 text-white shadow-lightBlue-900/20 shadow-lg -mt-6 mb-8 p-6">
@@ -74,9 +79,6 @@ function PaymentReport() {
                       Date
                     </p>
                   </th>
-
-                
-
                   <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
                     <p className="block antialiased font-sans text-[11px] font-bold uppercase text-blue-gray-400">
                       Tutor Id
@@ -106,7 +108,7 @@ function PaymentReport() {
                         {formatDate(values.date)}
                       </div>
                     </td>
-                
+
                     <td className="py-3 px-5 border-b border-blue-gray-50">
                       <div className="flex items-center gap-4">
                         {values.studentId}
@@ -135,8 +137,9 @@ function PaymentReport() {
                   <FontAwesomeIcon icon={faChevronRight} className="text-xl" />
                 }
                 breakLabel={"..."}
-                pageCount={Preport ? Math.ceil(Preport.length / itemsPerPage) : 0}
-
+                pageCount={
+                  Preport ? Math.ceil(Preport.length / itemsPerPage) : 0
+                }
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={(data) => setCurrentPage(data.selected)}

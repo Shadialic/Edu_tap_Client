@@ -51,7 +51,6 @@ function Blog() {
     }
   };
   const detailBlog = (blogId) => {
-    console.log(blogId, "blogIdblogId");
     setBlogId(blogId);
     setBlogOpn(true);
   };
@@ -92,7 +91,7 @@ function Blog() {
       ) : (
         <>
           <div className="flex flex-col w-screen h-screen overflow-x-hidden overflow-y-hidden">
-            <Header />  
+            <Header />
             <div className="w-full h-full flex flex-col">
               <h1 className="text-3xl font-prompt font-prompt-semibold p-6">
                 Latest Updates

@@ -6,7 +6,7 @@ import { Loader } from "../../components/Constans/Loader/Loader";
 
 function PaymentReport() {
   const [report, setReport] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // State to manage loading state
+  const [isLoading, setIsLoading] = useState(true);
   const tutor = useSelector((state) => state.tutor.tutorInfo);
 
   useEffect(() => {
@@ -14,19 +14,19 @@ function PaymentReport() {
       try {
         const data = await fetchPaymentReport(tutor.email);
         setReport(data.data);
-        setIsLoading(false); // Set loading state to false once data is fetched
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching payment reports:", error);
       }
     };
     fetchReports();
-  }, [tutor.email]); 
+  }, [tutor.email]);
 
   const nav_title = [
     { display: "No", width: "5%" },
     { display: "Date", width: "10%" },
     { display: "Student Id", width: "15%" },
-    { display: "Course Name", width: "10%" }, 
+    { display: "Course Name", width: "10%" },
     { display: "Amount", width: "5%" },
   ];
 
@@ -44,8 +44,10 @@ function PaymentReport() {
           <h1 className="flex text-3xl font-prompt p-6 text-white">
             Payment History
           </h1>
-          {isLoading ? ( // Display loader if isLoading is true
-            <div><Loader/></div>
+          {isLoading ? (
+            <div>
+              <Loader />
+            </div>
           ) : (
             <div className="flex flex-col w-[95%] h-[90%] bg-white gap-24 overflow-auto">
               <table className="w-full">
@@ -65,11 +67,36 @@ function PaymentReport() {
                 <tbody>
                   {report.map((payment, index) => (
                     <tr key={index} className="border-b border-gray-200">
-                      <td className="font-prompt py-2 px-4" style={{ width: nav_title[0].width }}>{index + 1}</td>
-                      <td className="font-prompt py-2 px-4" style={{ width: nav_title[1].width }}>{formatDate(payment.date)}</td>
-                      <td className="font-prompt py-2 px-4" style={{ width: nav_title[2].width }}>{payment.studentId}</td>
-                      <td className="font-prompt py-2 px-4" style={{ width: nav_title[3].width }}>{payment.courseName}</td>
-                      <td className="font-prompt py-2 px-4 " style={{ width: nav_title[4].width }}>{payment.Amount}</td> {/* Align text to right */}
+                      <td
+                        className="font-prompt py-2 px-4"
+                        style={{ width: nav_title[0].width }}
+                      >
+                        {index + 1}
+                      </td>
+                      <td
+                        className="font-prompt py-2 px-4"
+                        style={{ width: nav_title[1].width }}
+                      >
+                        {formatDate(payment.date)}
+                      </td>
+                      <td
+                        className="font-prompt py-2 px-4"
+                        style={{ width: nav_title[2].width }}
+                      >
+                        {payment.studentId}
+                      </td>
+                      <td
+                        className="font-prompt py-2 px-4"
+                        style={{ width: nav_title[3].width }}
+                      >
+                        {payment.courseName}
+                      </td>
+                      <td
+                        className="font-prompt py-2 px-4 "
+                        style={{ width: nav_title[4].width }}
+                      >
+                        {payment.Amount}
+                      </td>{" "}
                     </tr>
                   ))}
                 </tbody>

@@ -3,6 +3,7 @@ import Sidebar from "../../components/AdminComponents/Layouts/Sidebar";
 import Navbar from "../../components/AdminComponents/Layouts/Navbar";
 import DisplayCourse from "../../components/AdminComponents/courseManage/showCourse/DisplayCourse";
 import { getCourse } from "../../api/AdminApi";
+import { Loader } from "../../components/Constans/Loader/Loader";
 function DisCourses() {
   const [searchInput, setSearchInput] = useState("");
   const [course, setCourse] = useState([]);
@@ -43,8 +44,7 @@ function DisCourses() {
 
       <div className="mt-4 flex flex-col gap-12 p-4 xl:ml-80">
         {loading ? (
-          // Show a loading indicator while fetching data
-          <p>Loading...</p>
+          <p><Loader/></p>
         ) : (
           <DisplayCourse userDatas={filteredCourses} />
         )}

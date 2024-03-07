@@ -41,7 +41,6 @@ function DisplayProfile() {
       await getUserData().then((res) => {
         const userData = res.data.userData;
         const data = userData.find((item) => item.email == userInfo.email);
-        console.log(data, "dddddddddddddddddddddddddddddd");
         setData(data);
       });
     };
@@ -125,7 +124,6 @@ function DisplayProfile() {
       console.error(err);
     }
   };
-  console.log(data, "aaaaaaaaaaaaaaaaaa");
 
   return (
     <div>

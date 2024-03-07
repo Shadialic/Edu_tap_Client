@@ -8,7 +8,7 @@ const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
   const userName = userInfo.userName;
 

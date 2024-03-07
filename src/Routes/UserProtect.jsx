@@ -8,7 +8,7 @@ function UserProtect(props) {
   const userId = userInfo.id;
   useEffect(() => {
     const checking = async () => {
-      const response = await checkingUser(userId);
+      const response = await    (userId);
       if (response.data.status == true) {
         localStorage.removeItem("token");
       }

@@ -3,7 +3,6 @@ import form_img from "../../../../public/images/tutor/Add files-bro.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CoursrManage, getCategory } from "../../../api/VendorApi";
-import cloudinary from "cloudinary-core";
 import { useSelector } from "react-redux";
 
 function Form() {
@@ -21,7 +20,7 @@ function Form() {
     description: "",
     price: "",
     image: null,
-    category: "", // Initialize category in formData
+    category: "", 
   });
 
   useEffect(() => {
@@ -78,7 +77,6 @@ function Form() {
         return;
       }
       const uploadedImageUrl = cloudinaryData.secure_url;
-      console.log(uploadedImageUrl, "uploadedImageUrl");
       return uploadedImageUrl;
     } catch (error) {
       console.log("Error during image upload:", error);

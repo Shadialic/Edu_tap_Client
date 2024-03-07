@@ -168,7 +168,7 @@ function DetailsCourses({ data, offer, newOffer }) {
                   <Elements stripe={StripePromise} options={options}>
                     <LoadStripe
                       bugs={bugs}
-                      newOffer={Discount&&Discount.Percentage}
+                      newOffer={Discount && Discount.Percentage}
                       clientSecret={clientSecret}
                       userId={userInfo.email}
                       tutorId={auther.email}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import reviewimg from "../../../../public/images/user/reviews.png";
 import {
-  Certificateadded,
   checkConnection,
   createChat,
   fetchReviews,
@@ -67,31 +66,18 @@ function Collections({ chapter, courseId, tutors, course }) {
     };
     fetch();
   }, [chapter, courseId, review]);
-  const provideCertificate = () => {
-    navigate("/certificate", {
-      state: {
-        name: userInfo.userName,
-        tutorName: tutorData.tutorName,
-        course: course,
-      },
-    });
-  };
+
   useEffect(() => {
     checkCourseCompletion();
-    const allChaptersWatched = courseCompleted.length === data.length;
-    if (data.length != 0 && videoCompletionStatus.length === data.length) {
-      const update = async () => {
-        const userId = userInfo.id;
-        const ata = await Certificateadded({ courseId, userId });
-      };
-      update();
-      setCertificate(true);
-    }
   }, [videoCompletionStatus]);
 
   const checkCourseCompletion = () => {
     const allChaptersWatched = videoCompletionStatus.every((status) => status);
+
     setCourseCompleted(allChaptersWatched);
+    if (videoCompletionStatus.length == data.length && data.length != 0) {
+      setCertificate(true);
+    }
   };
 
   if (!chapter.length || !data.length) {
@@ -155,6 +141,15 @@ function Collections({ chapter, courseId, tutors, course }) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
+  const provideCertificate = () => {
+    navigate("/certificate", {
+      state: {
+        name: userInfo.userName,
+        tutorName: tutorData.tutorName,
+        course: course,
+      },
+    });
+  };
 
   return (
     <div className="flex flex-col sm:flex lg:flex-row w-screen h-fit">
@@ -162,18 +157,22 @@ function Collections({ chapter, courseId, tutors, course }) {
         <video
           className="w-full h-auto"
           src={
-            selectedVideo !== null
+            data.length > 0 && selectedVideo !== null
               ? data[selectedVideo].chapterVideo
-              : data[0].chapterVideo
+              : data.length > 0
+              ? data[0].chapterVideo
+              : ""
           }
           controls
           autoPlay={true}
         />
         <div>
           <h1 className="font-prompt font-prompt-semibold text-2xl mt-3">
-            {selectedVideo !== null
-              ? data[selectedVideo].chapterTitle
-              : data[0].chapterTitle}
+            {data.length > 0 && selectedVideo !== null
+              ? data[selectedVideo]?.chapterTitle
+              : data.length > 0
+              ? data[0]?.chapterTitle
+              : "No title available"}
           </h1>
           <div>
             {certificate && (
@@ -188,10 +187,12 @@ function Collections({ chapter, courseId, tutors, course }) {
             )}
 
             <div className="flex flex-row mr-3  mt-7">
-              <img className="w-10 h-10 " src={tutorData.image} alt="" />
+              <img className="w-10 h-10" src={tutorData?.image || ""} alt="" />
+
               <h1 className="font-prompt-semibold ml-3 mt-1 text-xl">
-                {tutorData.tutorName}
+                {tutorData && tutorData.tutorName}
               </h1>
+
               {!showMessage ? (
                 <div className="flex w-24 font-prompt h-10 bg-violet-500 text-white justify-center ml-8 rounded-lg">
                   <button onClick={handleFollowing} className="p-2">
@@ -215,10 +216,11 @@ function Collections({ chapter, courseId, tutors, course }) {
             </div>
 
             <h1 className="font-prompt text-sm mt-4">
-              {" "}
-              {selectedVideo !== null
-                ? data[selectedVideo].chapterDescription
-                : data[0].chapterDescription}
+              {data.length > 0 && selectedVideo !== null
+                ? data[selectedVideo]?.chapterDescription
+                : data.length > 0
+                ? data[0]?.chapterDescription
+                : "No description available"}
             </h1>
           </div>
         </div>

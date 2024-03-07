@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import logo from "../../../assets/images/logoO.png";
 
 function Header() {
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
 
@@ -70,7 +69,7 @@ function Header() {
               <li>
                 <NavLink
                   to="/vendor/waitinglist"
-                  activeClassName="active"
+                  activeClassName="active-link"
                   className="lg:p-4 py-2 px-0 block hover:text-[#7d0fc6]"
                 >
                   Waiting List
@@ -79,7 +78,7 @@ function Header() {
               <li>
                 <NavLink
                   to="/vendor/runningClasses"
-                  activeClassName="active"
+                  activeClassName="active-link"
                   className="lg:p-4 py-2 px-0 block hover:text-[#7d0fc6]"
                 >
                   Running Classes
@@ -88,13 +87,13 @@ function Header() {
               <li>
                 <NavLink
                   to="/vendor/PaymentReport"
-                  activeClassName="active"
+                  activeClassName="active-link"
                   className="lg:p-4 py-2 px-0 block hover:text-[#7d0fc6]"
                 >
                   Payment Report
                 </NavLink>
               </li>
-              {localStorage.getItem("token") ? (
+              {localStorage.getItem("tutortoken") ? (
                 <li className="sm:mt-0 lg:p-4 py-2 px-0">
                   <button
                     onClick={toggleDropdown}

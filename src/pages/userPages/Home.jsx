@@ -6,28 +6,28 @@ import Banner from "../../components/UserComponents/Home/Banner";
 import { Footer } from "../../components/UserComponents/Layouts/Footer";
 import { FaComment } from "react-icons/fa";
 import { Navigate, useNavigate } from "react-router-dom";
-// import Navbar from "../../components/UserComponents/Layouts/HeaderChe";/
 import { Loader } from "../../components/Constans/Loader/Loader";
 import Navbar from "../../components/UserComponents/Layouts/Header";
 
 function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const handleChat = () => {
     navigate("/chat");
   };
 
   return (
     <div>
-      <Navbar/>
-     
-      {loading && <Loader/>}
+      <Navbar />
+
+      {loading && <Loader />}
 
       <section>
         <div className="container mx-auto ">
           <div className="home-container  sm:flex-auto ">
-            <a href="" className="">START TO SUCCESS</a>
+            <a href="" className="">
+              START TO SUCCESS
+            </a>
             <div className="sm:flex flex-col lg:flex-row items-center">
               <div className="content p-2  lg:w-1/2   mr-4 ">
                 <h1 className="text-4xl lg:text-7xl">

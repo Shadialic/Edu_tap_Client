@@ -14,7 +14,7 @@ function TutorProtect(props) {
       }
     };
     checking();
-  }, []);
+  },[]);
   if (localStorage.getItem("tutortoken")) {
     return props.children;
   } else {

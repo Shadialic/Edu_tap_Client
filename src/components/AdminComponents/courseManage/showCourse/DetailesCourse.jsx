@@ -46,7 +46,9 @@ function DetailesCourse({ courseId, course, setOpn }) {
                 <label className="text-xl font-prompt-semibold" htmlFor="">
                   auther:
                 </label>
-                <h1 className="text-lg font-prompt ml-1">{element.auther}</h1>
+                <h1 className="text-lg font-prompt ml-1 mt-1">
+                  {element.auther}
+                </h1>
                 <img src="" alt="" />
               </div>
             </div>

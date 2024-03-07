@@ -30,6 +30,7 @@ import {
 import Header from "../TutorComponents/TutorLayouts/Header";
 import { TimeMange } from "../../helpers/TimeMange";
 import { useNavigate } from "react-router-dom";
+import profile from "../../../public/images/user/profile.png";
 
 function TutorChat() {
   const navigate = useNavigate();
@@ -259,6 +260,11 @@ function TutorChat() {
     };
     fetch();
   }, []);
+
+  console.log(userChats, "userChats");
+  console.log(searchUsers, "searchUsers");
+  console.log(selectedMember, "selectedMember");
+
   // const filterData = searchUsers.filter(item => {
   //   const lowerCaseSearchQuery = searchQuery.toLowerCase();
   //   const lowerCaseUserName = item.userName ? item.userName.toLowerCase() : '';
@@ -383,11 +389,20 @@ function TutorChat() {
                                         checked={selectedUsers.includes(item)}
                                       />
                                     </ListItemPrefix>
-                                    <Avatar
-                                      src={item.members[0].image}
-                                      alt="avatar"
-                                      size="md"
-                                    />
+                                    {item.members[0].image ? (
+                                      <Avatar
+                                        src={item.members[0].image}
+                                        alt="avatar"
+                                        size="md"
+                                      />
+                                    ) : (
+                                      <Avatar
+                                        src={profile}
+                                        alt="avatar"
+                                        size="md"
+                                      />
+                                    )}
+
                                     <div className="flex flex-col pl-2">
                                       <Typography
                                         color="blue-gray"
@@ -439,11 +454,16 @@ function TutorChat() {
                 >
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                      <Avatar
-                        src={chat.members[0].image}
-                        alt="avatar"
-                        size="md"
-                      />
+                      {chat.members[0].image ? (
+                        <Avatar
+                          src={chat.members[0].image}
+                          alt="avatar"
+                          size="md"
+                        />
+                      ) : (
+                        <Avatar src={profile} alt="avatar" size="md" />
+                      )}
+
                       <div>
                         <Typography
                           variant="h6"
@@ -486,7 +506,12 @@ function TutorChat() {
                 >
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                      <Avatar src={item.image} alt="avatar" size="md" />
+                      {item.image ? (
+                        <Avatar src={item.image} alt="avatar" size="md" />
+                      ) : (
+                        <Avatar src={profile} alt="avatar" size="md" />
+                      )}
+
                       <div>
                         <Typography
                           variant="h6"
@@ -514,11 +539,16 @@ function TutorChat() {
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-3 border-b border-gray-200">
                   <div className="flex items-center">
-                    <Avatar
-                      src={currentChat.members[0].image || currentChat.image}
-                      alt="avatar"
-                      size="md"
-                    />
+                    {currentChat.members[0].image ? (
+                      <Avatar
+                        src={currentChat.members[0].image || currentChat.image}
+                        alt="avatar"
+                        size="md"
+                      />
+                    ) : (
+                      <Avatar src={profile} alt="avatar" size="md" />
+                    )}
+
                     <div className="ml-3">
                       <Typography variant="h6">
                         {currentChat.members[0].userName ||
@@ -562,12 +592,16 @@ function TutorChat() {
                       {currentChat.groupName &&
                       message.senderId !== tutorInfo.id ? (
                         <>
-                          <Avatar
-                            src={message.userImage}
-                            alt="avatar"
-                            size="sm"
-                            className="mb-2 mr-2"
-                          />
+                          {message.userImage ? (
+                            <Avatar
+                              src={message.userImage}
+                              alt="avatar"
+                              size="md"
+                            />
+                          ) : (
+                            <Avatar src={profile} alt="avatar" size="md" />
+                          )}
+
                           <div>
                             <h1 className="font-prompt-semibold">
                               {message.userName}

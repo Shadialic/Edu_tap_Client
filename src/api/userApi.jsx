@@ -139,7 +139,6 @@ export async function LoadCategory() {
 }
 export async function purchaseCourse(id, userId) {
   try {
-    console.log(id, userId,'id, userId');
     const response = await UserApi.put(`/purchaseCourse/${id}`, {
       userid: userId,
     });

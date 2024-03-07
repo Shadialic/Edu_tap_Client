@@ -66,7 +66,6 @@ function DisProfile({}) {
                 </div>
               )}
 
-              {/* Change Profile Image Button */}
               <div className="flex justify-center items-center mt-4">
                 <form
                   encType="multipart/form-data"

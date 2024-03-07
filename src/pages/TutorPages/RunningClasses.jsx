@@ -3,11 +3,7 @@ import empty from "../../../public/images/tutor/noData.png";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  blockUnBlockcourse,
-  fetchCoures,
-  manageCourse,
-} from "../../api/VendorApi";
+import { blockUnBlockcourse, fetchCoures } from "../../api/VendorApi";
 import DetaileClass from "../../components/TutorComponents/Classes/DetaileClass";
 import { Loader } from "../../components/Constans/Loader/Loader";
 

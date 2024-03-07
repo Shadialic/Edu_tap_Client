@@ -6,10 +6,12 @@ import { TimeMange } from "../../../helpers/TimeMange";
 import { io } from "socket.io-client";
 
 function Comment({ chapterId, userInfo }) {
+  console.log(chapterId,'chapterId');
   const [commentText, setCommentText] = useState("");
   const [showComments, setShowComments] = useState([]);
   const [socket, setSocket] = useState(null);
-  const chapter = chapterId[0]._id;
+  const chapter = chapterId.length > 0 ? chapterId[0]._id : null;
+
 
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
@@ -48,12 +50,9 @@ function Comment({ chapterId, userInfo }) {
       chapterId: chapter,
       Image: userInfo.image,
     };
-
     setCommentText("");
-
     try {
       const response = await postCommnets(data);
-      console.log(response, "responseresponseresponseresponse");
     } catch (error) {
       console.error("Error submitting comment:", error);
     }

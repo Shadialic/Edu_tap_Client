@@ -7,8 +7,8 @@ const initialState = {
   price: "",
   description: "",
   category: "",
-  level:"",
-  image:""
+  level: "",
+  image: "",
 };
 
 const CourseSlice = createSlice({
@@ -22,7 +22,7 @@ const CourseSlice = createSlice({
         (state.price = action.payload.price),
         (state.category = action.payload.category),
         (state.description = action.payload.description),
-        (state. image = action.payload. image),
+        (state.image = action.payload.image),
         (state.level = action.payload.level);
     },
   },
