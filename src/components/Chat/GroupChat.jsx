@@ -11,11 +11,6 @@ import {
 function GroupChat() {
   const [open, setOpen] = React.useState(false);
   const [groupName, setGroupName] = useState("");
-  const [user, setUsers] = useState("");
-
-  const createGroup = () => {
-    closeDialog();
-  };
 
   return (
     <div>
